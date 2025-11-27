@@ -5,14 +5,14 @@ import Business.Enterprise.Enterprise;
 import Business.Enterprise.EnterpriseDirectory;
 import Business.Enterprise.CoffeeChainEnterprise;
 import Business.Network.Network;
-import Business.Organization.DoctorOrganization;
-import Business.Organization.LabOrganization;
+import Business.Organization.CafeOperationOrganization;
+import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
-import Business.Role.AdminRole;
-import Business.Role.DoctorRole;
-import Business.Role.LabAssistantRole;
-import Business.Role.LabManagerRole;
+import Business.Role.CafeAdminRole;
+import Business.Role.FrontDeskRole;
+import Business.Role.BaristaRole;
+import Business.Role.StoreManagerRole;
 import Business.Role.SystemAdminRole;
 import Business.UserAccount.UserAccount;
 
@@ -42,16 +42,17 @@ public class ConfigureASystem {
         Network network = system.createAndAddNetwork();
         network.setName("Default Network");
 
-        // 2. 在 Network 里创建一个 Hospital Enterprise
+        // 2. 在 Network 里创建一个 CoffeeChain Enterprise
         EnterpriseDirectory enterpriseDirectory = network.getEnterpriseDirectory();
-        CoffeeChainEnterprise hospital = (CoffeeChainEnterprise) enterpriseDirectory
-                .createAndAddEnterprise("Test Hospital", Enterprise.EnterpriseType.Hospital);
+        CoffeeChainEnterprise CoffeeChain = (CoffeeChainEnterprise) enterpriseDirectory
+                .createAndAddEnterprise("CoffeeChain", Enterprise.EnterpriseType.CoffeeChain);
 
-        // 3. 在 Hospital 里创建 Doctor 和 Lab 两个 Organization
-        OrganizationDirectory orgDir = hospital.getOrganizationDirectory();
-        DoctorOrganization doctorOrg = (DoctorOrganization) orgDir.createOrganization(Organization.Type.Doctor);
-        LabOrganization labOrg = (LabOrganization) orgDir.createOrganization(Organization.Type.Lab);
-
+        // 3. 在 CoffeeChain 里创建 CafeOp, CafeMgmt 2个 Organization
+        OrganizationDirectory cafeOrgDir = CoffeeChain.getOrganizationDirectory();
+        CafeOperationOrganization cafeOpOrg = (CafeOperationOrganization) cafeOrgDir.createOrganization(Organization.Type.CafeOperation);
+        CafeManagementOrganization cafeMgmtOrg = (CafeManagementOrganization) cafeOrgDir.createOrganization(Organization.Type.CafeManagement);
+        
+        
         //4. have some employees 
         //5. create user account
         
@@ -61,25 +62,25 @@ public class ConfigureASystem {
         UserAccount sysAdminUA = system.getUserAccountDirectory()
                 .createUserAccount("sa", "1", sysEmp, new SystemAdminRole());
 
-        // ====== B. Hospital Admin（Enterprise Admin）======//cafe admin
-        Employee entAdminEmp = hospital.getEmployeeDirectory().createEmployee("Hospital Admin");
-        UserAccount entAdminUA = hospital.getUserAccountDirectory()
-                .createUserAccount("ha", "1", entAdminEmp, new AdminRole());
+        // ====== B. Cafe Admin（Enterprise Admin）======// Hospital Admin（Enterprise Admin）
+        Employee cafeAdminEmp = CoffeeChain.getEmployeeDirectory().createEmployee("Cafe Admin");
+        UserAccount cafeAdminUA = CoffeeChain.getUserAccountDirectory()
+                .createUserAccount("ca", "1", cafeAdminEmp, new CafeAdminRole());
 
-        // ====== C. Doctor（医生）======//Front Desk Staff
-        Employee doctorEmp = doctorOrg.getEmployeeDirectory().createEmployee("Doctor One");
-        UserAccount doctorUA = doctorOrg.getUserAccountDirectory()
-                .createUserAccount("d", "1", doctorEmp, new DoctorRole());
+        // ====== C. Front Desk Staff ======// Doctor（医生）
+        Employee frontDeskEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Doctor One");
+        UserAccount frontDeskUA = cafeOpOrg.getUserAccountDirectory()
+                .createUserAccount("fd", "1", frontDeskEmp, new FrontDeskRole());
 
-        // ====== D. Lab Assistant（实验室助理）======//Barista
-        Employee labAssistantEmp = labOrg.getEmployeeDirectory().createEmployee("Lab Assistant One");
-        UserAccount labAssistantUA = labOrg.getUserAccountDirectory()
-                .createUserAccount("la", "1", labAssistantEmp, new LabAssistantRole());
+        // ====== D. Barista ======// Lab Assistant（实验室助理）
+        Employee baristaEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Lab Assistant One");
+        UserAccount baristaUA = cafeOpOrg.getUserAccountDirectory()
+                .createUserAccount("b", "1", baristaEmp, new BaristaRole());
 
-        // ====== E. Lab Manager（实验室经理）======//store manager
-        Employee labManagerEmp = labOrg.getEmployeeDirectory().createEmployee("Lab Manager One");
-        UserAccount labManagerUA = labOrg.getUserAccountDirectory()
-                .createUserAccount("lm", "1", labManagerEmp, new LabManagerRole());
+        // ====== E. Store Manager ======// Lab Manager（实验室经理）
+        Employee storeManagerEmp = cafeMgmtOrg.getEmployeeDirectory().createEmployee("Lab Manager One");
+        UserAccount storeManagerUA = cafeMgmtOrg.getUserAccountDirectory()
+                .createUserAccount("sm", "1", storeManagerEmp, new StoreManagerRole());
 
         
         return system;

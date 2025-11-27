@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class CoffeeChainEnterprise extends Enterprise {
     
     public CoffeeChainEnterprise(String name){
-        super(name,EnterpriseType.Hospital);
+        super(name,EnterpriseType.CoffeeChain);
     }
     @Override
     public ArrayList<Role> getSupportedRole() {

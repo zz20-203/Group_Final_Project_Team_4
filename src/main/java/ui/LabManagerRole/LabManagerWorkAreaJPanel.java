@@ -6,7 +6,7 @@ package ui.LabManagerRole;
 
 import ui.LabAssistantRole.*;
 import Business.EcoSystem;
-import Business.Organization.LabOrganization;
+import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.LabTestWorkRequest;
@@ -24,7 +24,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
     private JPanel userProcessContainer;
     private EcoSystem business;
     private UserAccount userAccount;
-    private LabOrganization labOrganization;
+    private CafeManagementOrganization labOrganization;
     
     /**
      * Creates new form LabAssistantWorkAreaJPanel
@@ -35,7 +35,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.userAccount = account;
         this.business = business;
-        this.labOrganization = (LabOrganization)organization;
+        this.labOrganization = (CafeManagementOrganization)organization;
         
         populateTable();
     }

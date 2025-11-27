@@ -6,7 +6,7 @@ package ui.DoctorRole;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
-import Business.Organization.LabOrganization;
+import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.LabTestWorkRequest;
@@ -94,7 +94,7 @@ public class RequestLabTestJPanel extends javax.swing.JPanel {
         
         Organization org = null;
         for (Organization organization : enterprise.getOrganizationDirectory().getOrganizationList()){
-            if (organization instanceof LabOrganization){
+            if (organization instanceof CafeManagementOrganization){
                 org = organization;
                 break;
             }
