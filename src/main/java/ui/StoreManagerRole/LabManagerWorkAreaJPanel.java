@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.LabManagerRole;
+package ui.StoreManagerRole;
 
-import ui.LabAssistantRole.*;
+import ui.BaristaRole.ProcessWorkRequestJPanel;
 import Business.EcoSystem;
 import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;

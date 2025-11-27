@@ -25,11 +25,11 @@ public class OrganizationDirectory {
     
     public Organization createOrganization(Type type){
         Organization organization = null;
-        if (type.getValue().equals(Type.CafeOp.getValue())){
+        if (type.getValue().equals(Type.CafeOperation.getValue())){
             organization = new CafeOperationOrganization();
             organizationList.add(organization);
         }
-        else if (type.getValue().equals(Type.CafeMgmt.getValue())){
+        else if (type.getValue().equals(Type.CafeManagement.getValue())){
             organization = new CafeManagementOrganization();
             organizationList.add(organization);
         }

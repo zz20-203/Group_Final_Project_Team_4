@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.DoctorRole;
+package ui.FrontDeskRole;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;

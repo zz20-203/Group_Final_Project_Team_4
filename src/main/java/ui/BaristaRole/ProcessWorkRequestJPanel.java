@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.LabAssistantRole;
+package ui.BaristaRole;
 
 import Business.WorkQueue.LabTestWorkRequest;
 import java.awt.CardLayout;
