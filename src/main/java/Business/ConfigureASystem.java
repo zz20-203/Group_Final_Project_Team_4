@@ -3,7 +3,7 @@ package Business;
 import Business.Employee.Employee;
 import Business.Enterprise.Enterprise;
 import Business.Enterprise.EnterpriseDirectory;
-import Business.Enterprise.HospitalEnterprise;
+import Business.Enterprise.CoffeeChainEnterprise;
 import Business.Network.Network;
 import Business.Organization.DoctorOrganization;
 import Business.Organization.LabOrganization;
@@ -44,7 +44,7 @@ public class ConfigureASystem {
 
         // 2. 在 Network 里创建一个 Hospital Enterprise
         EnterpriseDirectory enterpriseDirectory = network.getEnterpriseDirectory();
-        HospitalEnterprise hospital = (HospitalEnterprise) enterpriseDirectory
+        CoffeeChainEnterprise hospital = (CoffeeChainEnterprise) enterpriseDirectory
                 .createAndAddEnterprise("Test Hospital", Enterprise.EnterpriseType.Hospital);
 
         // 3. 在 Hospital 里创建 Doctor 和 Lab 两个 Organization
@@ -52,6 +52,10 @@ public class ConfigureASystem {
         DoctorOrganization doctorOrg = (DoctorOrganization) orgDir.createOrganization(Organization.Type.Doctor);
         LabOrganization labOrg = (LabOrganization) orgDir.createOrganization(Organization.Type.Lab);
 
+        //4. have some employees 
+        //5. create user account
+        
+        
         // ====== A. System Admin（系统级别）======
         Employee sysEmp = system.getEmployeeDirectory().createEmployee("System Admin");
         UserAccount sysAdminUA = system.getUserAccountDirectory()
@@ -62,12 +66,12 @@ public class ConfigureASystem {
         UserAccount entAdminUA = hospital.getUserAccountDirectory()
                 .createUserAccount("ha", "1", entAdminEmp, new AdminRole());
 
-        // ====== C. Doctor（医生）======//front desk
+        // ====== C. Doctor（医生）======//Front Desk Staff
         Employee doctorEmp = doctorOrg.getEmployeeDirectory().createEmployee("Doctor One");
         UserAccount doctorUA = doctorOrg.getUserAccountDirectory()
                 .createUserAccount("d", "1", doctorEmp, new DoctorRole());
 
-        // ====== D. Lab Assistant（实验室助理）======//store staff
+        // ====== D. Lab Assistant（实验室助理）======//Barista
         Employee labAssistantEmp = labOrg.getEmployeeDirectory().createEmployee("Lab Assistant One");
         UserAccount labAssistantUA = labOrg.getUserAccountDirectory()
                 .createUserAccount("la", "1", labAssistantEmp, new LabAssistantRole());

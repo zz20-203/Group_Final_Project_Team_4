@@ -12,9 +12,9 @@ import java.util.ArrayList;
  *
  * @author MyPC1
  */
-public class HospitalEnterprise extends Enterprise {
+public class CoffeeChainEnterprise extends Enterprise {
     
-    public HospitalEnterprise(String name){
+    public CoffeeChainEnterprise(String name){
         super(name,EnterpriseType.Hospital);
     }
     @Override
