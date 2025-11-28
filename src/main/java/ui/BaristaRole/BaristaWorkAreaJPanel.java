@@ -11,6 +11,7 @@ import Business.UserAccount.UserAccount;
 import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
 import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author raunak
  */
-public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
+public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
 
     private JPanel userProcessContainer;
     private EcoSystem business;
@@ -28,7 +29,7 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
     /**
      * Creates new form LabAssistantWorkAreaJPanel
      */
-    public LabAssistantWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, EcoSystem business) {
+    public BaristaWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, EcoSystem business) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -41,14 +42,20 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
     
     public void populateTable(){
         DefaultTableModel model = (DefaultTableModel)workRequestJTable.getModel();
-        
         model.setRowCount(0);
         
-        for(OrderRequest request : cafeOpOrganization.getWorkQueue().getWorkRequestList()){
+        java.util.List<OrderRequest> list = cafeOpOrganization.getWorkQueue().getWorkRequestList();
+        
+        for (int i = list.size() - 1; i >= 0; i--) {
+            OrderRequest request = list.get(i);
+            
+            CoffeeOrderRequest coffeeReq = (CoffeeOrderRequest) request;
+            
             Object[] row = new Object[4];
-            row[0] = request;
-            row[1] = request.getSender().getEmployee().getName();
-            row[2] = request.getReceiver() == null ? null : request.getReceiver().getEmployee().getName();
+            row[0] = coffeeReq;
+            row[1] = coffeeReq.getMessage();
+            //row[2] = request.getReceiver() == null ? null : request.getReceiver().getEmployee().getName();
+            row[2] = request.getReceiver() == null ? "Waiting" : request.getReceiver();
             row[3] = request.getStatus();
             
             model.addRow(row);
@@ -67,7 +74,7 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         workRequestJTable = new javax.swing.JTable();
         assignJButton = new javax.swing.JButton();
-        processJButton = new javax.swing.JButton();
+        orderFinishedJButton = new javax.swing.JButton();
         refreshJButton = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -80,14 +87,14 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Message", "Sender", "Receiver", "Status"
+                "Order Number", "Order", "Receiver", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -106,23 +113,23 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
             workRequestJTable.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(108, 58, 375, 96));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 58, 390, 96));
 
-        assignJButton.setText("Assign to me");
+        assignJButton.setText("Assign Order to me");
         assignJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 assignJButtonActionPerformed(evt);
             }
         });
-        add(assignJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 215, -1, -1));
+        add(assignJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, -1, -1));
 
-        processJButton.setText("Process");
-        processJButton.addActionListener(new java.awt.event.ActionListener() {
+        orderFinishedJButton.setText("Order Finished");
+        orderFinishedJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                processJButtonActionPerformed(evt);
+                orderFinishedJButtonActionPerformed(evt);
             }
         });
-        add(processJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 210, -1, -1));
+        add(orderFinishedJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 180, -1, -1));
 
         refreshJButton.setText("Refresh");
         refreshJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -138,34 +145,47 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
         int selectedRow = workRequestJTable.getSelectedRow();
         
         if (selectedRow < 0){
+            JOptionPane.showMessageDialog(null, "Please select an order to assign.");
             return;
         }
         
         OrderRequest request = (OrderRequest)workRequestJTable.getValueAt(selectedRow, 0);
+        
+        if(!"Sent".equals(request.getStatus())){
+             JOptionPane.showMessageDialog(null, "This order is already taken or completed.");
+             return;
+        }
+        
         request.setReceiver(userAccount);
         request.setStatus("Pending");
         populateTable();
+        JOptionPane.showMessageDialog(null, "Order assigned to you!");
         
     }//GEN-LAST:event_assignJButtonActionPerformed
 
-    private void processJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processJButtonActionPerformed
+    private void orderFinishedJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderFinishedJButtonActionPerformed
         
         int selectedRow = workRequestJTable.getSelectedRow();
         
         if (selectedRow < 0){
+            JOptionPane.showMessageDialog(null, "Please select an order to finish.");
             return;
         }
         
         CoffeeOrderRequest request = (CoffeeOrderRequest)workRequestJTable.getValueAt(selectedRow, 0);
      
-        request.setStatus("Processing");
+        if(!"Pending".equals(request.getStatus()) || request.getReceiver() != userAccount){
+                     JOptionPane.showMessageDialog(null, "You can only finish orders assigned to you and in progress.");
+                     return;
+                }
         
-        ProcessWorkRequestJPanel processWorkRequestJPanel = new ProcessWorkRequestJPanel(userProcessContainer, request);
-        userProcessContainer.add("processWorkRequestJPanel", processWorkRequestJPanel);
-        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        layout.next(userProcessContainer);
+        request.setStatus("Completed");
         
-    }//GEN-LAST:event_processJButtonActionPerformed
+        populateTable();
+        JOptionPane.showMessageDialog(null, "Order Completed!");
+        
+        
+    }//GEN-LAST:event_orderFinishedJButtonActionPerformed
 
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
         populateTable();
@@ -174,7 +194,7 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton assignJButton;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton processJButton;
+    private javax.swing.JButton orderFinishedJButton;
     private javax.swing.JButton refreshJButton;
     private javax.swing.JTable workRequestJTable;
     // End of variables declaration//GEN-END:variables

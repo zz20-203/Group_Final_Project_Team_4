@@ -32,7 +32,7 @@ public class CoffeeOrderRequest extends OrderRequest{
     
     @Override
     public String toString() {
-        return getMessage();
+        return String.valueOf(this.getOrderNumber());
     }
     
 //    public String getTestResult() {

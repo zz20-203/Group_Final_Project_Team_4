@@ -42,9 +42,12 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) workRequestJTable.getModel();
         
         model.setRowCount(0);
-        for (OrderRequest request : userAccount.getWorkQueue().getWorkRequestList()){
-            CoffeeOrderRequest coffeeReq = (CoffeeOrderRequest) request;
+        java.util.List<OrderRequest> list = userAccount.getWorkQueue().getWorkRequestList();
+        
+        for (int i = list.size() - 1; i >= 0; i--) {
+            OrderRequest request = list.get(i);
             
+            CoffeeOrderRequest coffeeReq = (CoffeeOrderRequest) request;
             Object[] row = new Object[4];
             
             row[0] = coffeeReq.getOrderNumber();

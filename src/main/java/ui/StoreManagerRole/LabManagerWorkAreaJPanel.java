@@ -4,7 +4,6 @@
  */
 package ui.StoreManagerRole;
 
-import ui.BaristaRole.ProcessWorkRequestJPanel;
 import Business.EcoSystem;
 import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
@@ -140,11 +139,11 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
      
         request.setStatus("Processing");
         
-        ProcessWorkRequestJPanel processWorkRequestJPanel = new ProcessWorkRequestJPanel(userProcessContainer, request);
-        userProcessContainer.add("processWorkRequestJPanel", processWorkRequestJPanel);
-        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        layout.next(userProcessContainer);
-        
+//        ProcessWorkRequestJPanel processWorkRequestJPanel = new ProcessWorkRequestJPanel(userProcessContainer, request);
+//        userProcessContainer.add("processWorkRequestJPanel", processWorkRequestJPanel);
+//        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+//        layout.next(userProcessContainer);
+//        
     }//GEN-LAST:event_approvalJButtonActionPerformed
 
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
