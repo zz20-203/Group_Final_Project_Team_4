@@ -32,6 +32,10 @@ public class MainJFrame extends javax.swing.JFrame {
         //system = dB4OUtil.retrieveSystem();
         system = ConfigureASystem.configure();
         this.setSize(1680, 1050);
+        
+        //default login
+        userNameJTextField.setText("fd");
+        passwordField.setText("1");
     }
 
     /**

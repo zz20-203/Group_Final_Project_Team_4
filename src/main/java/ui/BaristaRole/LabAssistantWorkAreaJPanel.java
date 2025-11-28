@@ -5,7 +5,7 @@
 package ui.BaristaRole;
 
 import Business.EcoSystem;
-import Business.Organization.CafeManagementOrganization;
+import Business.Organization.CafeOperationOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import Business.WorkQueue.LabTestWorkRequest;
@@ -23,7 +23,7 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
     private JPanel userProcessContainer;
     private EcoSystem business;
     private UserAccount userAccount;
-    private CafeManagementOrganization labOrganization;
+    private CafeOperationOrganization cafeOpOrganization;
     
     /**
      * Creates new form LabAssistantWorkAreaJPanel
@@ -34,7 +34,7 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.userAccount = account;
         this.business = business;
-        this.labOrganization = (CafeManagementOrganization)organization;
+        this.cafeOpOrganization = (CafeOperationOrganization)organization;
         
         populateTable(); 
     }
@@ -44,7 +44,7 @@ public class LabAssistantWorkAreaJPanel extends javax.swing.JPanel {
         
         model.setRowCount(0);
         
-        for(WorkRequest request : labOrganization.getWorkQueue().getWorkRequestList()){
+        for(WorkRequest request : cafeOpOrganization.getWorkQueue().getWorkRequestList()){
             Object[] row = new Object[4];
             row[0] = request;
             row[1] = request.getSender().getEmployee().getName();
