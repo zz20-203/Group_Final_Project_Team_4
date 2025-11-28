@@ -68,17 +68,17 @@ public class ConfigureASystem {
                 .createUserAccount("ca", "1", cafeAdminEmp, new CafeAdminRole());
 
         // ====== C. Front Desk Staff ======// Doctor（医生）
-        Employee frontDeskEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Doctor One");
+        Employee frontDeskEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Front Desk One");
         UserAccount frontDeskUA = cafeOpOrg.getUserAccountDirectory()
                 .createUserAccount("fd", "1", frontDeskEmp, new FrontDeskRole());
 
         // ====== D. Barista ======// Lab Assistant（实验室助理）
-        Employee baristaEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Lab Assistant One");
+        Employee baristaEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Barista One");
         UserAccount baristaUA = cafeOpOrg.getUserAccountDirectory()
                 .createUserAccount("b", "1", baristaEmp, new BaristaRole());
 
         // ====== E. Store Manager ======// Lab Manager（实验室经理）
-        Employee storeManagerEmp = cafeMgmtOrg.getEmployeeDirectory().createEmployee("Lab Manager One");
+        Employee storeManagerEmp = cafeMgmtOrg.getEmployeeDirectory().createEmployee("Store Manager One");
         UserAccount storeManagerUA = cafeMgmtOrg.getUserAccountDirectory()
                 .createUserAccount("sm", "1", storeManagerEmp, new StoreManagerRole());
 
