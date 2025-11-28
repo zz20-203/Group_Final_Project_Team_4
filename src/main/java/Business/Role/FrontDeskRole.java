@@ -9,7 +9,7 @@ import Business.Enterprise.Enterprise;
 import Business.Organization.CafeOperationOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import ui.FrontDeskRole.DoctorWorkAreaJPanel;
+import ui.FrontDeskRole.FrontDeskWorkAreaJPanel;
 import javax.swing.JPanel;
 
 /**
@@ -20,7 +20,7 @@ public class FrontDeskRole extends Role{
 
     @Override
     public JPanel createWorkArea(JPanel userProcessContainer, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem business) {
-        return new DoctorWorkAreaJPanel(userProcessContainer, account, (CafeOperationOrganization)organization, enterprise);
+        return new FrontDeskWorkAreaJPanel(userProcessContainer, account, (CafeOperationOrganization)organization, enterprise);
     }
     
     

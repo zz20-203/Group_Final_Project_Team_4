@@ -9,18 +9,19 @@ import Business.Enterprise.Enterprise;
 import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import Business.WorkQueue.LabTestWorkRequest;
+import Business.OrderQueue.CoffeeOrderRequest;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
  *
  * @author raunak
  */
-public class RequestLabTestJPanel extends javax.swing.JPanel {
+public class OrderRequestJPanel extends javax.swing.JPanel {
 
     private JPanel userProcessContainer;
     private Enterprise enterprise;
@@ -28,7 +29,7 @@ public class RequestLabTestJPanel extends javax.swing.JPanel {
     /**
      * Creates new form RequestLabTestJPanel
      */
-    public RequestLabTestJPanel(JPanel userProcessContainer, UserAccount account, Enterprise enterprise) {
+    public OrderRequestJPanel(JPanel userProcessContainer, UserAccount account, Enterprise enterprise) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -46,26 +47,25 @@ public class RequestLabTestJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        requestTestJButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        messageJTextField = new javax.swing.JTextField();
+        placeOrderJButton = new javax.swing.JButton();
+        CoffeeLabel = new javax.swing.JLabel();
         backJButton = new javax.swing.JButton();
         valueLabel = new javax.swing.JLabel();
         enterpriseLabel = new javax.swing.JLabel();
+        cmbOrder = new javax.swing.JComboBox<>();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        requestTestJButton.setText("Request Test");
-        requestTestJButton.addActionListener(new java.awt.event.ActionListener() {
+        placeOrderJButton.setText("Place Order");
+        placeOrderJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                requestTestJButtonActionPerformed(evt);
+                placeOrderJButtonActionPerformed(evt);
             }
         });
-        add(requestTestJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, -1, -1));
+        add(placeOrderJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, -1, -1));
 
-        jLabel1.setText("Message");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, -1, -1));
-        add(messageJTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 89, -1));
+        CoffeeLabel.setText("Coffee:");
+        add(CoffeeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, -1, 40));
 
         backJButton.setText("<<Back");
         backJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -73,28 +73,36 @@ public class RequestLabTestJPanel extends javax.swing.JPanel {
                 backJButtonActionPerformed(evt);
             }
         });
-        add(backJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
+        add(backJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
 
         valueLabel.setText("<value>");
-        add(valueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, 130, -1));
+        add(valueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 130, 20));
 
-        enterpriseLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        enterpriseLabel.setText("EnterPrise :");
-        add(enterpriseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 120, 30));
+        enterpriseLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        enterpriseLabel.setText("Enterprise :");
+        add(enterpriseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 80, 40));
+
+        cmbOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Americano", "Latte", "Mocha", "Espresso" }));
+        cmbOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbOrderActionPerformed(evt);
+            }
+        });
+        add(cmbOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void requestTestJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestTestJButtonActionPerformed
+    private void placeOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placeOrderJButtonActionPerformed
         
-        String message = messageJTextField.getText();
+        String coffeeType = cmbOrder.getSelectedItem().toString();
         
-        LabTestWorkRequest request = new LabTestWorkRequest();
-        request.setMessage(message);
+        CoffeeOrderRequest request = new CoffeeOrderRequest();
+        request.setMessage(coffeeType);
         request.setSender(userAccount);
         request.setStatus("Sent");
         
         Organization org = null;
         for (Organization organization : enterprise.getOrganizationDirectory().getOrganizationList()){
-            if (organization instanceof CafeManagementOrganization){
+            if (organization instanceof Business.Organization.CafeOperationOrganization){
                 org = organization;
                 break;
             }
@@ -102,28 +110,34 @@ public class RequestLabTestJPanel extends javax.swing.JPanel {
         if (org!=null){
             org.getWorkQueue().getWorkRequestList().add(request);
             userAccount.getWorkQueue().getWorkRequestList().add(request);
+            
+            JOptionPane.showMessageDialog(null, "Order Placed Successfully!");
         }
         
-    }//GEN-LAST:event_requestTestJButtonActionPerformed
+    }//GEN-LAST:event_placeOrderJButtonActionPerformed
 
     private void backJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backJButtonActionPerformed
         
         userProcessContainer.remove(this);
         Component[] componentArray = userProcessContainer.getComponents();
         Component component = componentArray[componentArray.length - 1];
-        DoctorWorkAreaJPanel dwjp = (DoctorWorkAreaJPanel) component;
+        FrontDeskWorkAreaJPanel dwjp = (FrontDeskWorkAreaJPanel) component;
         dwjp.populateRequestTable();
         CardLayout layout = (CardLayout)userProcessContainer.getLayout();
         layout.previous(userProcessContainer);
         
     }//GEN-LAST:event_backJButtonActionPerformed
 
+    private void cmbOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOrderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbOrderActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel CoffeeLabel;
     private javax.swing.JButton backJButton;
+    private javax.swing.JComboBox<String> cmbOrder;
     private javax.swing.JLabel enterpriseLabel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField messageJTextField;
-    private javax.swing.JButton requestTestJButton;
+    private javax.swing.JButton placeOrderJButton;
     private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
 }
