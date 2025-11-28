@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Business.WorkQueue;
+package Business.OrderQueue;
 
 import Business.UserAccount.UserAccount;
 import java.util.Date;
@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author raunak
  */
-public abstract class WorkRequest {
+public abstract class OrderRequest {
 
     private String message;
     private UserAccount sender;
@@ -20,7 +20,7 @@ public abstract class WorkRequest {
     private Date requestDate;
     private Date resolveDate;
     
-    public WorkRequest(){
+    public OrderRequest(){
         requestDate = new Date();
     }
 

@@ -9,8 +9,8 @@ import Business.EcoSystem;
 import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import Business.WorkQueue.LabTestWorkRequest;
-import Business.WorkQueue.WorkRequest;
+import Business.OrderQueue.CoffeeOrderRequest;
+import Business.OrderQueue.OrderRequest;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -47,7 +47,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
         
         if (labOrganization == null) return;
         
-        for(WorkRequest request : labOrganization.getWorkQueue().getWorkRequestList()){
+        for(OrderRequest request : labOrganization.getWorkQueue().getWorkRequestList()){
             Object[] row = new Object[4];
             row[0] = request;
             row[1] = request.getSender().getEmployee().getName();
@@ -136,7 +136,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
             return;
         }
         
-        LabTestWorkRequest request = (LabTestWorkRequest)workRequestJTable.getValueAt(selectedRow, 0);
+        CoffeeOrderRequest request = (CoffeeOrderRequest)workRequestJTable.getValueAt(selectedRow, 0);
      
         request.setStatus("Processing");
         
