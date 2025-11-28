@@ -34,7 +34,7 @@ public class MainJFrame extends javax.swing.JFrame {
         this.setSize(1680, 1050);
         
         //default login
-        userNameJTextField.setText("fd");
+        userNameJTextField.setText("b");
         passwordField.setText("1");
     }
 

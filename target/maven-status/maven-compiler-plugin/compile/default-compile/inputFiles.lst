@@ -23,8 +23,7 @@
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Role/SystemAdminRole.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/UserAccount/UserAccount.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/UserAccount/UserAccountDirectory.java
-/Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/ui/BaristaRole/LabAssistantWorkAreaJPanel.java
-/Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/ui/BaristaRole/ProcessWorkRequestJPanel.java
+/Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/ui/BaristaRole/BaristaWorkAreaJPanel.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/ui/CafeAdminRole/AdminWorkAreaJPanel.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/ui/CafeAdminRole/ManageEmployeeJPanel.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/ui/CafeAdminRole/ManageOrganizationJPanel.java

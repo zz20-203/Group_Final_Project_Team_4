@@ -4,12 +4,11 @@ Business/ConfigureASystem.class
 Business/Role/Role$RoleType.class
 ui/FrontDeskRole/FrontDeskWorkAreaJPanel$2.class
 Business/Organization/CafeOperationOrganization.class
-ui/BaristaRole/LabAssistantWorkAreaJPanel$1.class
+ui/BaristaRole/BaristaWorkAreaJPanel.class
 ui/CafeAdminRole/ManageOrganizationJPanel$3.class
 ui/MainJFrame.class
 Business/Employee/Employee.class
 ui/StoreManagerRole/LabManagerWorkAreaJPanel$3.class
-ui/BaristaRole/ProcessWorkRequestJPanel$2.class
 ui/SystemAdminWorkArea/ManageEnterpriseAdminJPanel$3.class
 Business/OrderQueue/CoffeeOrderRequest.class
 ui/SystemAdminWorkArea/ManageNetworkJPanel.class
@@ -19,6 +18,8 @@ ui/CafeAdminRole/ManageUserAccountJPanel$4.class
 Business/Organization/CafeAdminOrganization.class
 ui/CafeAdminRole/ManageEmployeeJPanel$4.class
 Business/Enterprise/CoffeeChainEnterprise.class
+ui/BaristaRole/BaristaWorkAreaJPanel$1.class
+ui/BaristaRole/BaristaWorkAreaJPanel$4.class
 ui/FrontDeskRole/FrontDeskWorkAreaJPanel$1.class
 ui/MainJFrame$3.class
 Business/Organization/OrganizationDirectory.class
@@ -29,7 +30,7 @@ Business/Role/StoreManagerRole.class
 Business/Network/Network.class
 ui/CafeAdminRole/AdminWorkAreaJPanel.class
 ui/FrontDeskRole/OrderRequestJPanel$1.class
-ui/BaristaRole/ProcessWorkRequestJPanel.class
+ui/BaristaRole/BaristaWorkAreaJPanel$3.class
 ui/CafeAdminRole/ManageEmployeeJPanel$3.class
 Business/Role/Role.class
 ui/CafeAdminRole/AdminWorkAreaJPanel$1.class
@@ -38,7 +39,6 @@ Business/Organization/CafeManagementOrganization.class
 ui/SystemAdminWorkArea/SystemAdminWorkAreaJPanel.class
 ui/StoreManagerRole/LabManagerWorkAreaJPanel.class
 Business/Enterprise/EnterpriseDirectory.class
-ui/BaristaRole/LabAssistantWorkAreaJPanel$4.class
 ui/CafeAdminRole/ManageUserAccountJPanel$3.class
 Business/Enterprise/Enterprise$EnterpriseType.class
 ui/FrontDeskRole/FrontDeskWorkAreaJPanel.class
@@ -48,12 +48,10 @@ ui/CafeAdminRole/ManageUserAccountJPanel.class
 ui/CafeAdminRole/ManageEmployeeJPanel.class
 Business/Role/CafeAdminRole.class
 ui/StoreManagerRole/LabManagerWorkAreaJPanel$1.class
-ui/BaristaRole/LabAssistantWorkAreaJPanel$3.class
 ui/CafeAdminRole/ManageUserAccountJPanel$2.class
 Business/UserAccount/UserAccountDirectory.class
 ui/CafeAdminRole/AdminWorkAreaJPanel$2.class
 ui/MainJFrame$1.class
-ui/BaristaRole/LabAssistantWorkAreaJPanel.class
 ui/CafeAdminRole/ManageOrganizationJPanel$2.class
 ui/FrontDeskRole/OrderRequestJPanel.class
 ui/CafeAdminRole/ManageOrganizationJPanel.class
@@ -62,12 +60,12 @@ ui/CafeAdminRole/ManageEmployeeJPanel$2.class
 ui/SystemAdminWorkArea/ManageEnterpriseJPanel$1.class
 ui/SystemAdminWorkArea/SystemAdminWorkAreaJPanel$2.class
 ui/SystemAdminWorkArea/ManageNetworkJPanel$1.class
-ui/BaristaRole/LabAssistantWorkAreaJPanel$2.class
 ui/CafeAdminRole/ManageUserAccountJPanel$1.class
 ui/CafeAdminRole/AdminWorkAreaJPanel$3.class
 ui/SystemAdminWorkArea/ManageEnterpriseJPanel$3.class
 ui/StoreManagerRole/LabManagerWorkAreaJPanel$2.class
 ui/MainJFrame$2.class
+ui/BaristaRole/BaristaWorkAreaJPanel$2.class
 ui/FrontDeskRole/FrontDeskWorkAreaJPanel$3.class
 ui/CafeAdminRole/ManageEmployeeJPanel$1.class
 ui/SystemAdminWorkArea/SystemAdminWorkAreaJPanel$4.class
@@ -85,4 +83,3 @@ ui/SystemAdminWorkArea/SystemAdminWorkAreaJPanel$1.class
 Business/UserAccount/UserAccount.class
 Business/Role/BaristaRole.class
 Business/Organization/Organization.class
-ui/BaristaRole/ProcessWorkRequestJPanel$1.class
