@@ -4,17 +4,89 @@
  */
 package ui.delivery;
 
+import Business.Enterprise.DeliveryDepartment.Delivery;
+import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
+import Business.Enterprise.DeliveryDepartment.Rider;
+import Business.Enterprise.DeliveryDepartment.RiderDirectory;
+import Business.OrderQueue.CoffeeOrderRequest;
+import Business.OrderQueue.OrderQueue;
+import Business.OrderQueue.OrderRequest;
+import java.awt.CardLayout;
+import java.awt.Component;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Luciela us Biktria
  */
 public class AssignRiderJPanel extends javax.swing.JPanel {
 
+    private JPanel userProcessContainer;
+    private RiderDirectory riderDirectory;
+    private OrderQueue orderQueue;
+    private DeliveryDirectory deliveryDirectory;
+    private JCheckBox[] regionCheckBoxes;
+
     /**
      * Creates new form AssignRiderJPanel
      */
-    public AssignRiderJPanel() {
+    public AssignRiderJPanel(JPanel userProcessContainer, OrderQueue orderQueue, RiderDirectory riderDirectory, DeliveryDirectory deliveryDirectory, CoffeeOrderRequest orderToEdit) {
         initComponents();
+        this.userProcessContainer = userProcessContainer;
+        this.orderQueue = orderQueue;
+        this.riderDirectory = riderDirectory;
+        this.deliveryDirectory = deliveryDirectory;
+        
+        regionCheckBoxes = new JCheckBox[] {
+            chkRiderRegion1, chkRiderRegion2, chkRiderRegion3, chkRiderRegion4, 
+            chkRiderRegion5, chkRiderRegion6, chkRiderRegion7, chkRiderRegion8, 
+            chkRiderRegion9, chkRiderRegion10
+        };
+        
+        populateComboBoxes();
+        
+        // Handle logic for initial selection
+        if (orderToEdit != null) {
+            // If an order was passed from the View screen, select it
+            cbxOrderID.setSelectedItem(orderToEdit);
+            // Trigger the action explicitly to fill fields
+            cbxOrderIDActionPerformed(null);
+        } else if (cbxOrderID.getItemCount() > 0) {
+            // Default to first item if nothing passed
+            cbxOrderID.setSelectedIndex(0);
+            cbxOrderIDActionPerformed(null);
+        }
+    }
+    
+    public void populateComboBoxes() {
+        cbxOrderID.removeAllItems();
+        cbxRiderID.removeAllItems();
+        
+        for (OrderRequest req : orderQueue.getWorkRequestList()) {
+            if (req instanceof CoffeeOrderRequest) {
+                cbxOrderID.addItem(req);
+            }
+        }
+        
+        for (Rider r : riderDirectory.getEmployeeList()) {
+            cbxRiderID.addItem(r);
+        }
+    }
+    
+    private void setRiderCheckboxes(int[] regions) {
+        for (JCheckBox chk : regionCheckBoxes) {
+            chk.setSelected(false);
+        }
+        
+        if (regions == null) return;
+        
+        for (int regionNum : regions) {
+            if (regionNum >= 1 && regionNum <= 10) {
+                regionCheckBoxes[regionNum - 1].setSelected(true);
+            }
+        }
     }
 
     /**
@@ -44,8 +116,8 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
         lblRiderRegions = new javax.swing.JLabel();
         txtRiderName = new javax.swing.JTextField();
         txtRiderPhone = new javax.swing.JTextField();
-        cbxRiderID = new javax.swing.JComboBox<>();
-        cbxOrderID = new javax.swing.JComboBox<>();
+        cbxRiderID = new javax.swing.JComboBox();
+        cbxOrderID = new javax.swing.JComboBox();
         chkRiderRegion1 = new javax.swing.JCheckBox();
         chkRiderRegion2 = new javax.swing.JCheckBox();
         chkRiderRegion3 = new javax.swing.JCheckBox();
@@ -56,18 +128,30 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
         chkRiderRegion8 = new javax.swing.JCheckBox();
         chkRiderRegion9 = new javax.swing.JCheckBox();
         chkRiderRegion10 = new javax.swing.JCheckBox();
+        btnBack = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        lblTitle.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
         lblTitle.setText("Delivery Assignment");
-        add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 34, -1, -1));
+        add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
 
         btnEdit.setText("Assign Delivery Rider");
-        add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, 210, -1));
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 430, 210, -1));
 
         btnConfirm.setText("Confirm and Request Delivery");
-        add(btnConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 520, -1, -1));
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
+        add(btnConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 470, 210, -1));
 
         lblOrderID.setText("Order (ID)");
         add(lblOrderID, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, -1, -1));
@@ -114,11 +198,19 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
         txtRiderPhone.setEnabled(false);
         add(txtRiderPhone, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 240, 250, -1));
 
-        cbxRiderID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbxRiderID.setEnabled(false);
+        cbxRiderID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxRiderIDActionPerformed(evt);
+            }
+        });
         add(cbxRiderID, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 140, 250, -1));
 
-        cbxOrderID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxOrderID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxOrderIDActionPerformed(evt);
+            }
+        });
         add(cbxOrderID, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 250, -1));
 
         chkRiderRegion1.setText("Region 1");
@@ -160,14 +252,114 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
         chkRiderRegion10.setText("Region 10");
         chkRiderRegion10.setEnabled(false);
         add(chkRiderRegion10, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 370, -1, -1));
+
+        btnBack.setText("<< Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 470, 160, -1));
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        CoffeeOrderRequest selectedOrder = (CoffeeOrderRequest) cbxOrderID.getSelectedItem();
+        
+        if (selectedOrder == null) {
+            JOptionPane.showMessageDialog(this, "No order selected.");
+            return;
+        }
+
+        if (btnEdit.getText().equals("Assign Delivery Rider")) {
+            cbxOrderID.setEnabled(false);
+            cbxRiderID.setEnabled(true);
+            btnEdit.setText("Save Rider Assignment");
+            
+        } else {
+            Rider selectedRider = (Rider) cbxRiderID.getSelectedItem();
+            
+            if (selectedRider == null) {
+                JOptionPane.showMessageDialog(this, "Please select a rider.");
+                return;
+            }
+            
+            try {
+                Delivery d = new Delivery(selectedOrder, selectedRider);
+                deliveryDirectory.addDelivery(d);
+                JOptionPane.showMessageDialog(this, "Rider assigned successfully!");
+                
+                cbxOrderID.setEnabled(true);
+                cbxRiderID.setEnabled(false);
+                btnEdit.setText("Assign Delivery Rider");
+                
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Assignment Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        userProcessContainer.remove(this);
+        
+        // Refresh the previous panel's table if it is ViewDeliveriesJPanel
+        Component[] componentArray = userProcessContainer.getComponents();
+        Component component = componentArray[componentArray.length - 1];
+        if (component instanceof ViewDeliveriesJPanel) {
+            ViewDeliveriesJPanel viewPanel = (ViewDeliveriesJPanel) component;
+            viewPanel.populateTable();
+        }
+        
+        CardLayout layout = (java.awt.CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void cbxRiderIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxRiderIDActionPerformed
+        Rider r = (Rider) cbxRiderID.getSelectedItem();
+        if (r != null) {
+            txtRiderName.setText(r.getFirstName() + " " + r.getLastName());
+            txtRiderPhone.setText(String.valueOf(r.getPhoneNumber()));
+            setRiderCheckboxes(r.getRegions());
+        } else {
+            txtRiderName.setText("");
+            txtRiderPhone.setText("");
+            setRiderCheckboxes(null);
+        }
+    }//GEN-LAST:event_cbxRiderIDActionPerformed
+
+    private void cbxOrderIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxOrderIDActionPerformed
+        CoffeeOrderRequest order = (CoffeeOrderRequest) cbxOrderID.getSelectedItem();
+        if (order != null) {
+            txtOrderContents.setText(order.getMessage());
+            txtOrderStatus.setText(order.getStatus());
+            
+            if (order.getDestination() != null) {
+                txtOrderDestination.setText(order.getDestination().getAddress());
+                txtOrderRegion.setText(String.valueOf(order.getDestination().getRegion()));
+            } else {
+                txtOrderDestination.setText("N/A");
+                txtOrderRegion.setText("N/A");
+            }
+            
+            Delivery existing = deliveryDirectory.findDeliveryByOrder(order);
+            if (existing != null) {
+                cbxRiderID.setSelectedItem(existing.getRider());
+                cbxRiderIDActionPerformed(null);
+            } else {
+                if (cbxRiderID.getItemCount() > 0) cbxRiderID.setSelectedIndex(0);
+            }
+        }
+    }//GEN-LAST:event_cbxOrderIDActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnConfirm;
     private javax.swing.JButton btnEdit;
-    private javax.swing.JComboBox<String> cbxOrderID;
-    private javax.swing.JComboBox<String> cbxRiderID;
+    private javax.swing.JComboBox cbxOrderID;
+    private javax.swing.JComboBox cbxRiderID;
     private javax.swing.JCheckBox chkRiderRegion1;
     private javax.swing.JCheckBox chkRiderRegion10;
     private javax.swing.JCheckBox chkRiderRegion2;
