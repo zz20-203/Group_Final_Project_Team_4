@@ -114,7 +114,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
             workRequestJTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 58, 390, 96));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 850, 150));
 
         assignJButton.setText("Assign Order to me");
         assignJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -122,7 +122,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                 assignJButtonActionPerformed(evt);
             }
         });
-        add(assignJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, -1, -1));
+        add(assignJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, -1, -1));
 
         orderFinishedJButton.setText("Order Finished");
         orderFinishedJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -130,7 +130,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                 orderFinishedJButtonActionPerformed(evt);
             }
         });
-        add(orderFinishedJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 180, -1, -1));
+        add(orderFinishedJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 250, -1, -1));
 
         refreshJButton.setText("Refresh");
         refreshJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -138,7 +138,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                 refreshJButtonActionPerformed(evt);
             }
         });
-        add(refreshJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 26, -1, -1));
+        add(refreshJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 30, 110, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void assignJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignJButtonActionPerformed
