@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.FrontDeskRole;
+package ui.StoreManagerRole;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
@@ -16,12 +16,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import Business.OrderQueue.RestockWorkRequest; 
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
  * @author raunak
  */
-public class OrderRequestJPanel extends javax.swing.JPanel {
+public class StockRequestJPanel extends javax.swing.JPanel {
 
     private JPanel userProcessContainer;
     private Enterprise enterprise;
@@ -29,13 +31,16 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
     /**
      * Creates new form RequestLabTestJPanel
      */
-    public OrderRequestJPanel(JPanel userProcessContainer, UserAccount account, Enterprise enterprise) {
+    public StockRequestJPanel(JPanel userProcessContainer, UserAccount account, Enterprise enterprise) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
         this.enterprise = enterprise;
         this.userAccount = account;
         valueLabel.setText(enterprise.getName());
+        
+        populateCategoryComboBox();
+        populateItemComboBox();
     }
 
     /**
@@ -48,26 +53,28 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         placeOrderJButton = new javax.swing.JButton();
-        CoffeeLabel = new javax.swing.JLabel();
+        itemLabel = new javax.swing.JLabel();
         backJButton = new javax.swing.JButton();
         valueLabel = new javax.swing.JLabel();
         enterpriseLabel = new javax.swing.JLabel();
         cmbOrder = new javax.swing.JComboBox<>();
         typeLabel = new javax.swing.JLabel();
         cmbOrder1 = new javax.swing.JComboBox<>();
+        typeLabel1 = new javax.swing.JLabel();
+        cmbOrder2 = new javax.swing.JComboBox<>();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        placeOrderJButton.setText("Place Order");
+        placeOrderJButton.setText("Place Restock Order");
         placeOrderJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 placeOrderJButtonActionPerformed(evt);
             }
         });
-        add(placeOrderJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, -1, -1));
+        add(placeOrderJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 190, 170, -1));
 
-        CoffeeLabel.setText("Coffee:");
-        add(CoffeeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, -1, 40));
+        itemLabel.setText("Item:");
+        add(itemLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, -1, 40));
 
         backJButton.setText("<<Back");
         backJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -75,7 +82,7 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
                 backJButtonActionPerformed(evt);
             }
         });
-        add(backJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
+        add(backJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, -1, -1));
 
         valueLabel.setText("<value>");
         add(valueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 130, 20));
@@ -84,51 +91,98 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
         enterpriseLabel.setText("Enterprise :");
         add(enterpriseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 80, 40));
 
-        cmbOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Americano", "Latte", "Mocha", "Espresso" }));
+        cmbOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Coffee Beans", "Milk", "Cup" }));
         cmbOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbOrderActionPerformed(evt);
             }
         });
-        add(cmbOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, -1, -1));
+        add(cmbOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, -1, -1));
 
         typeLabel.setText("Type:");
-        add(typeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, -1, 40));
+        add(typeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, -1, 40));
 
-        cmbOrder1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dine-in", "Delivery" }));
+        cmbOrder1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "cb type1", "cb type2", "cb type3", "cb type4" }));
         cmbOrder1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbOrder1ActionPerformed(evt);
             }
         });
-        add(cmbOrder1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, -1, -1));
+        add(cmbOrder1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, -1, -1));
+
+        typeLabel1.setText("Quantity (Box):");
+        add(typeLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, -1, 40));
+
+        cmbOrder2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+        cmbOrder2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbOrder2ActionPerformed(evt);
+            }
+        });
+        add(cmbOrder2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void populateCategoryComboBox(){
+        cmbOrder.removeAllItems();
+        cmbOrder.addItem("Coffee Beans");
+        cmbOrder.addItem("Milk");
+        cmbOrder.addItem("Cups");
+    }
+    
+    private void populateItemComboBox(){
+        String selectedCategory = (String) cmbOrder.getSelectedItem();
+        
+        if(selectedCategory == null) return;
+        
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cmbOrder1.getModel();
+        model.removeAllElements();
+        
+        if(selectedCategory.equals("Coffee Beans")){
+            model.addElement("Arabica");
+            model.addElement("Robusta");
+            model.addElement("House Blend");
+            model.addElement("Dark Roast");
+        } 
+        else if(selectedCategory.equals("Milk")){
+            model.addElement("Whole Milk");
+            model.addElement("Skim Milk");
+            model.addElement("Soy Milk");
+            model.addElement("Almond Milk");
+        } 
+        else if(selectedCategory.equals("Cups")){
+            model.addElement("Small (8oz)");
+            model.addElement("Medium (12oz)");
+            model.addElement("Large (16oz)");
+            model.addElement("X-Large (20oz)");
+        }
+    }
+    
     private void placeOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placeOrderJButtonActionPerformed
         
-        String coffeeType = cmbOrder.getSelectedItem().toString();
-        String type = cmbOrder1.getSelectedItem().toString();
+
+        String category = (String) cmbOrder.getSelectedItem();
+        String itemName = (String) cmbOrder1.getSelectedItem();
+      
+        int quantity = Integer.parseInt((String) cmbOrder2.getSelectedItem());
         
-        CoffeeOrderRequest request = new CoffeeOrderRequest();
-        request.setMessage(coffeeType);
-        request.setOrderType(type);
+        // Create RestockWorkRequest
+        RestockWorkRequest request = new RestockWorkRequest();
+        request.setCategory(category);
+        request.setItemName(itemName);
+        request.setQuantity(quantity);
+        request.setMessage("Restock: " + itemName + " x" + quantity); // 方便在表格显示
+        
         request.setSender(userAccount);
-        request.setStatus("Sent");
+        request.setStatus("Requested"); // 初始状态
         
-        Organization org = null;
-        for (Organization organization : enterprise.getOrganizationDirectory().getOrganizationList()){
-            if (organization instanceof Business.Organization.CafeOperationOrganization){
-                org = organization;
-                break;
-            }
-        }
-        if (org!=null){
-            org.getWorkQueue().getWorkRequestList().add(request);
-            userAccount.getWorkQueue().getWorkRequestList().add(request);
-            
-            JOptionPane.showMessageDialog(null, "Order Placed Successfully!");
-        }
+        // hold
+        userAccount.getWorkQueue().getWorkRequestList().add(request);
         
+        // hold
+        
+        JOptionPane.showMessageDialog(null, "Restock Request Placed Successfully!");
+    
     }//GEN-LAST:event_placeOrderJButtonActionPerformed
 
     private void backJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backJButtonActionPerformed
@@ -136,7 +190,7 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
         userProcessContainer.remove(this);
         Component[] componentArray = userProcessContainer.getComponents();
         Component component = componentArray[componentArray.length - 1];
-        FrontDeskWorkAreaJPanel dwjp = (FrontDeskWorkAreaJPanel) component;
+        StoreManagerWorkAreaJPanel dwjp = (StoreManagerWorkAreaJPanel) component;
         dwjp.populateRequestTable();
         CardLayout layout = (CardLayout)userProcessContainer.getLayout();
         layout.previous(userProcessContainer);
@@ -145,20 +199,27 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
 
     private void cmbOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOrderActionPerformed
         // TODO add your handling code here:
+        populateItemComboBox();
     }//GEN-LAST:event_cmbOrderActionPerformed
 
     private void cmbOrder1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOrder1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbOrder1ActionPerformed
 
+    private void cmbOrder2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOrder2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbOrder2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel CoffeeLabel;
     private javax.swing.JButton backJButton;
     private javax.swing.JComboBox<String> cmbOrder;
     private javax.swing.JComboBox<String> cmbOrder1;
+    private javax.swing.JComboBox<String> cmbOrder2;
     private javax.swing.JLabel enterpriseLabel;
+    private javax.swing.JLabel itemLabel;
     private javax.swing.JButton placeOrderJButton;
     private javax.swing.JLabel typeLabel;
+    private javax.swing.JLabel typeLabel1;
     private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -2,15 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.FrontDeskRole;
+package ui.StoreManagerRole;
 
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
-import Business.Organization.CafeOperationOrganization;
 import Business.UserAccount.UserAccount;
 import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
+import Business.Organization.CafeManagementOrganization;
 import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,16 +19,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author raunak
  */
-public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
+public class StoreManagerWorkAreaJPanel extends javax.swing.JPanel {
 
     private JPanel userProcessContainer;
-    private CafeOperationOrganization organization;
+    private CafeManagementOrganization organization;
     private Enterprise enterprise;
     private UserAccount userAccount;
     /**
      * Creates new form DoctorWorkAreaJPanel
      */
-    public FrontDeskWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, CafeOperationOrganization organization, Enterprise enterprise) {
+    public StoreManagerWorkAreaJPanel (JPanel userProcessContainer, UserAccount account, CafeManagementOrganization organization, Enterprise enterprise) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -47,16 +48,21 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
         for (int i = list.size() - 1; i >= 0; i--) {
             OrderRequest request = list.get(i);
             
-            CoffeeOrderRequest coffeeReq = (CoffeeOrderRequest) request;
-            Object[] row = new Object[5];
-            
-            row[0] = coffeeReq.getOrderType();
-            row[1] = coffeeReq.getOrderNumber();
-            row[2] = coffeeReq.getMessage();
-            row[3] = request.getReceiver() == null ? "Waiting" : request.getReceiver();
-            row[4] = request.getStatus();
-            
-            model.addRow(row);
+
+            if (request instanceof Business.OrderQueue.RestockWorkRequest) {
+                
+                Business.OrderQueue.RestockWorkRequest restockReq = (Business.OrderQueue.RestockWorkRequest) request;
+                
+                Object[] row = new Object[5];
+                
+                row[0] = restockReq.getCategory();
+                row[1] = restockReq;              
+                row[2] = restockReq.getQuantity();
+                //row[3] = request.getReceiver() == null ? "Waiting" : request.getReceiver();
+                row[3] = request.getStatus();
+                
+                model.addRow(row);
+            }
         }
     }
 
@@ -77,23 +83,24 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
         enterpriseLabel = new javax.swing.JLabel();
         valueLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        confirmButton = new javax.swing.JButton();
 
         workRequestJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Type", "Order#", "Order", "Receiver", "Status"
+                "Item", "Type", "Quantity", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -110,10 +117,9 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
             workRequestJTable.getColumnModel().getColumn(1).setResizable(false);
             workRequestJTable.getColumnModel().getColumn(2).setResizable(false);
             workRequestJTable.getColumnModel().getColumn(3).setResizable(false);
-            workRequestJTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        orderRequestJButton.setText("Create Order");
+        orderRequestJButton.setText("Create Restock Order");
         orderRequestJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 orderRequestJButtonActionPerformed(evt);
@@ -133,7 +139,14 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
         valueLabel.setText("<value>");
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
-        jLabel1.setText("Order List");
+        jLabel1.setText("Inventory Restock Request List");
+
+        confirmButton.setText("Confirm Received");
+        confirmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -141,19 +154,21 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(orderRequestJButton)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(enterpriseLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(valueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(refreshTestJButton))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(enterpriseLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(valueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(refreshTestJButton))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(confirmButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(orderRequestJButton))))
                 .addContainerGap(300, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -169,16 +184,18 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(orderRequestJButton)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(confirmButton)
+                    .addComponent(orderRequestJButton))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void orderRequestJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderRequestJButtonActionPerformed
         
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        userProcessContainer.add("RequestLabTestJPanel", new OrderRequestJPanel(userProcessContainer, userAccount, enterprise));
+        userProcessContainer.add("RequestLabTestJPanel", new StockRequestJPanel(userProcessContainer, userAccount, enterprise));
         layout.next(userProcessContainer);
         
     }//GEN-LAST:event_orderRequestJButtonActionPerformed
@@ -189,7 +206,31 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_refreshTestJButtonActionPerformed
 
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = workRequestJTable.getSelectedRow();
+        
+        if (selectedRow < 0){
+             JOptionPane.showMessageDialog(null, "Please select a request to confirm.");
+             return;
+        }
+        
+        OrderRequest request = (OrderRequest)workRequestJTable.getValueAt(selectedRow, 1);
+        
+        if("Completed".equals(request.getStatus())){
+            JOptionPane.showMessageDialog(null, "This order is already completed.");
+            return;
+        }
+        
+        request.setStatus("Completed");
+        populateRequestTable();
+        
+        JOptionPane.showMessageDialog(null, "Inventory Updated! Order Completed.");
+        
+    }//GEN-LAST:event_confirmButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton confirmButton;
     private javax.swing.JLabel enterpriseLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
