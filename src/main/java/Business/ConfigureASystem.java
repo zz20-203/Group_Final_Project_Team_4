@@ -20,7 +20,6 @@ import Business.Organization.WarehouseOrganization;
 import Business.Organization.LogisticsOrganization;
 import Business.Role.WarehouseKeeperRole;
 import Business.Role.LogisticsDispatcherRole;
-import Business.OrderQueue.SupplyOrderRequest;
 
 /**
  *
@@ -111,22 +110,6 @@ public class ConfigureASystem {
         Employee logisticsEmp = logisticsOrg.getEmployeeDirectory().createEmployee("Logistics Dispatcher One");
         UserAccount logisticsUA = logisticsOrg.getUserAccountDirectory()
                 .createUserAccount("ld", "1", logisticsEmp, new LogisticsDispatcherRole());
-        
-        
-        // Add sample SupplyOrderRequest for testing
-        SupplyOrderRequest sOrder = new SupplyOrderRequest();
-        sOrder.setStoreName("Main Coffee Store");
-        sOrder.setItemName("Coffee Beans - Dark Roast");
-        sOrder.setQuantity(100);
-        sOrder.setSender(storeManagerUA);
-        sOrder.setStatus("Sent to Warehouse");
-
-        // Put the request into Warehouse organization's queue
-        warehouseOrg.getWorkQueue().getWorkRequestList().add(sOrder);
-
-        // Also track it in the Store Manager's personal queue
-        storeManagerUA.getWorkQueue().getWorkRequestList().add(sOrder);
-        
         return system;
     }
     
