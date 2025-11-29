@@ -4,19 +4,21 @@
  */
 package Business.Enterprise.DeliveryDepartment;
 
+import Business.OrderQueue.CoffeeOrderRequest;
+
 /**
  *
  * @author Luciela us Biktria
  */
 public class Delivery {
     Rider rider;
-    Order order;
+    CoffeeOrderRequest order;
     Destination destination;
     
     int dateTimeSent;
     int dateTimeArrived;
     
-    public Delivery(Order o, Rider r) {
+    public Delivery(CoffeeOrderRequest o, Rider r) {
         order = o;
         destination = o.getDestination();
         rider = r;
@@ -27,7 +29,7 @@ public class Delivery {
         return rider;
     }
 
-    public Order getOrder() {
+    public CoffeeOrderRequest getOrder() {
         return order;
     }
 
