@@ -26,19 +26,173 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
-        );
+        lblTitle = new javax.swing.JLabel();
+        btnEdit = new javax.swing.JButton();
+        btnConfirm = new javax.swing.JButton();
+        lblOrderID = new javax.swing.JLabel();
+        lblOrderContents = new javax.swing.JLabel();
+        lblOrderDestination = new javax.swing.JLabel();
+        lblOrderRegion = new javax.swing.JLabel();
+        lblOrderStatus = new javax.swing.JLabel();
+        txtOrderContents = new javax.swing.JTextField();
+        txtOrderDestination = new javax.swing.JTextField();
+        txtOrderRegion = new javax.swing.JTextField();
+        txtOrderStatus = new javax.swing.JTextField();
+        lblRiderID = new javax.swing.JLabel();
+        lblRiderName = new javax.swing.JLabel();
+        lblRiderPhone = new javax.swing.JLabel();
+        lblRiderRegions = new javax.swing.JLabel();
+        txtRiderName = new javax.swing.JTextField();
+        txtRiderPhone = new javax.swing.JTextField();
+        cbxRiderID = new javax.swing.JComboBox<>();
+        cbxOrderID = new javax.swing.JComboBox<>();
+        chkRiderRegion1 = new javax.swing.JCheckBox();
+        chkRiderRegion2 = new javax.swing.JCheckBox();
+        chkRiderRegion3 = new javax.swing.JCheckBox();
+        chkRiderRegion4 = new javax.swing.JCheckBox();
+        chkRiderRegion5 = new javax.swing.JCheckBox();
+        chkRiderRegion6 = new javax.swing.JCheckBox();
+        chkRiderRegion7 = new javax.swing.JCheckBox();
+        chkRiderRegion8 = new javax.swing.JCheckBox();
+        chkRiderRegion9 = new javax.swing.JCheckBox();
+        chkRiderRegion10 = new javax.swing.JCheckBox();
+
+        setPreferredSize(new java.awt.Dimension(800, 600));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblTitle.setText("Delivery Assignment");
+        add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 34, -1, -1));
+
+        btnEdit.setText("Assign Delivery Rider");
+        add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, 210, -1));
+
+        btnConfirm.setText("Confirm and Request Delivery");
+        add(btnConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 520, -1, -1));
+
+        lblOrderID.setText("Order (ID)");
+        add(lblOrderID, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, -1, -1));
+
+        lblOrderContents.setText("Contents");
+        add(lblOrderContents, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, -1, -1));
+
+        lblOrderDestination.setText("Destination");
+        add(lblOrderDestination, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, -1, -1));
+
+        lblOrderRegion.setText("Region");
+        add(lblOrderRegion, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, -1, -1));
+
+        lblOrderStatus.setText("Status");
+        add(lblOrderStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, -1, -1));
+
+        txtOrderContents.setEnabled(false);
+        add(txtOrderContents, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 190, 250, -1));
+
+        txtOrderDestination.setEnabled(false);
+        add(txtOrderDestination, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 240, 250, -1));
+
+        txtOrderRegion.setEnabled(false);
+        add(txtOrderRegion, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 250, -1));
+
+        txtOrderStatus.setEnabled(false);
+        add(txtOrderStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 340, 250, -1));
+
+        lblRiderID.setText("Rider (ID)");
+        add(lblRiderID, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 120, -1, -1));
+
+        lblRiderName.setText("Rider Name");
+        add(lblRiderName, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 170, -1, -1));
+
+        lblRiderPhone.setText("Rider Phone Number");
+        add(lblRiderPhone, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, -1, -1));
+
+        lblRiderRegions.setText("Rider Regions");
+        add(lblRiderRegions, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 270, -1, -1));
+
+        txtRiderName.setEnabled(false);
+        add(txtRiderName, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, 250, -1));
+
+        txtRiderPhone.setEnabled(false);
+        add(txtRiderPhone, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 240, 250, -1));
+
+        cbxRiderID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxRiderID.setEnabled(false);
+        add(cbxRiderID, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 140, 250, -1));
+
+        cbxOrderID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        add(cbxOrderID, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 250, -1));
+
+        chkRiderRegion1.setText("Region 1");
+        chkRiderRegion1.setEnabled(false);
+        add(chkRiderRegion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 290, -1, -1));
+
+        chkRiderRegion2.setText("Region 2");
+        chkRiderRegion2.setEnabled(false);
+        add(chkRiderRegion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, -1, -1));
+
+        chkRiderRegion3.setText("Region 3");
+        chkRiderRegion3.setEnabled(false);
+        add(chkRiderRegion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 330, -1, -1));
+
+        chkRiderRegion4.setText("Region 4");
+        chkRiderRegion4.setEnabled(false);
+        add(chkRiderRegion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, -1, -1));
+
+        chkRiderRegion5.setText("Region 5");
+        chkRiderRegion5.setEnabled(false);
+        add(chkRiderRegion5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 370, -1, -1));
+
+        chkRiderRegion6.setText("Region 6");
+        chkRiderRegion6.setEnabled(false);
+        add(chkRiderRegion6, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
+
+        chkRiderRegion7.setText("Region 7");
+        chkRiderRegion7.setEnabled(false);
+        add(chkRiderRegion7, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 310, -1, -1));
+
+        chkRiderRegion8.setText("Region 8");
+        chkRiderRegion8.setEnabled(false);
+        add(chkRiderRegion8, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, -1, -1));
+
+        chkRiderRegion9.setText("Region 9");
+        chkRiderRegion9.setEnabled(false);
+        add(chkRiderRegion9, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 350, -1, -1));
+
+        chkRiderRegion10.setText("Region 10");
+        chkRiderRegion10.setEnabled(false);
+        add(chkRiderRegion10, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 370, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConfirm;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JComboBox<String> cbxOrderID;
+    private javax.swing.JComboBox<String> cbxRiderID;
+    private javax.swing.JCheckBox chkRiderRegion1;
+    private javax.swing.JCheckBox chkRiderRegion10;
+    private javax.swing.JCheckBox chkRiderRegion2;
+    private javax.swing.JCheckBox chkRiderRegion3;
+    private javax.swing.JCheckBox chkRiderRegion4;
+    private javax.swing.JCheckBox chkRiderRegion5;
+    private javax.swing.JCheckBox chkRiderRegion6;
+    private javax.swing.JCheckBox chkRiderRegion7;
+    private javax.swing.JCheckBox chkRiderRegion8;
+    private javax.swing.JCheckBox chkRiderRegion9;
+    private javax.swing.JLabel lblOrderContents;
+    private javax.swing.JLabel lblOrderDestination;
+    private javax.swing.JLabel lblOrderID;
+    private javax.swing.JLabel lblOrderRegion;
+    private javax.swing.JLabel lblOrderStatus;
+    private javax.swing.JLabel lblRiderID;
+    private javax.swing.JLabel lblRiderName;
+    private javax.swing.JLabel lblRiderPhone;
+    private javax.swing.JLabel lblRiderRegions;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JTextField txtOrderContents;
+    private javax.swing.JTextField txtOrderDestination;
+    private javax.swing.JTextField txtOrderRegion;
+    private javax.swing.JTextField txtOrderStatus;
+    private javax.swing.JTextField txtRiderName;
+    private javax.swing.JTextField txtRiderPhone;
     // End of variables declaration//GEN-END:variables
 }
