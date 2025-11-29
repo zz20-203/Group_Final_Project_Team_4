@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author raunak
  */
-public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
+public class DDStoreManagerWorkAreaJPanel extends javax.swing.JPanel {
 
     private JPanel userProcessContainer;
     private EcoSystem business;
@@ -28,7 +28,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
     /**
      * Creates new form LabAssistantWorkAreaJPanel
      */
-    public LabManagerWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, EcoSystem business) {
+    public DDStoreManagerWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, EcoSystem business) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -70,6 +70,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
         workRequestJTable = new javax.swing.JTable();
         approvalJButton = new javax.swing.JButton();
         refreshJButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -81,14 +82,14 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Approved", "Message", "Sender", "Receiver", "Status"
+                "Material", "Quantity", "Sender", "Receiver", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -108,7 +109,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
             workRequestJTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(108, 58, 470, 140));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, 470, 140));
 
         approvalJButton.setText("Approve");
         approvalJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -116,7 +117,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
                 approvalJButtonActionPerformed(evt);
             }
         });
-        add(approvalJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, -1, -1));
+        add(approvalJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 380, -1, -1));
 
         refreshJButton.setText("Refresh");
         refreshJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -124,7 +125,10 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
                 refreshJButtonActionPerformed(evt);
             }
         });
-        add(refreshJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, -1, -1));
+        add(refreshJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 80, -1, -1));
+
+        jLabel1.setText("Material ");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void approvalJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approvalJButtonActionPerformed
@@ -152,6 +156,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton approvalJButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton refreshJButton;
     private javax.swing.JTable workRequestJTable;

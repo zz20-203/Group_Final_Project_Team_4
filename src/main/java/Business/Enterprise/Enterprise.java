@@ -22,7 +22,7 @@ public abstract class Enterprise extends Organization{
     }
     
     public enum EnterpriseType{
-        CoffeeChain("Cafe");
+        CoffeeChain("Coffee Chain");
         
         private String value;
         
