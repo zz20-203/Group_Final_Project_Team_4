@@ -53,6 +53,8 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
         valueLabel = new javax.swing.JLabel();
         enterpriseLabel = new javax.swing.JLabel();
         cmbOrder = new javax.swing.JComboBox<>();
+        typeLabel = new javax.swing.JLabel();
+        cmbOrder1 = new javax.swing.JComboBox<>();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -62,10 +64,10 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
                 placeOrderJButtonActionPerformed(evt);
             }
         });
-        add(placeOrderJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, -1, -1));
+        add(placeOrderJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, -1, -1));
 
         CoffeeLabel.setText("Coffee:");
-        add(CoffeeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, -1, 40));
+        add(CoffeeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, -1, 40));
 
         backJButton.setText("<<Back");
         backJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -88,15 +90,28 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
                 cmbOrderActionPerformed(evt);
             }
         });
-        add(cmbOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, -1, -1));
+        add(cmbOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, -1, -1));
+
+        typeLabel.setText("Type:");
+        add(typeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, -1, 40));
+
+        cmbOrder1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dine-in", "Delivery" }));
+        cmbOrder1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbOrder1ActionPerformed(evt);
+            }
+        });
+        add(cmbOrder1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void placeOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placeOrderJButtonActionPerformed
         
         String coffeeType = cmbOrder.getSelectedItem().toString();
+        String type = cmbOrder1.getSelectedItem().toString();
         
         CoffeeOrderRequest request = new CoffeeOrderRequest();
         request.setMessage(coffeeType);
+        request.setOrderType(type);
         request.setSender(userAccount);
         request.setStatus("Sent");
         
@@ -132,12 +147,18 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbOrderActionPerformed
 
+    private void cmbOrder1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOrder1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbOrder1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CoffeeLabel;
     private javax.swing.JButton backJButton;
     private javax.swing.JComboBox<String> cmbOrder;
+    private javax.swing.JComboBox<String> cmbOrder1;
     private javax.swing.JLabel enterpriseLabel;
     private javax.swing.JButton placeOrderJButton;
+    private javax.swing.JLabel typeLabel;
     private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
 }

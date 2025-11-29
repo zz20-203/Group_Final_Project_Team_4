@@ -48,12 +48,13 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
             OrderRequest request = list.get(i);
             
             CoffeeOrderRequest coffeeReq = (CoffeeOrderRequest) request;
-            Object[] row = new Object[4];
+            Object[] row = new Object[5];
             
-            row[0] = coffeeReq.getOrderNumber();
-            row[1] = coffeeReq.getMessage();
-            row[2] = request.getReceiver() == null ? "Waiting" : request.getReceiver();
-            row[3] = request.getStatus();
+            row[0] = coffeeReq.getOrderType();
+            row[1] = coffeeReq.getOrderNumber();
+            row[2] = coffeeReq.getMessage();
+            row[3] = request.getReceiver() == null ? "Waiting" : request.getReceiver();
+            row[4] = request.getStatus();
             
             model.addRow(row);
         }
@@ -79,20 +80,20 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
 
         workRequestJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Order Number", "Order", "Receiver", "Status"
+                "Type", "Order#", "Order", "Receiver", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -109,6 +110,7 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
             workRequestJTable.getColumnModel().getColumn(1).setResizable(false);
             workRequestJTable.getColumnModel().getColumn(2).setResizable(false);
             workRequestJTable.getColumnModel().getColumn(3).setResizable(false);
+            workRequestJTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         orderRequestJButton.setText("Create Order");

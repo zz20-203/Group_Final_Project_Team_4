@@ -51,12 +51,12 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
             
             CoffeeOrderRequest coffeeReq = (CoffeeOrderRequest) request;
             
-            Object[] row = new Object[4];
-            row[0] = coffeeReq;
-            row[1] = coffeeReq.getMessage();
-            //row[2] = request.getReceiver() == null ? null : request.getReceiver().getEmployee().getName();
-            row[2] = request.getReceiver() == null ? "Waiting" : request.getReceiver();
-            row[3] = request.getStatus();
+            Object[] row = new Object[5];
+            row[0] = coffeeReq.getOrderType();
+            row[1] = coffeeReq;
+            row[2] = coffeeReq.getMessage();
+            row[3] = request.getReceiver() == null ? "Waiting" : request.getReceiver();
+            row[4] = request.getStatus();
             
             model.addRow(row);
         }
@@ -81,20 +81,20 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
 
         workRequestJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Order Number", "Order", "Receiver", "Status"
+                "Type", "Order#", "Order", "Receiver", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -111,6 +111,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
             workRequestJTable.getColumnModel().getColumn(1).setResizable(false);
             workRequestJTable.getColumnModel().getColumn(2).setResizable(false);
             workRequestJTable.getColumnModel().getColumn(3).setResizable(false);
+            workRequestJTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 58, 390, 96));
@@ -149,7 +150,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
             return;
         }
         
-        OrderRequest request = (OrderRequest)workRequestJTable.getValueAt(selectedRow, 0);
+        OrderRequest request = (OrderRequest)workRequestJTable.getValueAt(selectedRow, 1);
         
         if(!"Sent".equals(request.getStatus())){
              JOptionPane.showMessageDialog(null, "This order is already taken or completed.");
@@ -172,7 +173,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
             return;
         }
         
-        CoffeeOrderRequest request = (CoffeeOrderRequest)workRequestJTable.getValueAt(selectedRow, 0);
+        CoffeeOrderRequest request = (CoffeeOrderRequest)workRequestJTable.getValueAt(selectedRow, 1);
      
         if(!"Pending".equals(request.getStatus()) || request.getReceiver() != userAccount){
                      JOptionPane.showMessageDialog(null, "You can only finish orders assigned to you and in progress.");
