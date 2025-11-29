@@ -5,6 +5,7 @@
 package Business.Enterprise.DeliveryDepartment;
 
 import Business.OrderQueue.CoffeeOrderRequest;
+import java.util.stream.IntStream;
 
 /**
  *
@@ -23,6 +24,13 @@ public class Delivery {
         destination = o.getDestination();
         rider = r;
         
+        if (destination.getRegion() == 0) {
+            throw new IllegalArgumentException("This destination is In-Store and cannot be delivered to.");
+        }
+        
+        if (IntStream.of(rider.getRegions()).anyMatch(x -> x == destination.getRegion())){
+            throw new IllegalArgumentException("This rider does not currently perform deliveries to the region of this delivery.");
+        }
     }
 
     public Rider getRider() {
