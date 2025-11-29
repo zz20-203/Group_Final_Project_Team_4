@@ -12,6 +12,7 @@ public class Destination {
     
     int region;
     String address;
+    
     public Destination(int reg, String add) { 
         region = reg;
         address = add;
@@ -23,5 +24,13 @@ public class Destination {
 
     public String getAddress() {
         return address;
+    }
+
+    public void setRegion(int region) {
+        this.region = region;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
