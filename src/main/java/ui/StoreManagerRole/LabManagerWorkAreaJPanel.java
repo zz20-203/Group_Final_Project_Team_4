@@ -13,6 +13,12 @@ import Business.OrderQueue.OrderRequest;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import Business.Enterprise.Enterprise;
+import Business.Enterprise.FoodSupplyEnterprise;
+import Business.Network.Network;
+import Business.Organization.WarehouseOrganization;
+import Business.OrderQueue.SupplyOrderRequest;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,6 +43,22 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
         this.labOrganization = (CafeManagementOrganization)organization;
         
         populateTable();
+        populateSupplyOrdersTable();
+    }
+    
+    private WarehouseOrganization findWarehouseOrganization() {
+        for (Network network : business.getNetworkList()) {
+            for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
+                if (enterprise instanceof FoodSupplyEnterprise) {
+                    for (Organization org : enterprise.getOrganizationDirectory().getOrganizationList()) {
+                        if (org instanceof WarehouseOrganization) {
+                            return (WarehouseOrganization) org;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
     
     public void populateTable(){
@@ -56,6 +78,36 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
             model.addRow(row);
         }
     }
+    
+    private void populateSupplyOrdersTable() {
+        DefaultTableModel model = (DefaultTableModel) tblSupplyOrders.getModel();
+        model.setRowCount(0);
+
+        // Show all SupplyOrderRequests where this user is the sender
+        for (Network network : business.getNetworkList()) {
+            for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
+                for (Organization org : enterprise.getOrganizationDirectory().getOrganizationList()) {
+                    for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
+                        if (req instanceof SupplyOrderRequest) {
+                            SupplyOrderRequest sReq = (SupplyOrderRequest) req;
+
+                            // Only show requests created by this Store Manager
+                            if (sReq.getSender() == userAccount) {
+                                Object[] row = new Object[5];
+                                row[0] = sReq.getItemName();
+                                row[1] = sReq.getQuantity();
+                                row[2] = sReq.getStatus();
+                                row[3] = sReq.getSender() == null ? "" : sReq.getSender().getUsername();
+                                row[4] = sReq.getReceiver() == null ? "" : sReq.getReceiver().getUsername();
+
+                                model.addRow(row);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -70,6 +122,14 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
         workRequestJTable = new javax.swing.JTable();
         approvalJButton = new javax.swing.JButton();
         refreshJButton = new javax.swing.JButton();
+        lblQuantity = new javax.swing.JLabel();
+        txtQuantity = new javax.swing.JTextField();
+        lblItem1 = new javax.swing.JLabel();
+        btnRequestSupplies = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblSupplyOrders = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        cmbSupplyItem = new javax.swing.JComboBox<>();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -108,7 +168,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
             workRequestJTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(108, 58, 470, 140));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 900, 170));
 
         approvalJButton.setText("Approve");
         approvalJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -116,7 +176,7 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
                 approvalJButtonActionPerformed(evt);
             }
         });
-        add(approvalJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, -1, -1));
+        add(approvalJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 130, -1));
 
         refreshJButton.setText("Refresh");
         refreshJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -124,7 +184,53 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
                 refreshJButtonActionPerformed(evt);
             }
         });
-        add(refreshJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, -1, -1));
+        add(refreshJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 30, 110, -1));
+
+        lblQuantity.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        lblQuantity.setText("Quantity");
+        add(lblQuantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 290, 70, -1));
+        add(txtQuantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 150, -1));
+
+        lblItem1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        lblItem1.setText("Item");
+        add(lblItem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 40, -1));
+
+        btnRequestSupplies.setText("Request Supplies");
+        btnRequestSupplies.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRequestSuppliesActionPerformed(evt);
+            }
+        });
+        add(btnRequestSupplies, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 210, -1));
+
+        tblSupplyOrders.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Item", "Quantity", "Status", "Sender", "Receiver"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblSupplyOrders);
+
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 900, 140));
+
+        jLabel1.setText("Supply Orders");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 340, -1, -1));
+
+        cmbSupplyItem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Coffee - Dark Roast", "Coffee - Medium Roast", "Coffee - Light Roast", "Coffee - Espresso", "Coffee - Decaf", "Cups - Small (12oz)", "Cups - Medium (16oz)", "Cups - Large (20oz)", "Milk - Whole", "Milk - Skim", "Milk - Almond", "Milk - Oat", "Other" }));
+        add(cmbSupplyItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 290, 170, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void approvalJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approvalJButtonActionPerformed
@@ -148,12 +254,77 @@ public class LabManagerWorkAreaJPanel extends javax.swing.JPanel {
 
     private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
         populateTable();
+        populateSupplyOrdersTable();
+
     }//GEN-LAST:event_refreshJButtonActionPerformed
+
+    private void btnRequestSuppliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestSuppliesActionPerformed
+        // TODO add your handling code here:
+        
+        Object selected = cmbSupplyItem.getSelectedItem();
+        String qtyText = txtQuantity.getText().trim();
+
+        if (selected == null) {
+            JOptionPane.showMessageDialog(this, "Please select a supply item.");
+            return;
+        }
+
+        if (qtyText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a quantity.");
+            return;
+        }
+
+        String itemName = selected.toString();
+
+        int quantity;
+        try {
+            quantity = Integer.parseInt(qtyText);
+            if (quantity <= 0) {
+                JOptionPane.showMessageDialog(this, "Quantity must be a positive number.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Quantity must be a number.");
+            return;
+        }
+
+        WarehouseOrganization warehouseOrg = findWarehouseOrganization();
+        if (warehouseOrg == null) {
+            JOptionPane.showMessageDialog(this, "No Warehouse organization found in FoodSupply enterprise.");
+            return;
+        }
+
+        SupplyOrderRequest request = new SupplyOrderRequest();
+        request.setStoreName(labOrganization.getName());
+        request.setItemName(itemName);   
+        request.setQuantity(quantity);
+        request.setSender(userAccount);
+        request.setStatus("Sent to Warehouse");
+
+        warehouseOrg.getWorkQueue().getWorkRequestList().add(request);
+        userAccount.getWorkQueue().getWorkRequestList().add(request);
+
+        JOptionPane.showMessageDialog(this, "Supply request sent to Warehouse.");
+
+        // reset inputs
+        cmbSupplyItem.setSelectedIndex(0);
+        txtQuantity.setText("");
+    }//GEN-LAST:event_btnRequestSuppliesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton approvalJButton;
+    private javax.swing.JButton btnRequestSupplies;
+    private javax.swing.JComboBox<String> cmbSupplyItem;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblItem1;
+    private javax.swing.JLabel lblQuantity;
     private javax.swing.JButton refreshJButton;
+    private javax.swing.JTable tblSupplyOrders;
+    private javax.swing.JTextField txtQuantity;
     private javax.swing.JTable workRequestJTable;
     // End of variables declaration//GEN-END:variables
+        
+        
 }
