@@ -38,16 +38,16 @@ public class ConfigureASystem {
 //        UserAccount ua = system.getUserAccountDirectory().createUserAccount("sa", "1", employee, new SystemAdminRole());
 //        UserAccount labManager = system.getUserAccountDirectory().createUserAccount("lm", "1", employee, new LabManagerRole());
         
-        // 1. 创建一个 Network
+        // 1. create a Network
         Network network = system.createAndAddNetwork();
         network.setName("Default Network");
 
-        // 2. 在 Network 里创建一个 CoffeeChain Enterprise
+        // 2. In Network, create a CoffeeChain Enterprise
         EnterpriseDirectory enterpriseDirectory = network.getEnterpriseDirectory();
         CoffeeChainEnterprise CoffeeChain = (CoffeeChainEnterprise) enterpriseDirectory
                 .createAndAddEnterprise("CoffeeChain", Enterprise.EnterpriseType.CoffeeChain);
 
-        // 3. 在 CoffeeChain 里创建 CafeOp, CafeMgmt 2个 Organization
+        // 3. In CoffeeChain Enterprise, create 2 CafeOp, CafeMgmt Organizations
         OrganizationDirectory cafeOrgDir = CoffeeChain.getOrganizationDirectory();
         CafeOperationOrganization cafeOpOrg = (CafeOperationOrganization) cafeOrgDir.createOrganization(Organization.Type.CafeOperation);
         CafeManagementOrganization cafeMgmtOrg = (CafeManagementOrganization) cafeOrgDir.createOrganization(Organization.Type.CafeManagement);
@@ -57,27 +57,27 @@ public class ConfigureASystem {
         //5. create user account
         
         
-        // ====== A. System Admin（系统级别）======
+        // a. System Admin
         Employee sysEmp = system.getEmployeeDirectory().createEmployee("System Admin");
         UserAccount sysAdminUA = system.getUserAccountDirectory()
                 .createUserAccount("sa", "1", sysEmp, new SystemAdminRole());
 
-        // ====== B. Cafe Admin（Enterprise Admin）======// Hospital Admin（Enterprise Admin）
+        // b. Cafe Admin（Enterprise Admin）
         Employee cafeAdminEmp = CoffeeChain.getEmployeeDirectory().createEmployee("Cafe Admin");
         UserAccount cafeAdminUA = CoffeeChain.getUserAccountDirectory()
                 .createUserAccount("ca", "1", cafeAdminEmp, new CafeAdminRole());
 
-        // ====== C. Front Desk Staff ======// Doctor（医生）
+        // c.Front Desk
         Employee frontDeskEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Front Desk One");
         UserAccount frontDeskUA = cafeOpOrg.getUserAccountDirectory()
                 .createUserAccount("fd", "1", frontDeskEmp, new FrontDeskRole());
 
-        // ====== D. Barista ======// Lab Assistant（实验室助理）
+        // d. Barista
         Employee baristaEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Barista One");
         UserAccount baristaUA = cafeOpOrg.getUserAccountDirectory()
                 .createUserAccount("b", "1", baristaEmp, new BaristaRole());
 
-        // ====== E. Store Manager ======// Lab Manager（实验室经理）
+        // e. Store Manager
         Employee storeManagerEmp = cafeMgmtOrg.getEmployeeDirectory().createEmployee("Store Manager One");
         UserAccount storeManagerUA = cafeMgmtOrg.getUserAccountDirectory()
                 .createUserAccount("sm", "1", storeManagerEmp, new StoreManagerRole());
