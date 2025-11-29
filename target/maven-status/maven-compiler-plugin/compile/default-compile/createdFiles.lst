@@ -58,6 +58,7 @@ ui/CafeAdminRole/ManageOrganizationJPanel.class
 ui/SystemAdminWorkArea/ManageEnterpriseAdminJPanel$2.class
 ui/CafeAdminRole/ManageEmployeeJPanel$2.class
 ui/SystemAdminWorkArea/ManageEnterpriseJPanel$1.class
+ui/FrontDeskRole/OrderRequestJPanel$4.class
 ui/SystemAdminWorkArea/SystemAdminWorkAreaJPanel$2.class
 ui/SystemAdminWorkArea/ManageNetworkJPanel$1.class
 ui/CafeAdminRole/ManageUserAccountJPanel$1.class
