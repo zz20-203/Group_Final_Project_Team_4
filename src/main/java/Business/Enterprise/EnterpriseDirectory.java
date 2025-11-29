@@ -7,11 +7,10 @@ package Business.Enterprise;
 
 import Business.Organization.OrganizationDirectory;
 import java.util.ArrayList;
+import Business.Enterprise.CoffeeChainEnterprise;
+import Business.Enterprise.FoodSupplyEnterprise;
 
-/**
- *
- * @author MyPC1
- */
+
 public class EnterpriseDirectory {
     private ArrayList<Enterprise> enterpriseList;
    
@@ -29,10 +28,13 @@ public class EnterpriseDirectory {
     }
     
     //Create enterprise
-    public Enterprise createAndAddEnterprise(String name,Enterprise.EnterpriseType type){
-        Enterprise enterprise=null;
-        if(type==Enterprise.EnterpriseType.CoffeeChain){
-            enterprise=new CoffeeChainEnterprise(name);
+    public Enterprise createAndAddEnterprise(String name, Enterprise.EnterpriseType type){
+        Enterprise enterprise = null;
+        if (type == Enterprise.EnterpriseType.CoffeeChain){
+            enterprise = new CoffeeChainEnterprise(name);
+            enterpriseList.add(enterprise);
+        } else if (type == Enterprise.EnterpriseType.FoodSupply){
+            enterprise = new FoodSupplyEnterprise(name);
             enterpriseList.add(enterprise);
         }
         return enterprise;

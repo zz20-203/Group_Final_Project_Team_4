@@ -15,6 +15,11 @@ import Business.Role.BaristaRole;
 import Business.Role.StoreManagerRole;
 import Business.Role.SystemAdminRole;
 import Business.UserAccount.UserAccount;
+import Business.Enterprise.FoodSupplyEnterprise;
+import Business.Organization.WarehouseOrganization;
+import Business.Organization.LogisticsOrganization;
+import Business.Role.WarehouseKeeperRole;
+import Business.Role.LogisticsDispatcherRole;
 
 /**
  *
@@ -51,7 +56,18 @@ public class ConfigureASystem {
         OrganizationDirectory cafeOrgDir = CoffeeChain.getOrganizationDirectory();
         CafeOperationOrganization cafeOpOrg = (CafeOperationOrganization) cafeOrgDir.createOrganization(Organization.Type.CafeOperation);
         CafeManagementOrganization cafeMgmtOrg = (CafeManagementOrganization) cafeOrgDir.createOrganization(Organization.Type.CafeManagement);
-        
+                
+        //FoodSupply part:
+        //Create FoodSupply enterprise
+        FoodSupplyEnterprise foodSupply = (FoodSupplyEnterprise) enterpriseDirectory
+                .createAndAddEnterprise("FoodSupply", Enterprise.EnterpriseType.FoodSupply);
+                
+        //Organizations inside FoodSupply: Warehouse + Logistics
+        OrganizationDirectory foodOrgDir = foodSupply.getOrganizationDirectory();
+        WarehouseOrganization warehouseOrg = (WarehouseOrganization)
+                foodOrgDir.createOrganization(Organization.Type.Warehouse);
+        LogisticsOrganization logisticsOrg = (LogisticsOrganization)
+                foodOrgDir.createOrganization(Organization.Type.Logistics);
         
         //4. have some employees 
         //5. create user account
@@ -81,8 +97,19 @@ public class ConfigureASystem {
         Employee storeManagerEmp = cafeMgmtOrg.getEmployeeDirectory().createEmployee("Store Manager One");
         UserAccount storeManagerUA = cafeMgmtOrg.getUserAccountDirectory()
                 .createUserAccount("sm", "1", storeManagerEmp, new StoreManagerRole());
-
         
+        
+        
+        //FoodSupply part:
+        //Warehouse Keeper (FoodSupply)
+        Employee warehouseEmp = warehouseOrg.getEmployeeDirectory().createEmployee("Warehouse Keeper One");
+        UserAccount warehouseUA = warehouseOrg.getUserAccountDirectory()
+                .createUserAccount("wh", "1", warehouseEmp, new WarehouseKeeperRole());
+
+        // Logistics Dispatcher (FoodSupply)
+        Employee logisticsEmp = logisticsOrg.getEmployeeDirectory().createEmployee("Logistics Dispatcher One");
+        UserAccount logisticsUA = logisticsOrg.getUserAccountDirectory()
+                .createUserAccount("ld", "1", logisticsEmp, new LogisticsDispatcherRole());
         return system;
     }
     

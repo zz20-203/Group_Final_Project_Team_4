@@ -26,7 +26,11 @@ public abstract class Organization {
     public enum Type{
         CafeAdmin("Cafe Admin Organization"),
         CafeOperation("Cafe Operation Organization"),//Brista
-        CafeManagement("Cafe Management Organization");
+        CafeManagement("Cafe Management Organization"),
+        
+        Warehouse("Warehouse Organization"),
+        Logistics("Logistics Organization");
+        
         private String value;
         private Type(String value) {
             this.value = value;
