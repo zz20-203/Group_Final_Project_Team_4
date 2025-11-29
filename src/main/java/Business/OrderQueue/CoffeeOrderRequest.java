@@ -4,6 +4,7 @@
  */
 package Business.OrderQueue;
 
+import Business.Enterprise.DeliveryDepartment.Destination;
 import Business.UserAccount.UserAccount;
 
 /**
@@ -20,6 +21,11 @@ public class CoffeeOrderRequest extends OrderRequest{
     //order number
     private static int count = 1;
     private int orderNumber;
+    
+    //Jerry
+    //Destination to allow deliveries
+    
+    Destination destination;
     
     public CoffeeOrderRequest() { //constructor
       
@@ -38,6 +44,32 @@ public class CoffeeOrderRequest extends OrderRequest{
 
     public void setOrderType(String orderType) {
         this.orderType = orderType;
+    }
+
+    //Jerry
+    //Destination to allow deliveries
+    
+    public Destination getDestination() {
+        return destination;
+    }
+
+    public void setDestination(){
+        this.destination.setRegion(0);
+        this.destination.setAddress("[In-Store]");        
+    }
+    
+    public void setDestination(int region, String address) {
+        
+        if (this.orderType.contentEquals("Dine-In")){
+            this.destination.setRegion(0);
+            this.destination.setAddress("[In-Store]");
+        }
+        
+        else {
+            this.destination.setRegion(region);
+            this.destination.setAddress(address);            
+        }
+        
     }
     
     @Override
