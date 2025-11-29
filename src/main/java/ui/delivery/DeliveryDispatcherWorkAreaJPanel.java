@@ -4,17 +4,32 @@
  */
 package ui.delivery;
 
+import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
+import Business.Enterprise.DeliveryDepartment.RiderDirectory;
+import Business.OrderQueue.OrderQueue;
+import java.awt.CardLayout;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Luciela us Biktria
  */
 public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
 
+    private JPanel userProcessContainer;
+    private OrderQueue orderQueue;
+    private DeliveryDirectory deliveryDirectory;
+    private RiderDirectory riderDirectory;
+
     /**
      * Creates new form DeliveryDispatcherWorkArea
      */
-    public DeliveryDispatcherWorkAreaJPanel() {
+    public DeliveryDispatcherWorkAreaJPanel(JPanel userProcessContainer, OrderQueue orderQueue, DeliveryDirectory deliveryDirectory, RiderDirectory riderDirectory) {
         initComponents();
+        this.userProcessContainer = userProcessContainer;
+        this.orderQueue = orderQueue;
+        this.deliveryDirectory = deliveryDirectory;
+        this.riderDirectory = riderDirectory;
     }
 
     /**
@@ -26,32 +41,64 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblTitle = new javax.swing.JLabel();
+        btnManageDeliveries = new javax.swing.JButton();
+        btnManageDestinations = new javax.swing.JButton();
+        btnManageRiders = new javax.swing.JButton();
 
+        setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Delivery Dispatch Control Panel");
+        lblTitle.setFont(new java.awt.Font("Microsoft YaHei UI", 0, 24)); // NOI18N
+        lblTitle.setText("Delivery Dispatch Control Panel");
+        add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addComponent(jLabel1)
-                .addContainerGap(531, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabel1)
-                .addContainerGap(558, Short.MAX_VALUE))
-        );
+        btnManageDeliveries.setText("Manage Deliveries");
+        btnManageDeliveries.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageDeliveriesActionPerformed(evt);
+            }
+        });
+        add(btnManageDeliveries, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, 230, -1));
+
+        btnManageDestinations.setText("Manage Delivery Destinations");
+        btnManageDestinations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageDestinationsActionPerformed(evt);
+            }
+        });
+        add(btnManageDestinations, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 270, 230, -1));
+
+        btnManageRiders.setText("Manage Riders");
+        btnManageRiders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageRidersActionPerformed(evt);
+            }
+        });
+        add(btnManageRiders, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 320, 230, -1));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnManageDeliveriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageDeliveriesActionPerformed
+        ViewDeliveriesJPanel panel = new ViewDeliveriesJPanel(userProcessContainer, orderQueue, riderDirectory, deliveryDirectory);
+        userProcessContainer.add("ViewDeliveriesJPanel", panel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnManageDeliveriesActionPerformed
+
+    private void btnManageDestinationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageDestinationsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnManageDestinationsActionPerformed
+
+    private void btnManageRidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageRidersActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnManageRidersActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnManageDeliveries;
+    private javax.swing.JButton btnManageDestinations;
+    private javax.swing.JButton btnManageRiders;
+    private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 }
