@@ -16,9 +16,9 @@ public class Delivery {
     int dateTimeSent;
     int dateTimeArrived;
     
-    public Delivery(Order o, Destination d, Rider r) {
+    public Delivery(Order o, Rider r) {
         order = o;
-        destination = d;
+        destination = o.getDestination();
         rider = r;
         
     }
