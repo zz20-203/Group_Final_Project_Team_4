@@ -25,13 +25,12 @@ public class DeliveryDispatcherRole extends Role {
                                 Enterprise enterprise,
                                 EcoSystem business) {
         
-        DeliveryDispatcherOrganization deliveryOrg = (DeliveryDispatcherOrganization) organization;
-                
         return new DeliveryDispatcherWorkAreaJPanel(
                 userProcessContainer,
-                deliveryOrg.getWorkQueue(),   
-                deliveryOrg.getDeliveryDirectory(),
-                deliveryOrg.getRiderDirectory()
+                account,
+                (DeliveryDispatcherOrganization) organization,
+                enterprise,
+                business
         );
     }
 

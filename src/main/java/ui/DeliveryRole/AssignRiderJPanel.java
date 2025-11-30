@@ -21,16 +21,21 @@ import javax.swing.JPanel;
  *
  * @author Luciela us Biktria
  */
-public class AssignRiderJPanel extends javax.swing.JPanel {
+public final class AssignRiderJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private RiderDirectory riderDirectory;
-    private OrderQueue orderQueue;
-    private DeliveryDirectory deliveryDirectory;
-    private JCheckBox[] regionCheckBoxes;
+    private final JPanel userProcessContainer;
+    private final RiderDirectory riderDirectory;
+    private final OrderQueue orderQueue;
+    private final DeliveryDirectory deliveryDirectory;
+    private final JCheckBox[] regionCheckBoxes;
 
     /**
      * Creates new form AssignRiderJPanel
+     * @param userProcessContainer
+     * @param deliveryDirectory
+     * @param orderQueue
+     * @param riderDirectory
+     * @param orderToEdit
      */
     public AssignRiderJPanel(JPanel userProcessContainer, OrderQueue orderQueue, RiderDirectory riderDirectory, DeliveryDirectory deliveryDirectory, CoffeeOrderRequest orderToEdit) {
         initComponents();
@@ -309,8 +314,7 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
         // Refresh the previous panel's table if it is ViewDeliveriesJPanel
         Component[] componentArray = userProcessContainer.getComponents();
         Component component = componentArray[componentArray.length - 1];
-        if (component instanceof ViewDeliveriesJPanel) {
-            ViewDeliveriesJPanel viewPanel = (ViewDeliveriesJPanel) component;
+        if (component instanceof ViewDeliveriesJPanel viewPanel) {
             viewPanel.populateTable();
         }
         

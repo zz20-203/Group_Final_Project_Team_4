@@ -4,8 +4,11 @@
  */
 package ui.DeliveryRole;
 
+import Business.Employee.Employee;
 import Business.Enterprise.DeliveryDepartment.Rider;
-import Business.Enterprise.DeliveryDepartment.RiderDirectory;
+import Business.Organization.DeliveryDispatcherOrganization;
+import Business.Role.RiderRole;
+import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -13,7 +16,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,9 +24,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ManageRiderJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private RiderDirectory riderDirectory;
-    private JCheckBox[] regionCheckBoxes;
+    private final JPanel userProcessContainer;
+    private final DeliveryDispatcherOrganization organization;
+    private final JCheckBox[] regionCheckBoxes;
     
     // Placeholder constants
     private final String PHONE_PLACEHOLDER = "Enter a 10-digit phone number, including area code, without hyphens or parentheses";
@@ -34,11 +36,13 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ManageRiderJPanel
+     * @param userProcessContainer
+     * @param organization
      */
-    public ManageRiderJPanel(JPanel userProcessContainer, RiderDirectory riderDirectory) {
+    public ManageRiderJPanel(JPanel userProcessContainer, DeliveryDispatcherOrganization organization) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
-        this.riderDirectory = riderDirectory;
+        this.organization = organization;
         
         regionCheckBoxes = new JCheckBox[] {
             chkRiderRegion1, chkRiderRegion2, chkRiderRegion3, chkRiderRegion4, 
@@ -48,17 +52,11 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
         
         populateTable();
         
-        // Add listener to table to populate fields on selection
-        tblRiders.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent event) {
-                // Check if we are in view mode (buttons say Edit/New)
-                if (!event.getValueIsAdjusting() && tblRiders.getSelectedRow() >= 0) {
-                     // Only populate if not in Edit/New mode
-                     if (tblRiders.isEnabled()) {
-                        Rider selectedRider = (Rider) tblRiders.getValueAt(tblRiders.getSelectedRow(), 0);
-                        populateFields(selectedRider);
-                     }
+        tblRiders.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            if (!event.getValueIsAdjusting() && tblRiders.getSelectedRow() >= 0) {
+                if (tblRiders.isEnabled()) {
+                    Rider selectedRider = (Rider) tblRiders.getValueAt(tblRiders.getSelectedRow(), 0);
+                    populateFields(selectedRider);
                 }
             }
         });
@@ -68,9 +66,9 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblRiders.getModel();
         model.setRowCount(0);
         
-        for (Rider r : riderDirectory.getEmployeeList()) {
+        for (Rider r : organization.getRiderDirectory().getEmployeeList()) {
             Object[] row = new Object[3];
-            row[0] = r; // Uses Rider.toString() which returns ID as String
+            row[0] = r; 
             row[1] = r.getFirstName() + " " + r.getLastName();
             row[2] = r.getPhoneNumber(); 
             model.addRow(row);
@@ -86,7 +84,20 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
         txtRiderFirstName.setText(r.getFirstName());
         txtRiderLastName.setText(r.getLastName());
         
-        // Populate Checkboxes
+        // Populate User Account fields
+        String fullName = r.getFirstName() + " " + r.getLastName();
+        txtAccountUsername.setText("");
+        txtAccountPassword.setText("");
+        
+        for (UserAccount ua : organization.getUserAccountDirectory().getUserAccountList()) {
+            if (ua.getEmployee().getName().equals(fullName)) {
+                txtAccountUsername.setText(ua.getUsername());
+                txtAccountPassword.setText(ua.getPassword());
+                break;
+            }
+        }
+        
+        // Checkboxes
         for (JCheckBox chk : regionCheckBoxes) {
             chk.setSelected(false);
         }
@@ -100,15 +111,25 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
         }
     }
     
-    private void setFieldsEnabled(boolean enabled) {
-        txtRiderID.setEnabled(enabled);
-        txtRiderPhoneNum.setEnabled(enabled);
-        txtRiderFirstName.setEnabled(enabled);
-        txtRiderLastName.setEnabled(enabled);
+    /**
+     * Enables or disables fields based on the mode.
+     * @param generalEnabled  For Rider details (ID, Name, Phone, Regions)
+     * @param accountEnabled  For UserAccount details (User, Pass)
+     */
+    private void setFieldsEnabled(boolean generalEnabled, boolean accountEnabled) {
+        txtRiderID.setEnabled(generalEnabled);
+        txtRiderPhoneNum.setEnabled(generalEnabled);
+        txtRiderFirstName.setEnabled(generalEnabled);
+        txtRiderLastName.setEnabled(generalEnabled);
         
+        // Regions follow general enabled state
         for (JCheckBox chk : regionCheckBoxes) {
-            chk.setEnabled(enabled);
+            chk.setEnabled(generalEnabled);
         }
+        
+        // Account fields controlled separately
+        txtAccountUsername.setEnabled(accountEnabled);
+        txtAccountPassword.setEnabled(accountEnabled);
     }
     
     private void clearFields() {
@@ -116,8 +137,9 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
         txtRiderPhoneNum.setText("");
         txtRiderFirstName.setText("");
         txtRiderLastName.setText("");
+        txtAccountUsername.setText("");
+        txtAccountPassword.setText("");
         
-        // Restore default colors
         txtRiderID.setForeground(Color.BLACK);
         txtRiderPhoneNum.setForeground(Color.BLACK);
         
@@ -126,7 +148,6 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
         }
     }
     
-    // Helper to set placeholders when entering edit/new mode
     private void setPlaceholders() {
         if (txtRiderID.getText().isEmpty() || isCreationMode) {
              txtRiderID.setText(ID_PLACEHOLDER);
@@ -175,32 +196,28 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
         txtRiderFirstName = new javax.swing.JTextField();
         txtRiderLastName = new javax.swing.JTextField();
         txtAccountUsername = new javax.swing.JTextField();
-        txtAccountPassword = new javax.swing.JTextField();
+        txtAccountPassword = new javax.swing.JPasswordField();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tblRiders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
                 "Rider ID", "Rider Name", "Phone Number"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Long.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
+                java.lang.Object.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(tblRiders);
@@ -221,7 +238,7 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
                 btnNewCancelActionPerformed(evt);
             }
         });
-        add(btnNewCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 540, 80, -1));
+        add(btnNewCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 540, -1, -1));
 
         btnEditSave.setText("Edit");
         btnEditSave.addActionListener(new java.awt.event.ActionListener() {
@@ -229,7 +246,7 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
                 btnEditSaveActionPerformed(evt);
             }
         });
-        add(btnEditSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, 80, -1));
+        add(btnEditSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, -1, -1));
 
         lblTitle.setText("Rider Management & Registration");
         add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 40, -1, -1));
@@ -326,6 +343,7 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
         txtAccountUsername.setEnabled(false);
         add(txtAccountUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 290, 230, -1));
 
+        txtAccountPassword.setText("jPasswordField1");
         txtAccountPassword.setEnabled(false);
         add(txtAccountPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 340, 230, -1));
     }// </editor-fold>//GEN-END:initComponents
@@ -338,32 +356,28 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
 
     private void btnNewCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCancelActionPerformed
         if (btnNewCancel.getText().equals("New")) {
-            // -- Switch to New Mode --
+            // -- Switch to CREATION Mode --
             isCreationMode = true;
-            
-            // UI Logic
             btnNewCancel.setText("Cancel");
             btnEditSave.setText("Save");
             
             tblRiders.setEnabled(false);
             tblRiders.clearSelection();
-            
             clearFields();
-            setFieldsEnabled(true);
+            
+            // Enable ALL fields (Rider details + Account details)
+            setFieldsEnabled(true, true);
             setPlaceholders();
             
         } else {
-            // -- Cancel Action --
-            // Revert state
+            // -- CANCEL Action --
             isCreationMode = false;
-            
             btnNewCancel.setText("New");
             btnEditSave.setText("Edit");
             
             tblRiders.setEnabled(true);
-            setFieldsEnabled(false);
+            setFieldsEnabled(false, false);
             
-            // Check if there was a previous selection to restore
             if (tblRiders.getSelectedRow() >= 0) {
                  Rider selected = (Rider) tblRiders.getValueAt(tblRiders.getSelectedRow(), 0);
                  populateFields(selected);
@@ -375,7 +389,7 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
 
     private void btnEditSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditSaveActionPerformed
         if (btnEditSave.getText().equals("Edit")) {
-            // -- Switch to Edit Mode --
+            // -- Switch to EDIT Mode --
             int selectedRow = tblRiders.getSelectedRow();
             if (selectedRow < 0) {
                  JOptionPane.showMessageDialog(this, "Please select a rider to edit.");
@@ -383,34 +397,47 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
             }
             
             isCreationMode = false;
-            
             btnEditSave.setText("Save");
             btnNewCancel.setText("Cancel");
             
             tblRiders.setEnabled(false);
-            setFieldsEnabled(true);
             
-            // Populate fields again just to be safe, though they should be filled
+            // Enable Rider fields ONLY. Disable Account fields.
+            setFieldsEnabled(true, false);
+            
             Rider selected = (Rider) tblRiders.getValueAt(selectedRow, 0);
             populateFields(selected);
             setPlaceholders(); 
             
         } else {
-            // -- Save Action --
-            
-            // Validation
+            // -- SAVE Action (for both New and Edit) --
             String idTxt = txtRiderID.getText();
             String phoneTxt = txtRiderPhoneNum.getText();
             String fName = txtRiderFirstName.getText();
             String lName = txtRiderLastName.getText();
             
-            // Check placeholders
+            // Only validate Account fields if in Creation Mode
+            String username = txtAccountUsername.getText();
+            String password = String.valueOf(txtAccountPassword.getPassword());
+            
             if (idTxt.equals(ID_PLACEHOLDER)) idTxt = "";
             if (phoneTxt.equals(PHONE_PLACEHOLDER)) phoneTxt = "";
             
             if (idTxt.isBlank() || phoneTxt.isBlank() || fName.isBlank() || lName.isBlank()) {
-                JOptionPane.showMessageDialog(this, "All fields are required.");
+                JOptionPane.showMessageDialog(this, "Rider details are required.");
                 return;
+            }
+            
+            if (isCreationMode) {
+                if (username.isBlank() || password.isBlank()) {
+                    JOptionPane.showMessageDialog(this, "Username and Password are required for new accounts.");
+                    return;
+                }
+                boolean usernameExists = !organization.getUserAccountDirectory().checkIfUsernameIsUnique(username);
+                if (usernameExists) {
+                    JOptionPane.showMessageDialog(this, "Username already exists.");
+                    return;
+                }
             }
             
             long id;
@@ -436,7 +463,7 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
             ArrayList<Integer> selectedRegions = new ArrayList<>();
             for (int i = 0; i < regionCheckBoxes.length; i++) {
                 if (regionCheckBoxes[i].isSelected()) {
-                    selectedRegions.add(i + 1); // Regions are 1-indexed
+                    selectedRegions.add(i + 1); 
                 }
             }
             
@@ -448,32 +475,50 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
             int[] regionsArr = selectedRegions.stream().mapToInt(i -> i).toArray();
             
             if (isCreationMode) {
-                // Create new rider
-                riderDirectory.createRider(id, fName, lName, phone, regionsArr);
+                // 1. Create Business Object
+                organization.getRiderDirectory().createRider(id, fName, lName, phone, regionsArr);
                 
-                JOptionPane.showMessageDialog(this, "Rider created successfully.");
+                // 2. Create System Employee
+                String fullName = fName + " " + lName;
+                Employee emp = organization.getEmployeeDirectory().createEmployee(fullName);
+                
+                // 3. Create User Account
+                organization.getUserAccountDirectory().createUserAccount(username, password, emp, new RiderRole());
+                
+                JOptionPane.showMessageDialog(this, "Rider and Account created successfully.");
                 isCreationMode = false;
                 
             } else {
-                // Edit Mode
+                // Edit Mode - Updating Rider ONLY
+                // We do NOT touch the UserAccount here as instructed
                 Rider r = (Rider) tblRiders.getValueAt(tblRiders.getSelectedRow(), 0);
+                String oldName = r.getFirstName() + " " + r.getLastName();
+                String newName = fName + " " + lName;
+                
                 r.setId(id);
                 r.setPhoneNumber(phone);
                 r.setFirstName(fName);
                 r.setLastName(lName);
                 r.setRegions(regionsArr);
                 
-                JOptionPane.showMessageDialog(this, "Rider updated successfully.");
+                // We still need to update the Employee name so the system stays consistent
+                // Finding the associated employee via name logic
+                for (UserAccount ua : organization.getUserAccountDirectory().getUserAccountList()) {
+                    if (ua.getEmployee().getName().equals(oldName)) {
+                        ua.getEmployee().setName(newName);
+                        break;
+                    }
+                }
+                
+                JOptionPane.showMessageDialog(this, "Rider details updated successfully. User credentials were not changed.");
             }
             
-            // Revert UI
             populateTable();
             tblRiders.setEnabled(true);
-            setFieldsEnabled(false);
+            setFieldsEnabled(false, false);
             btnEditSave.setText("Edit");
             btnNewCancel.setText("New");
             
-            // Restore selection if edit
             if (!isCreationMode) {
                  tblRiders.clearSelection();
                  clearFields();
@@ -534,7 +579,7 @@ public class ManageRiderJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblRiderRegions;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JTable tblRiders;
-    private javax.swing.JTextField txtAccountPassword;
+    private javax.swing.JPasswordField txtAccountPassword;
     private javax.swing.JTextField txtAccountUsername;
     private javax.swing.JTextField txtRiderFirstName;
     private javax.swing.JTextField txtRiderID;

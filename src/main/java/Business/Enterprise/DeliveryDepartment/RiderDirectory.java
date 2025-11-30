@@ -11,10 +11,10 @@ import java.util.ArrayList;
  * @author Luciela us Biktria
  */
 public class RiderDirectory {
-    private ArrayList<Rider> riderList;
+    private final ArrayList<Rider> riderList;
 
     public RiderDirectory() {
-        riderList = new ArrayList();
+        riderList = new ArrayList<>();
     }
 
     public ArrayList<Rider> getEmployeeList() {

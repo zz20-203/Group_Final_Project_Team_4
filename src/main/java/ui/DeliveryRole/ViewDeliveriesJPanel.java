@@ -19,15 +19,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Luciela us Biktria
  */
-public class ViewDeliveriesJPanel extends javax.swing.JPanel {
+public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private OrderQueue orderQueue;
-    private RiderDirectory riderDirectory;
-    private DeliveryDirectory deliveryDirectory;
+    private final JPanel userProcessContainer;
+    private final OrderQueue orderQueue;
+    private final RiderDirectory riderDirectory;
+    private final DeliveryDirectory deliveryDirectory;
 
     /**
      * Creates new form ViewDeliveriesJPanel
+     * @param userProcessContainer
+     * @param orderQueue
+     * @param riderDirectory
+     * @param deliveryDirectory
      */
     public ViewDeliveriesJPanel(JPanel userProcessContainer, OrderQueue orderQueue, RiderDirectory riderDirectory, DeliveryDirectory deliveryDirectory) {
         initComponents();
