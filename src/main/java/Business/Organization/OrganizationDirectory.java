@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 package Business.Organization;
+import Business.Enterprise.CoffeeChainEnterprise;
+import Business.Enterprise.FoodSupplyEnterprise;
 
 import Business.Organization.Organization.Type;
 import java.util.ArrayList;
@@ -31,6 +33,14 @@ public class OrganizationDirectory {
         }
         else if (type.getValue().equals(Type.CafeManagement.getValue())){
             organization = new CafeManagementOrganization();
+            organizationList.add(organization);
+        }
+        else if (type.getValue().equals(Type.Warehouse.getValue())){
+            organization = new WarehouseOrganization();
+            organizationList.add(organization);
+        }
+        else if (type.getValue().equals(Type.Logistics.getValue())){
+            organization = new LogisticsOrganization();
             organizationList.add(organization);
         }
         return organization;

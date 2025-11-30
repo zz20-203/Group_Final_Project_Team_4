@@ -9,33 +9,35 @@ import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
 
 /**
- *
- * @author MyPC1
+ * Base class for all enterprises in the ecosystem.
  */
-public abstract class Enterprise extends Organization{
-    
+public abstract class Enterprise extends Organization {
+
     private EnterpriseType enterpriseType;
     private OrganizationDirectory organizationDirectory;
 
     public OrganizationDirectory getOrganizationDirectory() {
         return organizationDirectory;
     }
-    
-    public enum EnterpriseType{
-        CoffeeChain("Coffee Chain");
-        
+
+    public enum EnterpriseType {
+        CoffeeChain("Cafe"),
+        FoodSupply("Food Supply");
+
         private String value;
-        
-        private EnterpriseType(String value){
-            this.value=value;
+
+        private EnterpriseType(String value) {
+            this.value = value;
         }
+
         public String getValue() {
             return value;
         }
+
         @Override
-        public String toString(){
-        return value;
-    }
+        public String toString() {
+            return value;
+        }
     }
 
     public EnterpriseType getEnterpriseType() {
@@ -45,10 +47,10 @@ public abstract class Enterprise extends Organization{
     public void setEnterpriseType(EnterpriseType enterpriseType) {
         this.enterpriseType = enterpriseType;
     }
-    
-    public Enterprise(String name,EnterpriseType type){
+
+    public Enterprise(String name, EnterpriseType type) {
         super(name);
-        this.enterpriseType=type;
-        organizationDirectory=new OrganizationDirectory();
+        this.enterpriseType = type;
+        organizationDirectory = new OrganizationDirectory();
     }
 }
