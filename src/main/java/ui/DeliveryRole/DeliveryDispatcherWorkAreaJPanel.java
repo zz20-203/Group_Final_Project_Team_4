@@ -90,7 +90,6 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnManageDestinationsActionPerformed
 
     private void btnManageRidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageRidersActionPerformed
-        // TODO add your handling code here:
         ManageRiderJPanel panel = new ManageRiderJPanel(userProcessContainer, riderDirectory);
         userProcessContainer.add("ManageRiderJPanel", panel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
