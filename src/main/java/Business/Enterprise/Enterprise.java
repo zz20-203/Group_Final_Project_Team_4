@@ -7,6 +7,7 @@ package Business.Enterprise;
 
 import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
+import java.util.ArrayList;
 
 /**
  * Base class for all enterprises in the ecosystem.
@@ -19,7 +20,8 @@ public abstract class Enterprise extends Organization {
     public OrganizationDirectory getOrganizationDirectory() {
         return organizationDirectory;
     }
-
+    public abstract ArrayList<Organization.Type> getSupportedOrganizationTypes();
+    
     public enum EnterpriseType {
         CoffeeChain("Cafe"),
         FoodSupply("Food Supply");

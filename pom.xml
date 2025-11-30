@@ -25,9 +25,9 @@
             <version>RELEASE220</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
+            <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
-            <version>SNAPSHOT</version>
+            <version>RELEASE110</version>
         </dependency>
     </dependencies>
     <properties>
