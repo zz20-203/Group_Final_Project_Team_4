@@ -29,7 +29,9 @@ public abstract class Organization {
         CafeManagement("Cafe Management Organization"),
         
         Warehouse("Warehouse Organization"),
-        Logistics("Logistics Organization");
+        Logistics("Logistics Organization"),
+        Dispatch("Delivery Dispatch Organization"),
+        Analyst("Analyst Organization");
         
         private String value;
         private Type(String value) {

@@ -11,23 +11,24 @@ import java.util.ArrayList;
  * @author Luciela us Biktria
  */
 public class RiderDirectory {
-    private ArrayList<Rider> riderList;
+    private final ArrayList<Rider> riderList;
 
     public RiderDirectory() {
-        riderList = new ArrayList();
+        riderList = new ArrayList<>();
     }
 
     public ArrayList<Rider> getEmployeeList() {
         return riderList;
     }
     
-    public Rider createRider(int id, String firstName, String lastName, int[] regions){
+    public Rider createRider(long id, String firstName, String lastName, long phoneNumber, int[] regions){
         Rider rider = new Rider();
         
         rider.setId(id);
         rider.setFirstName(firstName);
         rider.setLastName(lastName);
         rider.setRegions(regions);
+        rider.setPhoneNumber(phoneNumber);
         
         riderList.add(rider);
         return rider;

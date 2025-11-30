@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.delivery;
+package ui.DeliveryRole;
 
 import Business.Enterprise.DeliveryDepartment.Delivery;
 import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
@@ -19,15 +19,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Luciela us Biktria
  */
-public class ViewDeliveriesJPanel extends javax.swing.JPanel {
+public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private OrderQueue orderQueue;
-    private RiderDirectory riderDirectory;
-    private DeliveryDirectory deliveryDirectory;
+    private final JPanel userProcessContainer;
+    private final OrderQueue orderQueue;
+    private final RiderDirectory riderDirectory;
+    private final DeliveryDirectory deliveryDirectory;
 
     /**
      * Creates new form ViewDeliveriesJPanel
+     * @param userProcessContainer
+     * @param orderQueue
+     * @param riderDirectory
+     * @param deliveryDirectory
      */
     public ViewDeliveriesJPanel(JPanel userProcessContainer, OrderQueue orderQueue, RiderDirectory riderDirectory, DeliveryDirectory deliveryDirectory) {
         initComponents();
@@ -148,9 +152,11 @@ public class ViewDeliveriesJPanel extends javax.swing.JPanel {
         }
         
         CoffeeOrderRequest selectedOrder = (CoffeeOrderRequest) tblOrders.getValueAt(selectedRow, 0);
+        String status = selectedOrder.getStatus();
         
-        if ("Delivered".equalsIgnoreCase(selectedOrder.getStatus())) {
-            JOptionPane.showMessageDialog(this, "This order has already been delivered and cannot be modified.", "Action Not Allowed", JOptionPane.ERROR_MESSAGE);
+        // Prevent modification if Delivered or In-Progress
+        if ("Delivered".equalsIgnoreCase(status) || "In-Progress".equalsIgnoreCase(status)) {
+            JOptionPane.showMessageDialog(this, "This order is " + status + " and cannot be modified.", "Action Not Allowed", JOptionPane.ERROR_MESSAGE);
             return;
         }
         

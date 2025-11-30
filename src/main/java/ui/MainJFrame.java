@@ -156,7 +156,6 @@ public class MainJFrame extends javax.swing.JFrame {
                                break;
                            }
                        }
-                        
                     }
                     else{
                        inEnterprise=enterprise;
@@ -177,8 +176,6 @@ public class MainJFrame extends javax.swing.JFrame {
             return;
         }
         
-
-
         else{
             System.out.println("=== Login Debug ===");
             System.out.println("User = " + userAccount.getUsername());

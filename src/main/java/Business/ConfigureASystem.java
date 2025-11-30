@@ -21,11 +21,39 @@ import Business.Organization.LogisticsOrganization;
 import Business.Role.WarehouseKeeperRole;
 import Business.Role.LogisticsDispatcherRole;
 import Business.OrderQueue.SupplyOrderRequest;
+// Delivery Imports
+import Business.Enterprise.DeliveryEnterprise;
+import Business.Organization.DeliveryDispatcherOrganization;
+import Business.Role.DeliveryDispatcherRole;
+import Business.Role.RiderRole;
 
 /**
  *
  * @author rrheg
  */
+
+/*
+ * TEST CREDENTIALS LIST    UN / PW
+ * ===========================================
+ * System Admin:            sa / 1
+ * 
+ * -- CoffeeChain Enterprise --
+ * Enterprise Admin:        ca / 1
+ * Front Desk:              fd / 1
+ * Barista:                 b  / 1
+ * Store Manager:           sm / 1
+ * 
+ * -- FoodSupply Enterprise --
+ * Enterprise Admin:        fa / 1
+ * Warehouse Keeper:        wh / 1
+ * Logistics Dispatcher:    ld / 1
+ * 
+ * -- Delivery Enterprise --
+ * Enterprise Admin:        da / 1
+ * Delivery Dispatcher:     dd / 1
+ * Rider:                   r  / 1
+ */
+
 public class ConfigureASystem {
     
     public static EcoSystem configure(){
@@ -69,6 +97,16 @@ public class ConfigureASystem {
                 foodOrgDir.createOrganization(Organization.Type.Warehouse);
         LogisticsOrganization logisticsOrg = (LogisticsOrganization)
                 foodOrgDir.createOrganization(Organization.Type.Logistics);
+        
+        //Delivery part:
+        //Create Delivery Enterprise
+        DeliveryEnterprise deliveryEnterprise = (DeliveryEnterprise) enterpriseDirectory
+                .createAndAddEnterprise("FastDelivery", Enterprise.EnterpriseType.Delivery);
+        
+        //Organizations inside Delivery: Dispatch
+        OrganizationDirectory deliveryOrgDir = deliveryEnterprise.getOrganizationDirectory();
+        DeliveryDispatcherOrganization deliveryDispatchOrg = (DeliveryDispatcherOrganization)
+                deliveryOrgDir.createOrganization(Organization.Type.Dispatch);
         
         //4. have some employees 
         //5. create user account
@@ -116,6 +154,30 @@ public class ConfigureASystem {
         Employee fsAdminEmp = foodSupply.getEmployeeDirectory().createEmployee("FoodSupply Admin One");
         UserAccount fsAdminUA = foodSupply.getUserAccountDirectory()
                 .createUserAccount("fa", "1", fsAdminEmp, new Business.Role.AdminRole());
+                
+        //Delivery Part:
+        //Delivery Dispatcher
+        Employee deliveryDispatchEmp = deliveryDispatchOrg.getEmployeeDirectory().createEmployee("Delivery Dispatcher One");
+        UserAccount deliveryDispatchUA = deliveryDispatchOrg.getUserAccountDirectory()
+                .createUserAccount("dd", "1", deliveryDispatchEmp, new DeliveryDispatcherRole());
+        
+        //Delivery Admin
+        Employee deliveryAdminEmp = deliveryEnterprise.getEmployeeDirectory().createEmployee("Delivery Admin One");
+        UserAccount deliveryAdminUA = deliveryEnterprise.getUserAccountDirectory()
+                .createUserAccount("da", "1", deliveryAdminEmp, new AdminRole());
+        
+		// ** Test Rider **
+        // Create the Rider business object (ID: 101, Regions: 1,2,3)
+        int[] testRiderRegions = {1, 2, 3};
+        deliveryDispatchOrg.getRiderDirectory().createRider(101L, "Test", "Rider", 9876543210L, testRiderRegions);
+        
+        // Create the System Employee (Name for ManageAccount matching)
+        Employee riderEmp = deliveryDispatchOrg.getEmployeeDirectory().createEmployee("Test Rider");
+        
+        // Create the User Account
+        UserAccount riderUA = deliveryDispatchOrg.getUserAccountDirectory()
+                .createUserAccount("r", "1", riderEmp, new RiderRole());
+		
         
         // Add sample SupplyOrderRequest for testing
         SupplyOrderRequest sOrder = new SupplyOrderRequest();
