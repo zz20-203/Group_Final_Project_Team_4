@@ -4,15 +4,21 @@
  */
 package ui.DeliveryRole;
 
+import Business.EcoSystem;
+import Business.Enterprise.CoffeeChainEnterprise;
 import Business.Enterprise.DeliveryDepartment.Delivery;
 import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
 import Business.Enterprise.DeliveryDepartment.Destination;
 import Business.Enterprise.DeliveryDepartment.DestinationDirectory;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Organization.CafeOperationOrganization;
+import Business.Organization.Organization;
 import Business.OrderQueue.CoffeeOrderRequest;
-import Business.OrderQueue.OrderQueue;
 import Business.OrderQueue.OrderRequest;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -26,27 +32,25 @@ import javax.swing.table.DefaultTableModel;
 public class ManageDestinationsJPanel extends javax.swing.JPanel {
 
     private JPanel userProcessContainer;
-    private OrderQueue orderQueue;
+    private EcoSystem system;
     private DeliveryDirectory deliveryDirectory;
     private DestinationDirectory destinationDirectory;
     
     private JRadioButton[] regionRadioButtons;
-    
-    // State flags
     private boolean isEditOrderMode = false;
     private boolean isEditDestMode = false;
 
     /**
      * Creates new form ManageDestinationsJPanel
      * @param userProcessContainer
-     * @param orderQueue
+     * @param system
      * @param deliveryDirectory
      * @param destinationDirectory
      */
-    public ManageDestinationsJPanel(JPanel userProcessContainer, OrderQueue orderQueue, DeliveryDirectory deliveryDirectory, DestinationDirectory destinationDirectory) {
+    public ManageDestinationsJPanel(JPanel userProcessContainer, EcoSystem system, DeliveryDirectory deliveryDirectory, DestinationDirectory destinationDirectory) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
-        this.orderQueue = orderQueue;
+        this.system = system;
         this.deliveryDirectory = deliveryDirectory;
         this.destinationDirectory = destinationDirectory;
         
@@ -57,30 +61,23 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
         
         populateTable();
         
-        // Table Selection Listener
         tblDestinations.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
             if (!event.getValueIsAdjusting() && tblDestinations.getSelectedRow() >= 0) {
-                // Prevent changing selection while editing
-                if (isEditOrderMode || isEditDestMode) {
-                    return;
-                }
+                if (isEditOrderMode || isEditDestMode) return;
                 CoffeeOrderRequest selectedOrder = (CoffeeOrderRequest) tblDestinations.getValueAt(tblDestinations.getSelectedRow(), 0);
                 populateFields(selectedOrder);
             }
         });
         
-        // ComboBox Action Listener (Auto-fill region if existing address selected)
         cbxAddress.addActionListener((ActionEvent e) -> {
             if (isEditOrderMode) {
                 String input = (String) cbxAddress.getSelectedItem();
                 if (input != null) {
                     Destination existing = destinationDirectory.findDestination(input);
                     if (existing != null) {
-                        // Existing address: lock region and select it
                         setRegionSelection(existing.getRegion());
                         setRegionsEnabled(false);
                     } else {
-                        // New or typed address: allow region selection
                         setRegionsEnabled(true);
                         btnGrpRegion.clearSelection();
                     }
@@ -89,14 +86,34 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
         });
     }
     
+    private ArrayList<CoffeeOrderRequest> getAllCoffeeOrders() {
+        ArrayList<CoffeeOrderRequest> list = new ArrayList<>();
+        for (Network n : system.getNetworkList()) {
+            for (Enterprise e : n.getEnterpriseDirectory().getEnterpriseList()) {
+                if (e instanceof CoffeeChainEnterprise) {
+                    for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
+                        if (org instanceof CafeOperationOrganization) {
+                            for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
+                                if (req instanceof CoffeeOrderRequest) {
+                                    list.add((CoffeeOrderRequest) req);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return list;
+    }
+    
     private void populateTable() {
         DefaultTableModel model = (DefaultTableModel) tblDestinations.getModel();
         model.setRowCount(0);
         
-        for (OrderRequest req : orderQueue.getWorkRequestList()) {
-            if (req instanceof CoffeeOrderRequest order) {
+        for (CoffeeOrderRequest order : getAllCoffeeOrders()) {
+            if ("Delivery".equalsIgnoreCase(order.getOrderType())) {
                 Object[] row = new Object[3];
-                row[0] = order; // toString returns ID
+                row[0] = order; 
                 row[1] = (order.getDestination() != null) ? order.getDestination().getAddress() : "N/A";
                 row[2] = order.getStatus();
                 model.addRow(row);
@@ -106,7 +123,6 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
     
     private void populateFields(CoffeeOrderRequest order) {
         txtOrderID.setText(String.valueOf(order.getOrderNumber()));
-        
         cbxAddress.removeAllItems();
         if (order.getDestination() != null) {
             cbxAddress.addItem(order.getDestination().getAddress());
@@ -116,15 +132,10 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
             btnGrpRegion.clearSelection();
         }
         
-        // Check availability
         boolean canEdit = true;
-        
-        // Check if delivered
         if ("Delivered".equalsIgnoreCase(order.getStatus())) {
             canEdit = false;
         }
-        
-        // Check if assigned to rider
         Delivery d = deliveryDirectory.findDeliveryByOrder(order);
         if (d != null) {
             canEdit = false;
@@ -196,7 +207,6 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
         cbxAddress = new javax.swing.JComboBox<>();
         btnEditDestination = new javax.swing.JButton();
 
-        setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -301,6 +311,7 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
         txtOrderID.setEnabled(false);
         add(txtOrderID, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 110, 280, -1));
 
+        cbxAddress.setEditable(true);
         cbxAddress.setEnabled(false);
         add(cbxAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 180, 280, -1));
 
@@ -322,20 +333,15 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
         CoffeeOrderRequest order = (CoffeeOrderRequest) tblDestinations.getValueAt(selectedRow, 0);
 
         if (!isEditOrderMode) {
-            // -- Enable Edit Order Mode --
             isEditOrderMode = true;
             btnEditOrder.setText("Save");
             btnEditDestination.setEnabled(false);
             tblDestinations.setEnabled(false);
-            
-            // Allow editing address
             cbxAddress.setEnabled(true);
             populateComboBoxWithAll();
             
-            // Set current selection
             if (order.getDestination() != null) {
                 cbxAddress.setSelectedItem(order.getDestination().getAddress());
-                // Set region but keep disabled unless address changes to new (handled by listener)
                 setRegionSelection(order.getDestination().getRegion());
                 setRegionsEnabled(false);
             } else {
@@ -343,12 +349,9 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
                 btnGrpRegion.clearSelection();
                 setRegionsEnabled(true);
             }
-            
         } else {
-            // -- Save Action --
             String addr = (String) cbxAddress.getSelectedItem();
             int reg = getSelectedRegion();
-            
             if (addr == null || addr.isBlank()) {
                 JOptionPane.showMessageDialog(this, "Address cannot be empty.");
                 return;
@@ -357,30 +360,21 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Please select a region.");
                 return;
             }
-            
             Destination dest = destinationDirectory.findDestination(addr);
-            
             if (dest == null) {
                 dest = new Destination(reg, addr);
                 destinationDirectory.addDestination(dest);
-            } else {
-
             }
             
-            // Assign to Order
-            // Ideally CoffeeOrderRequest should reference the Destination object.
-            if (order.getDestination() != null) {
+            if (order.getDestination() == null) {
+                order.setOrderType("Delivery"); // Ensure type is correct
+
+                order.setDestination(dest.getRegion(), dest.getAddress());
+            } else {
                 order.getDestination().setAddress(dest.getAddress());
                 order.getDestination().setRegion(dest.getRegion());
-            } else {
-                // If it was null, we rely on the CoffeeOrderRequest to have initialized it internally 
-                // or we are stuck. Usually constructors init it.
-                // If we can't set it, we assume the getter returns a mutable object.
-                 JOptionPane.showMessageDialog(this, "Error: Order destination object is null. Cannot update.");
-                 // In a real scenario we'd fix CoffeeOrderRequest to allow setDestination(Destination d)
             }
             
-            // Cleanup
             isEditOrderMode = false;
             btnEditOrder.setText("Edit Order Destination");
             btnEditDestination.setEnabled(true);
@@ -388,7 +382,7 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
             cbxAddress.setEnabled(false);
             setRegionsEnabled(false);
             populateTable();
-            populateFields(order); // Refresh view
+            populateFields(order);
         }
     }//GEN-LAST:event_btnEditOrderActionPerformed
 
@@ -399,56 +393,37 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
             return;
         }
         CoffeeOrderRequest order = (CoffeeOrderRequest) tblDestinations.getValueAt(selectedRow, 0);
-        
         if (order.getDestination() == null) {
             JOptionPane.showMessageDialog(this, "This order has no destination set.");
             return;
         }
 
         if (!isEditDestMode) {
-            // -- Enable Edit Destination Mode --
             isEditDestMode = true;
             btnEditDestination.setText("Save");
             btnEditOrder.setEnabled(false);
             tblDestinations.setEnabled(false);
-            
-            // Address is NOT editable, only region
             cbxAddress.setEnabled(false); 
-            // But we display the current one
             cbxAddress.setSelectedItem(order.getDestination().getAddress());
-            
-            // Enable regions
             setRegionSelection(order.getDestination().getRegion());
             setRegionsEnabled(true);
-            
         } else {
-            // -- Save Action --
             int newReg = getSelectedRegion();
             if (newReg == -1) {
                 JOptionPane.showMessageDialog(this, "Please select a region.");
                 return;
             }
-            
             String currentAddress = order.getDestination().getAddress();
-            
-            // Update the Directory Object
             Destination dirDest = destinationDirectory.findDestination(currentAddress);
             if (dirDest != null) {
                 dirDest.setRegion(newReg);
             }
-            
-            // Update ALL orders that share this address (since we are editing the Destination Definition)
-            // Or at least the current one.
-            for (OrderRequest req : orderQueue.getWorkRequestList()) {
-                 if (req instanceof CoffeeOrderRequest) {
-                     CoffeeOrderRequest co = (CoffeeOrderRequest) req;
-                     if (co.getDestination() != null && co.getDestination().getAddress().equalsIgnoreCase(currentAddress)) {
-                         co.getDestination().setRegion(newReg);
-                     }
+            // Update all matching orders
+            for (CoffeeOrderRequest co : getAllCoffeeOrders()) {
+                 if (co.getDestination() != null && co.getDestination().getAddress().equalsIgnoreCase(currentAddress)) {
+                     co.getDestination().setRegion(newReg);
                  }
             }
-            
-            // Cleanup
             isEditDestMode = false;
             btnEditDestination.setText("Edit Destination Regions");
             btnEditOrder.setEnabled(true);

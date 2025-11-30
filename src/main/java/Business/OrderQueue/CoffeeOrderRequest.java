@@ -54,13 +54,24 @@ public class CoffeeOrderRequest extends OrderRequest{
     }
 
     public void setDestination(){
-        this.destination.setRegion(0);
-        this.destination.setAddress("[In-Store]");        
+        // Initialize destination if it is null
+        if (this.destination == null) {
+            this.destination = new Destination(0, "[In-Store]");
+        } else {
+            this.destination.setRegion(0);
+            this.destination.setAddress("[In-Store]");        
+        }
     }
     
     public void setDestination(int region, String address) {
         
-        if (this.orderType.contentEquals("Dine-In")){
+        // Initialize destination if it is null
+        if (this.destination == null) {
+            this.destination = new Destination(region, address);
+        }
+        
+        // Added null check for orderType, just to be safe
+        if (this.orderType != null && this.orderType.contentEquals("Dine-In")){
             this.destination.setRegion(0);
             this.destination.setAddress("[In-Store]");
         }

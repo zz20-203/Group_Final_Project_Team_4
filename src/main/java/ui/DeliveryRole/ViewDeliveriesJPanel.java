@@ -2,18 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.DeliveryRole;
+package ui.delivery;
 
+import Business.EcoSystem;
+import Business.Enterprise.CoffeeChainEnterprise;
 import Business.Enterprise.DeliveryDepartment.Delivery;
 import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
 import Business.Enterprise.DeliveryDepartment.RiderDirectory;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Organization.CafeOperationOrganization;
+import Business.Organization.Organization;
 import Business.OrderQueue.CoffeeOrderRequest;
-import Business.OrderQueue.OrderQueue;
 import Business.OrderQueue.OrderRequest;
 import java.awt.CardLayout;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import ui.DeliveryRole.AssignRiderJPanel;
 
 /**
  *
@@ -22,34 +29,55 @@ import javax.swing.table.DefaultTableModel;
 public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
 
     private final JPanel userProcessContainer;
-    private final OrderQueue orderQueue;
+    private final EcoSystem system;
     private final RiderDirectory riderDirectory;
     private final DeliveryDirectory deliveryDirectory;
 
     /**
      * Creates new form ViewDeliveriesJPanel
      * @param userProcessContainer
-     * @param orderQueue
+     * @param system
      * @param riderDirectory
      * @param deliveryDirectory
      */
-    public ViewDeliveriesJPanel(JPanel userProcessContainer, OrderQueue orderQueue, RiderDirectory riderDirectory, DeliveryDirectory deliveryDirectory) {
+    public ViewDeliveriesJPanel(JPanel userProcessContainer, EcoSystem system, RiderDirectory riderDirectory, DeliveryDirectory deliveryDirectory) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
-        this.orderQueue = orderQueue;
+        this.system = system;
         this.riderDirectory = riderDirectory;
         this.deliveryDirectory = deliveryDirectory;
         
         populateTable();
     }
     
+    private ArrayList<CoffeeOrderRequest> getAllCoffeeOrders() {
+        ArrayList<CoffeeOrderRequest> list = new ArrayList<>();
+        // Iterate entire ecosystem to find CoffeeChain -> CafeOperation -> Orders
+        for (Network n : system.getNetworkList()) {
+            for (Enterprise e : n.getEnterpriseDirectory().getEnterpriseList()) {
+                if (e instanceof CoffeeChainEnterprise) {
+                    for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
+                        if (org instanceof CafeOperationOrganization) {
+                            for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
+                                if (req instanceof CoffeeOrderRequest) {
+                                    list.add((CoffeeOrderRequest) req);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return list;
+    }
+    
     public void populateTable() {
         DefaultTableModel model = (DefaultTableModel) tblOrders.getModel();
         model.setRowCount(0);
         
-        for (OrderRequest request : orderQueue.getWorkRequestList()) {
-            if (request instanceof CoffeeOrderRequest) {
-                CoffeeOrderRequest order = (CoffeeOrderRequest) request;
+        for (CoffeeOrderRequest order : getAllCoffeeOrders()) {
+            
+            if ("Delivery".equalsIgnoreCase(order.getOrderType())) {
                 
                 Delivery delivery = deliveryDirectory.findDeliveryByOrder(order);
                 
@@ -68,7 +96,7 @@ public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
                 if (order.getDestination() != null) {
                     row[4] = order.getDestination().getAddress();
                 } else {
-                    row[4] = "In-Store/None";
+                    row[4] = "Needs Location"; // Indicates Dispatcher needs to assign destination
                 }
                 
                 row[5] = order.getStatus();
@@ -154,13 +182,12 @@ public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
         CoffeeOrderRequest selectedOrder = (CoffeeOrderRequest) tblOrders.getValueAt(selectedRow, 0);
         String status = selectedOrder.getStatus();
         
-        // Prevent modification if Delivered or In-Progress
         if ("Delivered".equalsIgnoreCase(status) || "In-Progress".equalsIgnoreCase(status)) {
             JOptionPane.showMessageDialog(this, "This order is " + status + " and cannot be modified.", "Action Not Allowed", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        AssignRiderJPanel panel = new AssignRiderJPanel(userProcessContainer, orderQueue, riderDirectory, deliveryDirectory, selectedOrder);
+        AssignRiderJPanel panel = new AssignRiderJPanel(userProcessContainer, system, riderDirectory, deliveryDirectory, selectedOrder);
         userProcessContainer.add("AssignRiderJPanel", panel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
