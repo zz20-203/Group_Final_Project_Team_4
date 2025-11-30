@@ -15,13 +15,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author raunak
  */
-public class ManageEmployeeJPanel extends javax.swing.JPanel {
+public final class ManageEmployeeJPanel extends javax.swing.JPanel {
 
-    private OrganizationDirectory organizationDir;
-    private JPanel userProcessContainer;
+    private final OrganizationDirectory organizationDir;
+    private final JPanel userProcessContainer;
     
     /**
      * Creates new form ManageOrganizationJPanel
+     * @param userProcessContainer
+     * @param organizationDir
      */
     public ManageEmployeeJPanel(JPanel userProcessContainer,OrganizationDirectory organizationDir) {
         initComponents();

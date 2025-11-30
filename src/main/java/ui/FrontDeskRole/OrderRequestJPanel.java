@@ -4,16 +4,12 @@
  */
 package ui.FrontDeskRole;
 
-import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
-import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import Business.OrderQueue.CoffeeOrderRequest;
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -28,6 +24,9 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
     private UserAccount userAccount;
     /**
      * Creates new form RequestLabTestJPanel
+     * @param userProcessContainer
+     * @param account
+     * @param enterprise
      */
     public OrderRequestJPanel(JPanel userProcessContainer, UserAccount account, Enterprise enterprise) {
         initComponents();
