@@ -17,7 +17,6 @@ public class FoodSupplyEnterprise extends Enterprise {
 
     @Override
     public ArrayList<Role> getSupportedRole() {
-        
         return new ArrayList<>();
     }
     @Override
@@ -26,5 +25,5 @@ public class FoodSupplyEnterprise extends Enterprise {
         types.add(Organization.Type.Warehouse);
         types.add(Organization.Type.Logistics);
         return types;
-}
+    }
 }

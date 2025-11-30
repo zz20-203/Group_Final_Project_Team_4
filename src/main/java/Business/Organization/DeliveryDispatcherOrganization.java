@@ -4,6 +4,8 @@
  */
 package Business.Organization;
 
+import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
+import Business.Enterprise.DeliveryDepartment.RiderDirectory;
 import Business.Role.DeliveryDispatcherRole;
 import Business.Role.Role;
 import java.util.ArrayList;
@@ -13,8 +15,22 @@ import java.util.ArrayList;
  * @author Luciela us Biktria
  */
 public class DeliveryDispatcherOrganization extends Organization {
+    
+    private RiderDirectory riderDirectory;
+    private DeliveryDirectory deliveryDirectory;
+    
     public DeliveryDispatcherOrganization() {
-        super(Organization.Type.CafeManagement.getValue());
+        super(Organization.Type.Dispatch.getValue());
+        riderDirectory = new RiderDirectory();
+        deliveryDirectory = new DeliveryDirectory();
+    }
+
+    public RiderDirectory getRiderDirectory() {
+        return riderDirectory;
+    }
+
+    public DeliveryDirectory getDeliveryDirectory() {
+        return deliveryDirectory;
     }
 
     @Override

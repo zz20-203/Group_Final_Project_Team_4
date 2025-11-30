@@ -28,7 +28,7 @@ public class CoffeeChainEnterprise extends Enterprise {
         types.add(Organization.Type.CafeOperation);
         types.add(Organization.Type.CafeManagement);
         return types;
-}
+    }
 }
 
 

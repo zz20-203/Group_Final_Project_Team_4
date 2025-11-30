@@ -59,14 +59,11 @@ public class UserAccount {
     public OrderQueue getWorkQueue() {
         return workQueue;
     }
-
-    
-    
+	
+	
     @Override
     public String toString() {
         return username;
     }
-    
-    
-    
+	
 }

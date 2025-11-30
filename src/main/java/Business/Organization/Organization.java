@@ -30,7 +30,8 @@ public abstract class Organization {
         
         Warehouse("Warehouse Organization"),
         Logistics("Logistics Organization"),
-        Dispatch("Delivery Dispatch Organization");
+        Dispatch("Delivery Dispatch Organization"),
+        Analyst("Analyst Organization");
         
         private String value;
         private Type(String value) {
