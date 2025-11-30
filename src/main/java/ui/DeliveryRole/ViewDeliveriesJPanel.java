@@ -93,7 +93,6 @@ public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
         tblOrders = new javax.swing.JTable();
         lblTitle = new javax.swing.JLabel();
 
-        setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -120,7 +119,15 @@ public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
             new String [] {
                 "Order ID", "Date Ordered", "Date Delivered", "Assigned Rider", "Destination", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblOrders);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 117, 720, 370));
@@ -145,9 +152,11 @@ public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
         }
         
         CoffeeOrderRequest selectedOrder = (CoffeeOrderRequest) tblOrders.getValueAt(selectedRow, 0);
+        String status = selectedOrder.getStatus();
         
-        if ("Delivered".equalsIgnoreCase(selectedOrder.getStatus())) {
-            JOptionPane.showMessageDialog(this, "This order has already been delivered and cannot be modified.", "Action Not Allowed", JOptionPane.ERROR_MESSAGE);
+        // Prevent modification if Delivered or In-Progress
+        if ("Delivered".equalsIgnoreCase(status) || "In-Progress".equalsIgnoreCase(status)) {
+            JOptionPane.showMessageDialog(this, "This order is " + status + " and cannot be modified.", "Action Not Allowed", JOptionPane.ERROR_MESSAGE);
             return;
         }
         

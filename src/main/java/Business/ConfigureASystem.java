@@ -25,6 +25,7 @@ import Business.OrderQueue.SupplyOrderRequest;
 import Business.Enterprise.DeliveryEnterprise;
 import Business.Organization.DeliveryDispatcherOrganization;
 import Business.Role.DeliveryDispatcherRole;
+import Business.Role.RiderRole;
 
 /**
  *
@@ -50,6 +51,7 @@ import Business.Role.DeliveryDispatcherRole;
  * -- Delivery Enterprise --
  * Enterprise Admin:        da / 1
  * Delivery Dispatcher:     dd / 1
+ * Rider:                   r  / 1
  */
 
 public class ConfigureASystem {
@@ -164,6 +166,18 @@ public class ConfigureASystem {
         UserAccount deliveryAdminUA = deliveryEnterprise.getUserAccountDirectory()
                 .createUserAccount("da", "1", deliveryAdminEmp, new AdminRole());
         
+		// ** Test Rider **
+        // Create the Rider business object (ID: 101, Regions: 1,2,3)
+        int[] testRiderRegions = {1, 2, 3};
+        deliveryDispatchOrg.getRiderDirectory().createRider(101L, "Test", "Rider", 9876543210L, testRiderRegions);
+        
+        // Create the System Employee (Name for ManageAccount matching)
+        Employee riderEmp = deliveryDispatchOrg.getEmployeeDirectory().createEmployee("Test Rider");
+        
+        // Create the User Account
+        UserAccount riderUA = deliveryDispatchOrg.getUserAccountDirectory()
+                .createUserAccount("r", "1", riderEmp, new RiderRole());
+		
         
         // Add sample SupplyOrderRequest for testing
         SupplyOrderRequest sOrder = new SupplyOrderRequest();
