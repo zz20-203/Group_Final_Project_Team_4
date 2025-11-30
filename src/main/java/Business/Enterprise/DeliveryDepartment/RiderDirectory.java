@@ -21,13 +21,14 @@ public class RiderDirectory {
         return riderList;
     }
     
-    public Rider createRider(int id, String firstName, String lastName, int[] regions){
+    public Rider createRider(long id, String firstName, String lastName, long phoneNumber, int[] regions){
         Rider rider = new Rider();
         
         rider.setId(id);
         rider.setFirstName(firstName);
         rider.setLastName(lastName);
         rider.setRegions(regions);
+        rider.setPhoneNumber(phoneNumber);
         
         riderList.add(rider);
         return rider;

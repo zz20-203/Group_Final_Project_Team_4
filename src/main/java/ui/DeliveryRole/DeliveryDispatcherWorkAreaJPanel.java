@@ -46,7 +46,6 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
         btnManageDestinations = new javax.swing.JButton();
         btnManageRiders = new javax.swing.JButton();
 
-        setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -92,6 +91,10 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
 
     private void btnManageRidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageRidersActionPerformed
         // TODO add your handling code here:
+        ManageRiderJPanel panel = new ManageRiderJPanel(userProcessContainer, riderDirectory);
+        userProcessContainer.add("ManageRiderJPanel", panel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnManageRidersActionPerformed
 
 
