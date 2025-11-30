@@ -20,7 +20,7 @@ public class StoreManagerRole extends Role {
 
     @Override
     public JPanel createWorkArea(JPanel userProcessContainer, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem business) {
-        return new StoreManagerWorkAreaJPanel(userProcessContainer, account, (CafeManagementOrganization) organization, enterprise);
+        return new StoreManagerWorkAreaJPanel(userProcessContainer, account, (CafeManagementOrganization) organization, business);
     }
     
 }

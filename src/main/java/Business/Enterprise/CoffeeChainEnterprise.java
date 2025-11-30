@@ -5,6 +5,7 @@
  */
 package Business.Enterprise;
 
+import Business.Organization.Organization;
 import Business.Role.Role;
 import java.util.ArrayList;
 
@@ -21,5 +22,13 @@ public class CoffeeChainEnterprise extends Enterprise {
     public ArrayList<Role> getSupportedRole() {
         return null;
     }
-    
+    @Override
+    public ArrayList<Organization.Type> getSupportedOrganizationTypes() {
+        ArrayList<Organization.Type> types = new ArrayList<>();
+        types.add(Organization.Type.CafeOperation);
+        types.add(Organization.Type.CafeManagement);
+        return types;
 }
+}
+
+

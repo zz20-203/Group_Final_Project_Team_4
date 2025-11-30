@@ -9,7 +9,7 @@ import Business.Organization.CafeOperationOrganization;
 import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
-import Business.Role.CafeAdminRole;
+import Business.Role.AdminRole;
 import Business.Role.FrontDeskRole;
 import Business.Role.BaristaRole;
 import Business.Role.StoreManagerRole;
@@ -80,9 +80,9 @@ public class ConfigureASystem {
                 .createUserAccount("sa", "1", sysEmp, new SystemAdminRole());
 
         // b. Cafe Admin（Enterprise Admin）
-        Employee cafeAdminEmp = CoffeeChain.getEmployeeDirectory().createEmployee("Cafe Admin");
+        Employee cafeAdminEmp = CoffeeChain.getEmployeeDirectory().createEmployee("CoffeeChain Admin One");
         UserAccount cafeAdminUA = CoffeeChain.getUserAccountDirectory()
-                .createUserAccount("ca", "1", cafeAdminEmp, new CafeAdminRole());
+                .createUserAccount("ca", "1", cafeAdminEmp, new AdminRole());
 
         // c.Front Desk
         Employee frontDeskEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Front Desk One");
@@ -112,6 +112,10 @@ public class ConfigureASystem {
         UserAccount logisticsUA = logisticsOrg.getUserAccountDirectory()
                 .createUserAccount("ld", "1", logisticsEmp, new LogisticsDispatcherRole());
         
+        // admin
+        Employee fsAdminEmp = foodSupply.getEmployeeDirectory().createEmployee("FoodSupply Admin One");
+        UserAccount fsAdminUA = foodSupply.getUserAccountDirectory()
+                .createUserAccount("fa", "1", fsAdminEmp, new Business.Role.AdminRole());
         
         // Add sample SupplyOrderRequest for testing
         SupplyOrderRequest sOrder = new SupplyOrderRequest();
