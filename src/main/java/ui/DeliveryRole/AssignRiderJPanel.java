@@ -326,6 +326,12 @@ public final class AssignRiderJPanel extends javax.swing.JPanel {
             return;
         }
         
+        // CHECK: Order must be Ready before assigning
+        if (!"Ready".equalsIgnoreCase(selectedOrder.getStatus())) {
+            JOptionPane.showMessageDialog(this, "This order is not 'Ready' yet. Please wait for the cafe to prepare it.");
+            return;
+        }
+        
         try {
             Delivery d = new Delivery(selectedOrder, selectedRider);
             deliveryDirectory.addDelivery(d);

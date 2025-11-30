@@ -28,8 +28,8 @@ public class Delivery {
             throw new IllegalArgumentException("This destination is In-Store and cannot be delivered to.");
         }
         
-        if (IntStream.of(rider.getRegions()).anyMatch(x -> x == destination.getRegion())){
-            throw new IllegalArgumentException("This rider does not currently perform deliveries to the region of this delivery.");
+        if (!IntStream.of(rider.getRegions()).anyMatch(x -> x == destination.getRegion())){
+             throw new IllegalArgumentException("This rider does not currently perform deliveries to the region (" + destination.getRegion() + ") of this delivery.");
         }
     }
 

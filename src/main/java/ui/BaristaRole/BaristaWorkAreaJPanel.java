@@ -180,7 +180,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                      return;
                 }
         
-        request.setStatus("Completed");
+        request.setStatus("Ready");
         
         populateTable();
         JOptionPane.showMessageDialog(null, "Order Completed!");
