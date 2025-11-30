@@ -23,9 +23,7 @@ public class UserAccount {
     public UserAccount() {
         workQueue = new OrderQueue();
     }
-    
-    
-    
+        
     public String getUsername() {
         return username;
     }

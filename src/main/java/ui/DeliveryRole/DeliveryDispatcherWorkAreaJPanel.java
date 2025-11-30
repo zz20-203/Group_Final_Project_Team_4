@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.delivery;
+package ui.DeliveryRole;
 
 import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
 import Business.Enterprise.DeliveryDepartment.RiderDirectory;

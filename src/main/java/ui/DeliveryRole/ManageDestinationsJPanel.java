@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.delivery;
+package ui.DeliveryRole;
 
 /**
  *
  * @author Luciela us Biktria
  */
-public class ManageRiderJPanel extends javax.swing.JPanel {
+public class ManageDestinationsJPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form ManageRiderJPanel
+     * Creates new form ManageDestinationsJPanel
      */
-    public ManageRiderJPanel() {
+    public ManageDestinationsJPanel() {
         initComponents();
     }
 

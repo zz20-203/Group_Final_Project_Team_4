@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.delivery;
+package ui.DeliveryRole;
 
 import Business.Enterprise.DeliveryDepartment.Delivery;
 import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
@@ -89,6 +89,7 @@ public class ViewDeliveriesJPanel extends javax.swing.JPanel {
         tblOrders = new javax.swing.JTable();
         lblTitle = new javax.swing.JLabel();
 
+        setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -115,15 +116,7 @@ public class ViewDeliveriesJPanel extends javax.swing.JPanel {
             new String [] {
                 "Order ID", "Date Ordered", "Date Delivered", "Assigned Rider", "Destination", "Status"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jScrollPane1.setViewportView(tblOrders);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 117, 720, 370));

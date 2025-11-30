@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.delivery;
+package ui.DeliveryRole;
 
 import Business.Enterprise.DeliveryDepartment.Delivery;
 import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
@@ -130,6 +130,7 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
         chkRiderRegion10 = new javax.swing.JCheckBox();
         btnBack = new javax.swing.JButton();
 
+        setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
