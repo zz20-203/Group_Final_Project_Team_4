@@ -7,7 +7,6 @@ package ui.LogisticsRole;
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Organization.LogisticsOrganization;
-import Business.Organization.Organization;
 import Business.OrderQueue.OrderRequest;
 import Business.OrderQueue.SupplyOrderRequest;
 import Business.UserAccount.UserAccount;
@@ -17,11 +16,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private UserAccount account;
-    private LogisticsOrganization organization;
-    private Enterprise enterprise;
-    private EcoSystem business;
+    private final JPanel userProcessContainer;
+    private final UserAccount account;
+    private final LogisticsOrganization organization;
+    private final Enterprise enterprise;
+    private final EcoSystem business;
 
     public LogisticsDispatcherWorkAreaJPanel(JPanel userProcessContainer,
                                              UserAccount account,

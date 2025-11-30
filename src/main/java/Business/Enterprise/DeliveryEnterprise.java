@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class DeliveryEnterprise extends Enterprise {
     /**
     * This is the delivery company and their deliveryboys/girls.
+     * @param name
     */
     public DeliveryEnterprise(String name){
         super(name, Enterprise.EnterpriseType.Delivery);

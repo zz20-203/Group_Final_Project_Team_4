@@ -4,7 +4,6 @@
  */
 package ui.FrontDeskRole;
 
-import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Organization.CafeOperationOrganization;
 import Business.UserAccount.UserAccount;
@@ -18,14 +17,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author raunak
  */
-public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
+public final class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private CafeOperationOrganization organization;
-    private Enterprise enterprise;
-    private UserAccount userAccount;
+    private final JPanel userProcessContainer;
+    private final CafeOperationOrganization organization;
+    private final Enterprise enterprise;
+    private final UserAccount userAccount;
     /**
      * Creates new form DoctorWorkAreaJPanel
+     * @param userProcessContainer
+     * @param organization
+     * @param account
+     * @param enterprise
      */
     public FrontDeskWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, CafeOperationOrganization organization, Enterprise enterprise) {
         initComponents();
