@@ -167,6 +167,16 @@ public class WarehouseKeeperWorkAreaJPanel extends javax.swing.JPanel {
 
         SupplyOrderRequest sReq = (SupplyOrderRequest) tblSupplyRequests.getValueAt(selectedRow, 0);
 
+        // ➜ Only allow sending when status is "Prepared in Warehouse"
+        if (!"Prepared in Warehouse".equals(sReq.getStatus())) {
+            JOptionPane.showMessageDialog(
+                this,
+                "You can send this order to Logistics only after it is marked\n" +
+                "\"Prepared in Warehouse\"."
+            );
+            return;
+        }
+
         // find LogisticsOrganization inside the same enterprise
         LogisticsOrganization logisticsOrg = null;
         for (Organization org : enterprise.getOrganizationDirectory().getOrganizationList()) {
