@@ -194,10 +194,10 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
         sReq.setStatus("Delivered to Store");
 
         // back into store manager’s queue so they see final status
-        if (sReq.getSender() != null &&
-            !sReq.getSender().getWorkQueue().getWorkRequestList().contains(sReq)) {
-            sReq.getSender().getWorkQueue().getWorkRequestList().add(sReq);
-        }
+//        if (sReq.getSender() != null &&
+//            !sReq.getSender().getWorkQueue().getWorkRequestList().contains(sReq)) {
+//            sReq.getSender().getWorkQueue().getWorkRequestList().add(sReq);
+//        }
 
         JOptionPane.showMessageDialog(this, "Order marked as delivered.");
         populateTable();
@@ -224,7 +224,7 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
             if (req instanceof SupplyOrderRequest) {
                 SupplyOrderRequest sReq = (SupplyOrderRequest) req;
 
-                Object[] row = new Object[6];
+                Object[] row = new Object[7];
                 row[0] = sReq;
                 row[1] = sReq.getStoreName();
                 row[2] = sReq.getItemName();
