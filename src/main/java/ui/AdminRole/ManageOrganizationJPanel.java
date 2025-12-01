@@ -18,12 +18,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ManageOrganizationJPanel extends javax.swing.JPanel {
 
-    private OrganizationDirectory directory;
-    private JPanel userProcessContainer;
-    private Enterprise enterprise;
+    private final OrganizationDirectory directory;
+    private final JPanel userProcessContainer;
+    private final Enterprise enterprise;
     
     /**
      * Creates new form ManageOrganizationJPanel
+     * @param userProcessContainer
+     * @param directory
+     * @param enterprise
      */
     public ManageOrganizationJPanel(JPanel userProcessContainer,OrganizationDirectory directory, Enterprise enterprise) {
         initComponents();

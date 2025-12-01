@@ -2,13 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.delivery;
+package ui.DeliveryRole;
 
-import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
-import Business.Enterprise.DeliveryDepartment.RiderDirectory;
-import Business.OrderQueue.OrderQueue;
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Organization.DeliveryDispatcherOrganization;
+import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
+import ui.delivery.ViewDeliveriesJPanel;
 
 /**
  *
@@ -16,20 +18,27 @@ import javax.swing.JPanel;
  */
 public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private OrderQueue orderQueue;
-    private DeliveryDirectory deliveryDirectory;
-    private RiderDirectory riderDirectory;
+    private final JPanel userProcessContainer;
+    private final DeliveryDispatcherOrganization organization;
+    private final Enterprise enterprise;
+    private final UserAccount userAccount;
+    private final EcoSystem system;
 
     /**
      * Creates new form DeliveryDispatcherWorkArea
+     * @param userProcessContainer
+     * @param enterprise
+     * @param organization
+     * @param account
+     * @param business
      */
-    public DeliveryDispatcherWorkAreaJPanel(JPanel userProcessContainer, OrderQueue orderQueue, DeliveryDirectory deliveryDirectory, RiderDirectory riderDirectory) {
+    public DeliveryDispatcherWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, DeliveryDispatcherOrganization organization, Enterprise enterprise, EcoSystem business) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
-        this.orderQueue = orderQueue;
-        this.deliveryDirectory = deliveryDirectory;
-        this.riderDirectory = riderDirectory;
+        this.userAccount = account;
+        this.organization = organization;
+        this.enterprise = enterprise;
+        this.system = business;
     }
 
     /**
@@ -46,7 +55,6 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
         btnManageDestinations = new javax.swing.JButton();
         btnManageRiders = new javax.swing.JButton();
 
-        setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -80,18 +88,29 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageDeliveriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageDeliveriesActionPerformed
-        ViewDeliveriesJPanel panel = new ViewDeliveriesJPanel(userProcessContainer, orderQueue, riderDirectory, deliveryDirectory);
+        ViewDeliveriesJPanel panel = new ViewDeliveriesJPanel(userProcessContainer, system, organization.getRiderDirectory(), organization.getDeliveryDirectory());
         userProcessContainer.add("ViewDeliveriesJPanel", panel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
     }//GEN-LAST:event_btnManageDeliveriesActionPerformed
 
     private void btnManageDestinationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageDestinationsActionPerformed
-        // TODO add your handling code here:
+        ManageDestinationsJPanel panel = new ManageDestinationsJPanel(
+                userProcessContainer, 
+                system, 
+                organization.getDeliveryDirectory(), 
+                organization.getDestinationDirectory()
+        );
+        userProcessContainer.add("ManageDestinationsJPanel", panel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnManageDestinationsActionPerformed
 
     private void btnManageRidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageRidersActionPerformed
-        // TODO add your handling code here:
+        ManageRiderJPanel panel = new ManageRiderJPanel(userProcessContainer, organization);
+        userProcessContainer.add("ManageRiderJPanel", panel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnManageRidersActionPerformed
 
 

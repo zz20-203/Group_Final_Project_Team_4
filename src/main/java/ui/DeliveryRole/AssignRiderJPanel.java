@@ -2,40 +2,53 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.delivery;
+package ui.DeliveryRole;
 
+import Business.EcoSystem;
+import Business.Enterprise.CoffeeChainEnterprise;
 import Business.Enterprise.DeliveryDepartment.Delivery;
 import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
 import Business.Enterprise.DeliveryDepartment.Rider;
 import Business.Enterprise.DeliveryDepartment.RiderDirectory;
+import Business.Enterprise.Enterprise;
+import Business.Network.Network;
+import Business.Organization.CafeOperationOrganization;
+import Business.Organization.Organization;
 import Business.OrderQueue.CoffeeOrderRequest;
-import Business.OrderQueue.OrderQueue;
 import Business.OrderQueue.OrderRequest;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import ui.delivery.ViewDeliveriesJPanel;
 
 /**
  *
  * @author Luciela us Biktria
  */
-public class AssignRiderJPanel extends javax.swing.JPanel {
+public final class AssignRiderJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private RiderDirectory riderDirectory;
-    private OrderQueue orderQueue;
-    private DeliveryDirectory deliveryDirectory;
-    private JCheckBox[] regionCheckBoxes;
+    private final JPanel userProcessContainer;
+    private final RiderDirectory riderDirectory;
+    private final EcoSystem system;
+    private final DeliveryDirectory deliveryDirectory;
+    
+    private final JCheckBox[] regionCheckBoxes;
 
     /**
      * Creates new form AssignRiderJPanel
+     * @param userProcessContainer
+     * @param system
+     * @param riderDirectory
+     * @param orderToEdit
+     * @param deliveryDirectory
      */
-    public AssignRiderJPanel(JPanel userProcessContainer, OrderQueue orderQueue, RiderDirectory riderDirectory, DeliveryDirectory deliveryDirectory, CoffeeOrderRequest orderToEdit) {
+    public AssignRiderJPanel(JPanel userProcessContainer, EcoSystem system, RiderDirectory riderDirectory, DeliveryDirectory deliveryDirectory, CoffeeOrderRequest orderToEdit) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
-        this.orderQueue = orderQueue;
+        this.system = system;
         this.riderDirectory = riderDirectory;
         this.deliveryDirectory = deliveryDirectory;
         
@@ -47,25 +60,41 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
         
         populateComboBoxes();
         
-        // Handle logic for initial selection
         if (orderToEdit != null) {
-            // If an order was passed from the View screen, select it
             cbxOrderID.setSelectedItem(orderToEdit);
-            // Trigger the action explicitly to fill fields
             cbxOrderIDActionPerformed(null);
         } else if (cbxOrderID.getItemCount() > 0) {
-            // Default to first item if nothing passed
             cbxOrderID.setSelectedIndex(0);
             cbxOrderIDActionPerformed(null);
         }
+    }
+    
+    private ArrayList<CoffeeOrderRequest> getAllCoffeeOrders() {
+        ArrayList<CoffeeOrderRequest> list = new ArrayList<>();
+        for (Network n : system.getNetworkList()) {
+            for (Enterprise e : n.getEnterpriseDirectory().getEnterpriseList()) {
+                if (e instanceof CoffeeChainEnterprise) {
+                    for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
+                        if (org instanceof CafeOperationOrganization) {
+                            for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
+                                if (req instanceof CoffeeOrderRequest coffeeOrderRequest) {
+                                    list.add(coffeeOrderRequest);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return list;
     }
     
     public void populateComboBoxes() {
         cbxOrderID.removeAllItems();
         cbxRiderID.removeAllItems();
         
-        for (OrderRequest req : orderQueue.getWorkRequestList()) {
-            if (req instanceof CoffeeOrderRequest) {
+        for (CoffeeOrderRequest req : getAllCoffeeOrders()) {
+            if ("Delivery".equalsIgnoreCase(req.getOrderType())) {
                 cbxOrderID.addItem(req);
             }
         }
@@ -79,9 +108,8 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
         for (JCheckBox chk : regionCheckBoxes) {
             chk.setSelected(false);
         }
-        
         if (regions == null) return;
-        
+
         for (int regionNum : regions) {
             if (regionNum >= 1 && regionNum <= 10) {
                 regionCheckBoxes[regionNum - 1].setSelected(true);
@@ -146,6 +174,7 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
         add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 430, 210, -1));
 
         btnConfirm.setText("Confirm and Request Delivery");
+        btnConfirm.setEnabled(false); // Initially disabled until user clicks 'Assign Rider'
         btnConfirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmActionPerformed(evt);
@@ -263,56 +292,75 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        CoffeeOrderRequest selectedOrder = (CoffeeOrderRequest) cbxOrderID.getSelectedItem();
-        
-        if (selectedOrder == null) {
-            JOptionPane.showMessageDialog(this, "No order selected.");
-            return;
-        }
 
         if (btnEdit.getText().equals("Assign Delivery Rider")) {
-            cbxOrderID.setEnabled(false);
-            cbxRiderID.setEnabled(true);
-            btnEdit.setText("Save Rider Assignment");
-            
-        } else {
-            Rider selectedRider = (Rider) cbxRiderID.getSelectedItem();
-            
-            if (selectedRider == null) {
-                JOptionPane.showMessageDialog(this, "Please select a rider.");
+            CoffeeOrderRequest selectedOrder = (CoffeeOrderRequest) cbxOrderID.getSelectedItem();
+            if (selectedOrder == null) {
+                JOptionPane.showMessageDialog(this, "No order selected.");
+                return;
+            }
+            if (selectedOrder.getDestination() == null) {
+                JOptionPane.showMessageDialog(this, "Order has no valid destination. Please go to Manage Destinations first.");
                 return;
             }
             
-            try {
-                Delivery d = new Delivery(selectedOrder, selectedRider);
-                deliveryDirectory.addDelivery(d);
-                JOptionPane.showMessageDialog(this, "Rider assigned successfully!");
-                
-                cbxOrderID.setEnabled(true);
-                cbxRiderID.setEnabled(false);
-                btnEdit.setText("Assign Delivery Rider");
-                
-            } catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Assignment Error", JOptionPane.ERROR_MESSAGE);
-            }
+            cbxOrderID.setEnabled(false);
+            cbxRiderID.setEnabled(true);
+            btnEdit.setText("Cancel Selection");
+            btnConfirm.setEnabled(true);
+            
+        } else {
+            cbxOrderID.setEnabled(true);
+            cbxRiderID.setEnabled(false);
+            btnEdit.setText("Assign Delivery Rider");
+            btnConfirm.setEnabled(false);
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        // TODO add your handling code here:
+        CoffeeOrderRequest selectedOrder = (CoffeeOrderRequest) cbxOrderID.getSelectedItem();
+        Rider selectedRider = (Rider) cbxRiderID.getSelectedItem();
+        
+        if (selectedOrder == null || selectedRider == null) {
+            JOptionPane.showMessageDialog(this, "Please select both an order and a rider.");
+            return;
+        }
+        
+        // CHECK: Order must be Ready before assigning
+        if (!"Ready".equalsIgnoreCase(selectedOrder.getStatus())) {
+            JOptionPane.showMessageDialog(this, "This order is not 'Ready' yet. Please wait for the cafe to prepare it.");
+            return;
+        }
+        
+        try {
+            Delivery d = new Delivery(selectedOrder, selectedRider);
+            deliveryDirectory.addDelivery(d);
+            
+            selectedOrder.setStatus("Assigned");
+            
+            JOptionPane.showMessageDialog(this, "Rider assigned successfully! Order status updated to 'Assigned'.");
+
+            cbxOrderID.setEnabled(true);
+            cbxRiderID.setEnabled(false);
+            btnEdit.setText("Assign Delivery Rider");
+            btnConfirm.setEnabled(false);
+            
+            cbxOrderIDActionPerformed(null);
+            
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Assignment Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         userProcessContainer.remove(this);
-        
-        // Refresh the previous panel's table if it is ViewDeliveriesJPanel
         Component[] componentArray = userProcessContainer.getComponents();
-        Component component = componentArray[componentArray.length - 1];
-        if (component instanceof ViewDeliveriesJPanel) {
-            ViewDeliveriesJPanel viewPanel = (ViewDeliveriesJPanel) component;
-            viewPanel.populateTable();
+        if (componentArray.length > 0) {
+            Component component = componentArray[componentArray.length - 1];
+            if (component instanceof ViewDeliveriesJPanel viewPanel) {
+                viewPanel.populateTable();
+            }
         }
-        
         CardLayout layout = (java.awt.CardLayout) userProcessContainer.getLayout();
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
@@ -340,7 +388,7 @@ public class AssignRiderJPanel extends javax.swing.JPanel {
                 txtOrderDestination.setText(order.getDestination().getAddress());
                 txtOrderRegion.setText(String.valueOf(order.getDestination().getRegion()));
             } else {
-                txtOrderDestination.setText("N/A");
+                txtOrderDestination.setText("N/A - Set in Manage Destinations");
                 txtOrderRegion.setText("N/A");
             }
             

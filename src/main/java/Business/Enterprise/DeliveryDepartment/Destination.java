@@ -4,6 +4,8 @@
  */
 package Business.Enterprise.DeliveryDepartment;
 
+import java.util.Objects;
+
 /**
  *
  * @author Luciela us Biktria
@@ -32,5 +34,23 @@ public class Destination {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+    
+    @Override
+    public String toString() {
+        return address;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Destination that = (Destination) obj;
+        return Objects.equals(address, that.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address);
     }
 }

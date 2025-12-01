@@ -17,13 +17,13 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Administrator
  */
-public class ManageUserAccountJPanel extends javax.swing.JPanel {
+public final class ManageUserAccountJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ManageUserAccountJPanel
      */
-    private JPanel container;
-    private Enterprise enterprise;
+    private final JPanel container;
+    private final Enterprise enterprise;
 
     public ManageUserAccountJPanel(JPanel container, Enterprise enterprise) {
         initComponents();

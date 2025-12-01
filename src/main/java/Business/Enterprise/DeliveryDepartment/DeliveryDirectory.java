@@ -12,10 +12,10 @@ import java.util.ArrayList;
  * @author Luciela us Biktria
  */
 public class DeliveryDirectory {
-    private ArrayList<Delivery> deliveries;
+    private final ArrayList<Delivery> deliveries;
     
     public DeliveryDirectory(){
-        deliveries = new ArrayList<Delivery>();
+        deliveries = new ArrayList<>();
     }
     
     public ArrayList<Delivery> getDeliveryList() {

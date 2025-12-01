@@ -10,7 +10,6 @@ import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
-import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -19,15 +18,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author raunak
  */
-public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
+public final class BaristaWorkAreaJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private EcoSystem business;
-    private UserAccount userAccount;
-    private CafeOperationOrganization cafeOpOrganization;
+    private final JPanel userProcessContainer;
+    private final EcoSystem business;
+    private final UserAccount userAccount;
+    private final CafeOperationOrganization cafeOpOrganization;
     
     /**
      * Creates new form LabAssistantWorkAreaJPanel
+     * @param userProcessContainer
+     * @param account
+     * @param organization
+     * @param business
      */
     public BaristaWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, EcoSystem business) {
         initComponents();
@@ -180,7 +183,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                      return;
                 }
         
-        request.setStatus("Completed");
+        request.setStatus("Ready");
         
         populateTable();
         JOptionPane.showMessageDialog(null, "Order Completed!");

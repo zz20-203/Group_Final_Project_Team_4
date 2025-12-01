@@ -23,9 +23,7 @@ public class UserAccount {
     public UserAccount() {
         workQueue = new OrderQueue();
     }
-    
-    
-    
+        
     public String getUsername() {
         return username;
     }
@@ -61,14 +59,11 @@ public class UserAccount {
     public OrderQueue getWorkQueue() {
         return workQueue;
     }
-
-    
-    
+	
+	
     @Override
     public String toString() {
         return username;
     }
-    
-    
-    
+	
 }

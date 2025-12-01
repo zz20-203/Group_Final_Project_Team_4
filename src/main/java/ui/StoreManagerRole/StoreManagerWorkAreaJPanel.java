@@ -8,9 +8,7 @@ import Business.EcoSystem;
 import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
-import java.awt.CardLayout;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import Business.Enterprise.Enterprise;
@@ -26,13 +24,17 @@ import javax.swing.JOptionPane;
  */
 public class StoreManagerWorkAreaJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private EcoSystem business;
-    private UserAccount userAccount;
-    private CafeManagementOrganization labOrganization;
+    private final JPanel userProcessContainer;
+    private final EcoSystem business;
+    private final UserAccount userAccount;
+    private final CafeManagementOrganization labOrganization;
     
     /**
      * Creates new form LabAssistantWorkAreaJPanel
+     * @param userProcessContainer
+     * @param business
+     * @param organization
+     * @param account
      */
     public StoreManagerWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, EcoSystem business) {
         initComponents();

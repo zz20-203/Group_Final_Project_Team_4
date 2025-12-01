@@ -9,19 +9,19 @@ package Business.Enterprise.DeliveryDepartment;
  * @author Luciela us Biktria
  */
 public class Rider {
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     
-    private int phoneNumber;
+    private long phoneNumber;
     
     private int[] regions;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -41,11 +41,11 @@ public class Rider {
         this.lastName = lastName;
     }
 
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -59,6 +59,6 @@ public class Rider {
     
     @Override
     public String toString(){
-        return Integer.toString(id);
+        return Long.toString(id);
     }
 }
