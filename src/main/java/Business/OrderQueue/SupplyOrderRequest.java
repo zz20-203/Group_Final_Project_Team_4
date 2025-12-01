@@ -17,6 +17,7 @@ public class SupplyOrderRequest extends OrderRequest {
     private String itemName;       // name of material / product
     private int quantity;          // requested quantity
     private String statusDetail;   // optional extra status text
+    private String trackingNumber;
 
     public SupplyOrderRequest() {
         super();
@@ -52,6 +53,14 @@ public class SupplyOrderRequest extends OrderRequest {
 
     public void setStatusDetail(String statusDetail) {
         this.statusDetail = statusDetail;
+    }
+    
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
     }
 
     @Override
