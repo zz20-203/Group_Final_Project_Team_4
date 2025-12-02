@@ -5,11 +5,12 @@
 package ui.BaristaRole;
 
 import Business.EcoSystem;
-import Business.Organization.CafeOperationOrganization;
+import Business.Organization.CustomerServiceOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
+import Business.Organization.BeverageProductionOrganization;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -23,7 +24,7 @@ public final class BaristaWorkAreaJPanel extends javax.swing.JPanel {
     private final JPanel userProcessContainer;
     private final EcoSystem business;
     private final UserAccount userAccount;
-    private final CafeOperationOrganization cafeOpOrganization;
+    private final BeverageProductionOrganization organization;
     
     /**
      * Creates new form LabAssistantWorkAreaJPanel
@@ -38,7 +39,7 @@ public final class BaristaWorkAreaJPanel extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.userAccount = account;
         this.business = business;
-        this.cafeOpOrganization = (CafeOperationOrganization)organization;
+        this.organization = (BeverageProductionOrganization) organization;
         
         populateTable(); 
     }
@@ -47,7 +48,9 @@ public final class BaristaWorkAreaJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel)workRequestJTable.getModel();
         model.setRowCount(0);
         
-        java.util.List<OrderRequest> list = cafeOpOrganization.getWorkQueue().getWorkRequestList();
+        java.util.List<OrderRequest> list = organization.getWorkQueue().getWorkRequestList();
+        
+        System.out.println("Barista Queue Size: " + list.size());
         
         for (int i = list.size() - 1; i >= 0; i--) {
             OrderRequest request = list.get(i);
@@ -117,7 +120,7 @@ public final class BaristaWorkAreaJPanel extends javax.swing.JPanel {
             workRequestJTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 850, 150));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 850, 270));
 
         assignJButton.setText("Assign Order to me");
         assignJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -125,7 +128,7 @@ public final class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                 assignJButtonActionPerformed(evt);
             }
         });
-        add(assignJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, -1, -1));
+        add(assignJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, -1, -1));
 
         orderFinishedJButton.setText("Order Finished");
         orderFinishedJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -133,7 +136,7 @@ public final class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                 orderFinishedJButtonActionPerformed(evt);
             }
         });
-        add(orderFinishedJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 250, -1, -1));
+        add(orderFinishedJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 370, -1, -1));
 
         refreshJButton.setText("Refresh");
         refreshJButton.addActionListener(new java.awt.event.ActionListener() {

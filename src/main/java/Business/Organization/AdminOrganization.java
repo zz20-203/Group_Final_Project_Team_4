@@ -12,9 +12,9 @@ import java.util.ArrayList;
  *
  * @author raunak
  */
-public class CafeAdminOrganization extends Organization{
+public class AdminOrganization extends Organization{
 
-    public CafeAdminOrganization() {
+    public AdminOrganization() {
         super(Type.CafeAdmin.getValue());
     }
     

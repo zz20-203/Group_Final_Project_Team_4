@@ -5,7 +5,6 @@ import Business.Enterprise.Enterprise;
 import Business.Enterprise.EnterpriseDirectory;
 import Business.Enterprise.CoffeeChainEnterprise;
 import Business.Network.Network;
-import Business.Organization.CafeOperationOrganization;
 import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.Organization.OrganizationDirectory;
@@ -21,12 +20,18 @@ import Business.Organization.LogisticsOrganization;
 import Business.Role.WarehouseKeeperRole;
 import Business.Role.LogisticsDispatcherRole;
 import Business.OrderQueue.SupplyOrderRequest;
+import Business.Organization.CustomerServiceOrganization;
+import Business.Organization.BeverageProductionOrganization;
+
 
 // Delivery Imports
 import Business.Enterprise.DeliveryEnterprise;
+import Business.OrderQueue.CoffeeOrderRequest;
 import Business.Organization.DeliveryDispatcherOrganization;
 import Business.Role.DeliveryDispatcherRole;
 import Business.Role.RiderRole;
+import com.github.javafaker.Faker;
+import java.util.Random;
 
 /**
  *
@@ -34,22 +39,24 @@ import Business.Role.RiderRole;
  */
 
 /*
- * TEST CREDENTIALS LIST    UN / PW
- * ===========================================
+ * Test Login (username / password):
  * System Admin:            sa / 1
  * 
- * -- CoffeeChain Enterprise --
+ * CoffeeChain Enterprise:
+
  * Enterprise Admin:        ca / 1
  * Front Desk:              fd / 1
  * Barista:                 b  / 1
  * Store Manager:           sm / 1
  * 
- * -- FoodSupply Enterprise --
+ * FoodSupply Enterprise:
+
  * Enterprise Admin:        fa / 1
  * Warehouse Keeper:        wh / 1
  * Logistics Dispatcher:    ld / 1
  * 
- * -- Delivery Enterprise --
+ * Delivery Enterprise:
+
  * Enterprise Admin:        da / 1
  * Delivery Dispatcher:     dd / 1
  * Rider:                   r  / 1
@@ -84,7 +91,8 @@ public class ConfigureASystem {
 
         // 3. In CoffeeChain Enterprise, create 2 CafeOp, CafeMgmt Organizations
         OrganizationDirectory cafeOrgDir = CoffeeChain.getOrganizationDirectory();
-        CafeOperationOrganization cafeOpOrg = (CafeOperationOrganization) cafeOrgDir.createOrganization(Organization.Type.CafeOperation);
+        CustomerServiceOrganization custServiceOrg = (CustomerServiceOrganization) cafeOrgDir.createOrganization(Organization.Type.CustomerService);
+        BeverageProductionOrganization bevProdOrg = (BeverageProductionOrganization) cafeOrgDir.createOrganization(Organization.Type.BeverageProduction);
         CafeManagementOrganization cafeMgmtOrg = (CafeManagementOrganization) cafeOrgDir.createOrganization(Organization.Type.CafeManagement);
                 
         //FoodSupply part:
@@ -123,14 +131,14 @@ public class ConfigureASystem {
         UserAccount cafeAdminUA = CoffeeChain.getUserAccountDirectory()
                 .createUserAccount("ca", "1", cafeAdminEmp, new AdminRole());
 
-        // c.Front Desk
-        Employee frontDeskEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Front Desk One");
-        UserAccount frontDeskUA = cafeOpOrg.getUserAccountDirectory()
+        // c. Front Desk 
+        Employee frontDeskEmp = custServiceOrg.getEmployeeDirectory().createEmployee("Front Desk One");
+        UserAccount frontDeskUA = custServiceOrg.getUserAccountDirectory()
                 .createUserAccount("fd", "1", frontDeskEmp, new FrontDeskRole());
 
-        // d. Barista
-        Employee baristaEmp = cafeOpOrg.getEmployeeDirectory().createEmployee("Barista One");
-        UserAccount baristaUA = cafeOpOrg.getUserAccountDirectory()
+        // d. Barista 
+        Employee baristaEmp = bevProdOrg.getEmployeeDirectory().createEmployee("Barista One");
+        UserAccount baristaUA = bevProdOrg.getUserAccountDirectory()
                 .createUserAccount("b", "1", baristaEmp, new BaristaRole());
 
         // e. Store Manager
@@ -167,7 +175,7 @@ public class ConfigureASystem {
         UserAccount deliveryAdminUA = deliveryEnterprise.getUserAccountDirectory()
                 .createUserAccount("da", "1", deliveryAdminEmp, new AdminRole());
         
-		// ** Test Rider **
+		//  Test Rider 
         // Create the Rider business object (ID: 101, Regions: 1,2,3)
         int[] testRiderRegions = {1, 2, 3};
         deliveryDispatchOrg.getRiderDirectory().createRider(101L, "Test", "Rider", 9876543210L, testRiderRegions);
@@ -194,7 +202,158 @@ public class ConfigureASystem {
         // Also track it in the Store Manager's personal queue
         storeManagerUA.getWorkQueue().getWorkRequestList().add(sOrder);
         
+        
+        // MANUAL TEST CASES (No Faker)
+        // =================================================================
+        
+        // 1. Manual DINE-IN Order
+        // -----------------------
+        CoffeeOrderRequest dineInOrder = new CoffeeOrderRequest();
+        dineInOrder.setMessage("Latte"); // Item name
+        dineInOrder.setOrderType("Dine-in");
+        dineInOrder.setDestination(); // Sets to default [In-Store]
+        dineInOrder.setStatus("Sent"); // Sent to Barista
+        dineInOrder.setSender(frontDeskUA);
+        
+        // Add to queues
+        bevProdOrg.getWorkQueue().getWorkRequestList().add(dineInOrder); // Barista sees this
+        frontDeskUA.getWorkQueue().getWorkRequestList().add(dineInOrder); // Front Desk history
+        
+        
+        // 2. Manual DELIVERY Order
+        // ------------------------
+        CoffeeOrderRequest deliveryOrder = new CoffeeOrderRequest();
+        deliveryOrder.setMessage("Americano"); // Item name
+        deliveryOrder.setOrderType("Delivery");
+        // Manually set a region (1) and address
+        deliveryOrder.setDestination(1, "123 Java Street, Object City"); 
+        
+        // IMPORTANT: Set status to "Ready" so you can test "Assign Rider" immediately
+        // If it is "Sent", Barista has to process it first.
+        deliveryOrder.setStatus("Ready"); 
+        
+        deliveryOrder.setSender(frontDeskUA);
+        
+        // Add to queues
+        bevProdOrg.getWorkQueue().getWorkRequestList().add(deliveryOrder);
+        frontDeskUA.getWorkQueue().getWorkRequestList().add(deliveryOrder);
+        
+        
+ 
+        
+   
+        
+        //faker:
+//        populateFakeData(custServiceOrg, bevProdOrg, warehouseOrg, deliveryDispatchOrg, storeManagerUA, frontDeskUA);
+        
         return system;
     }
     
+//    private static void populateFakeData(CustomerServiceOrganization custOrg, 
+//                                         BeverageProductionOrganization bevOrg,
+//                                         WarehouseOrganization wareOrg,
+//                                         DeliveryDispatcherOrganization deliveryOrg,
+//                                         UserAccount storeManagerUA,
+//                                         UserAccount frontDeskUA) {
+//        
+//        Faker faker = new Faker();
+//        Random rand = new Random();
+//        
+//        System.out.println("Starting Faker Data Generation...");
+//
+//        // 1. Generate Employees (Generic)
+//        for (int i = 0; i < 5; i++) {
+//            custOrg.getEmployeeDirectory().createEmployee(faker.name().fullName());
+//            bevOrg.getEmployeeDirectory().createEmployee(faker.name().fullName());
+//        }
+//        
+//        // 2. Generate Extra Riders (So 'Assign Rider' combo box is populated)
+//        for (int i = 0; i < 5; i++) {
+//            String fName = faker.name().firstName();
+//            String lName = faker.name().lastName();
+//            long id = 200 + i;
+//            // Fake regions [1, 5, 10] etc
+//            int[] regions = {rand.nextInt(10)+1, rand.nextInt(10)+1}; 
+//            deliveryOrg.getRiderDirectory().createRider(id, fName, lName, 9876543210L, regions);
+//            // Also add to UserAccount directory so they technically exist in system
+//            Employee emp = deliveryOrg.getEmployeeDirectory().createEmployee(fName + " " + lName);
+//            // No login needed for fake riders, but good for consistency
+//        }
+//
+//        // ====================================================================
+//        // PART A: Supply Orders (Store Manager -> Warehouse)
+//        // Options from: ui.StoreManagerRole.StoreManagerWorkAreaJPanel
+//        // ====================================================================
+//        String[] supplyItems = {
+//            "Coffee - Dark Roast", "Coffee - Medium Roast", "Coffee - Light Roast", 
+//            "Coffee - Espresso", "Coffee - Decaf", 
+//            "Cups - Small (12oz)", "Cups - Medium (16oz)", "Cups - Large (20oz)", 
+//            "Milk - Whole", "Milk - Skim", "Milk - Almond", "Milk - Oat", "Other"
+//        };
+//        
+//        String[] supplyStatuses = {"Completed", "Pending", "Approved", "Processing", "Sent to Warehouse"};
+//        
+//        for (int i = 0; i < 30; i++) {
+//            SupplyOrderRequest request = new SupplyOrderRequest();
+//            
+//            request.setItemName(supplyItems[rand.nextInt(supplyItems.length)]);            
+//            request.setStoreName("Store #" + faker.number().numberBetween(101, 109));
+//            request.setQuantity(faker.number().numberBetween(20, 200));
+//            request.setTrackingNumber(faker.code().ean8()); 
+//            
+//            request.setStatus(supplyStatuses[rand.nextInt(supplyStatuses.length)]);
+//            request.setSender(storeManagerUA);
+//            
+//            // Add to Queues
+//            wareOrg.getWorkQueue().getWorkRequestList().add(request); 
+//            storeManagerUA.getWorkQueue().getWorkRequestList().add(request); 
+//        }
+//
+//        // ====================================================================
+//        // PART B: Coffee Orders (Front Desk -> Barista)
+//        // Options from: ui.FrontDeskRole.OrderRequestJPanel
+//        // ====================================================================
+//        
+//        String[] coffeeMenu = { "Americano", "Latte", "Mocha", "Espresso" };
+//        String[] orderTypes = { "Dine-in", "Delivery" };
+//        String[] cafeStatuses = {"Sent", "Preparing", "Ready", "Served", "Delivered"};
+//        
+//        for (int i = 0; i < 40; i++) {
+//            CoffeeOrderRequest order = new CoffeeOrderRequest();
+//            
+//            // 1. Set Coffee Type
+//            String drink = coffeeMenu[rand.nextInt(coffeeMenu.length)];
+//            order.setMessage(drink); 
+//            
+//            // 2. Set Order Type (Dine-in or Delivery)
+//            String type = orderTypes[rand.nextInt(orderTypes.length)];
+//            order.setOrderType(type);
+//            
+//            // 3. Set Destination (Crucial for ViewDeliveriesJPanel)
+//            if ("Delivery".equals(type)) {
+//                // Generate a fake address and region (1-10)
+//                int region = rand.nextInt(10) + 1;
+//                String address = faker.address().streetAddress();
+//                order.setDestination(region, address);
+//                
+//                // Delivery orders usually start as "Sent" or "Ready" (waiting for rider)
+//                // If we want some to show up in "Assign Rider", keep them as "Ready"
+//                order.setStatus(rand.nextBoolean() ? "Ready" : "Sent");
+//            } else {
+//                // Dine-in
+//                order.setDestination(); // Sets to In-Store
+//                order.setStatus(cafeStatuses[rand.nextInt(cafeStatuses.length)]);
+//            }
+//            
+//            order.setSender(frontDeskUA);
+//            
+//            // 4. Add to Queues
+//            // Add to Barista/Production Queue
+//            bevOrg.getWorkQueue().getWorkRequestList().add(order);
+//            // Add to FrontDesk Personal Queue
+//            frontDeskUA.getWorkQueue().getWorkRequestList().add(order);
+//        }
+//        
+//        System.out.println("Professional Faker Data Generated Successfully!");
+//    }
 }
