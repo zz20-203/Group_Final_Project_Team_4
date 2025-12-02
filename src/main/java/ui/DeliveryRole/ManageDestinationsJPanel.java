@@ -12,7 +12,6 @@ import Business.Enterprise.DeliveryDepartment.Destination;
 import Business.Enterprise.DeliveryDepartment.DestinationDirectory;
 import Business.Enterprise.Enterprise;
 import Business.Network.Network;
-import Business.Organization.CustomerServiceOrganization;
 import Business.Organization.Organization;
 import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
@@ -24,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
+import Business.Organization.BeverageProductionOrganization;
 
 /**
  *
@@ -92,7 +92,7 @@ public class ManageDestinationsJPanel extends javax.swing.JPanel {
             for (Enterprise e : n.getEnterpriseDirectory().getEnterpriseList()) {
                 if (e instanceof CoffeeChainEnterprise) {
                     for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
-                        if (org instanceof CustomerServiceOrganization) {
+                        if (org instanceof BeverageProductionOrganization) {
                             for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
                                 if (req instanceof CoffeeOrderRequest) {
                                     list.add((CoffeeOrderRequest) req);

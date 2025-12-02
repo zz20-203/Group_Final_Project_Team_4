@@ -203,157 +203,199 @@ public class ConfigureASystem {
         storeManagerUA.getWorkQueue().getWorkRequestList().add(sOrder);
         
         
-        // MANUAL TEST CASES (No Faker)
-        // =================================================================
+        // test cases (not faker):
+
         
-        // 1. Manual DINE-IN Order
-        // -----------------------
+        // 1. dine in
         CoffeeOrderRequest dineInOrder = new CoffeeOrderRequest();
-        dineInOrder.setMessage("Latte"); // Item name
+        dineInOrder.setMessage("Latte"); 
         dineInOrder.setOrderType("Dine-in");
-        dineInOrder.setDestination(); // Sets to default [In-Store]
-        dineInOrder.setStatus("Sent"); // Sent to Barista
+        dineInOrder.setDestination(); 
+        dineInOrder.setStatus("Sent"); 
         dineInOrder.setSender(frontDeskUA);
         
-        // Add to queues
-        bevProdOrg.getWorkQueue().getWorkRequestList().add(dineInOrder); // Barista sees this
-        frontDeskUA.getWorkQueue().getWorkRequestList().add(dineInOrder); // Front Desk history
+        // add to queues
+        bevProdOrg.getWorkQueue().getWorkRequestList().add(dineInOrder); 
+        frontDeskUA.getWorkQueue().getWorkRequestList().add(dineInOrder); 
         
         
-        // 2. Manual DELIVERY Order
-        // ------------------------
+        // 2. delivery
         CoffeeOrderRequest deliveryOrder = new CoffeeOrderRequest();
-        deliveryOrder.setMessage("Americano"); // Item name
+        deliveryOrder.setMessage("Americano"); 
         deliveryOrder.setOrderType("Delivery");
-        // Manually set a region (1) and address
+       
         deliveryOrder.setDestination(1, "123 Java Street, Object City"); 
         
-        // IMPORTANT: Set status to "Ready" so you can test "Assign Rider" immediately
-        // If it is "Sent", Barista has to process it first.
         deliveryOrder.setStatus("Ready"); 
         
         deliveryOrder.setSender(frontDeskUA);
         
-        // Add to queues
+        // add to queues
         bevProdOrg.getWorkQueue().getWorkRequestList().add(deliveryOrder);
         frontDeskUA.getWorkQueue().getWorkRequestList().add(deliveryOrder);
         
+        
+        // 3. delivery - sent status
+        CoffeeOrderRequest deliveryOrderSent = new CoffeeOrderRequest();
+        deliveryOrderSent.setMessage("Mocha"); 
+        deliveryOrderSent.setOrderType("Delivery");
+        deliveryOrderSent.setDestination(2, "456 Code Lane, Region 2"); 
+        deliveryOrderSent.setStatus("Sent"); 
+        deliveryOrderSent.setSender(frontDeskUA);
+        
+        bevProdOrg.getWorkQueue().getWorkRequestList().add(deliveryOrderSent);
+        frontDeskUA.getWorkQueue().getWorkRequestList().add(deliveryOrderSent);
         
  
         
    
         
-        //faker:
-//        populateFakeData(custServiceOrg, bevProdOrg, warehouseOrg, deliveryDispatchOrg, storeManagerUA, frontDeskUA);
+    populateFakeData(custServiceOrg, bevProdOrg, warehouseOrg, logisticsOrg, deliveryDispatchOrg, 
+                         storeManagerUA, frontDeskUA, baristaUA, warehouseUA, logisticsUA);
         
         return system;
     }
     
-//    private static void populateFakeData(CustomerServiceOrganization custOrg, 
-//                                         BeverageProductionOrganization bevOrg,
-//                                         WarehouseOrganization wareOrg,
-//                                         DeliveryDispatcherOrganization deliveryOrg,
-//                                         UserAccount storeManagerUA,
-//                                         UserAccount frontDeskUA) {
-//        
-//        Faker faker = new Faker();
-//        Random rand = new Random();
-//        
-//        System.out.println("Starting Faker Data Generation...");
-//
-//        // 1. Generate Employees (Generic)
-//        for (int i = 0; i < 5; i++) {
-//            custOrg.getEmployeeDirectory().createEmployee(faker.name().fullName());
-//            bevOrg.getEmployeeDirectory().createEmployee(faker.name().fullName());
-//        }
-//        
-//        // 2. Generate Extra Riders (So 'Assign Rider' combo box is populated)
-//        for (int i = 0; i < 5; i++) {
-//            String fName = faker.name().firstName();
-//            String lName = faker.name().lastName();
-//            long id = 200 + i;
-//            // Fake regions [1, 5, 10] etc
-//            int[] regions = {rand.nextInt(10)+1, rand.nextInt(10)+1}; 
-//            deliveryOrg.getRiderDirectory().createRider(id, fName, lName, 9876543210L, regions);
-//            // Also add to UserAccount directory so they technically exist in system
-//            Employee emp = deliveryOrg.getEmployeeDirectory().createEmployee(fName + " " + lName);
-//            // No login needed for fake riders, but good for consistency
-//        }
-//
-//        // ====================================================================
-//        // PART A: Supply Orders (Store Manager -> Warehouse)
-//        // Options from: ui.StoreManagerRole.StoreManagerWorkAreaJPanel
-//        // ====================================================================
-//        String[] supplyItems = {
-//            "Coffee - Dark Roast", "Coffee - Medium Roast", "Coffee - Light Roast", 
-//            "Coffee - Espresso", "Coffee - Decaf", 
-//            "Cups - Small (12oz)", "Cups - Medium (16oz)", "Cups - Large (20oz)", 
-//            "Milk - Whole", "Milk - Skim", "Milk - Almond", "Milk - Oat", "Other"
-//        };
-//        
-//        String[] supplyStatuses = {"Completed", "Pending", "Approved", "Processing", "Sent to Warehouse"};
-//        
-//        for (int i = 0; i < 30; i++) {
-//            SupplyOrderRequest request = new SupplyOrderRequest();
-//            
-//            request.setItemName(supplyItems[rand.nextInt(supplyItems.length)]);            
-//            request.setStoreName("Store #" + faker.number().numberBetween(101, 109));
-//            request.setQuantity(faker.number().numberBetween(20, 200));
-//            request.setTrackingNumber(faker.code().ean8()); 
-//            
-//            request.setStatus(supplyStatuses[rand.nextInt(supplyStatuses.length)]);
-//            request.setSender(storeManagerUA);
-//            
-//            // Add to Queues
-//            wareOrg.getWorkQueue().getWorkRequestList().add(request); 
-//            storeManagerUA.getWorkQueue().getWorkRequestList().add(request); 
-//        }
-//
-//        // ====================================================================
-//        // PART B: Coffee Orders (Front Desk -> Barista)
-//        // Options from: ui.FrontDeskRole.OrderRequestJPanel
-//        // ====================================================================
-//        
-//        String[] coffeeMenu = { "Americano", "Latte", "Mocha", "Espresso" };
-//        String[] orderTypes = { "Dine-in", "Delivery" };
-//        String[] cafeStatuses = {"Sent", "Preparing", "Ready", "Served", "Delivered"};
-//        
-//        for (int i = 0; i < 40; i++) {
-//            CoffeeOrderRequest order = new CoffeeOrderRequest();
-//            
-//            // 1. Set Coffee Type
-//            String drink = coffeeMenu[rand.nextInt(coffeeMenu.length)];
-//            order.setMessage(drink); 
-//            
-//            // 2. Set Order Type (Dine-in or Delivery)
-//            String type = orderTypes[rand.nextInt(orderTypes.length)];
-//            order.setOrderType(type);
-//            
-//            // 3. Set Destination (Crucial for ViewDeliveriesJPanel)
-//            if ("Delivery".equals(type)) {
-//                // Generate a fake address and region (1-10)
-//                int region = rand.nextInt(10) + 1;
-//                String address = faker.address().streetAddress();
-//                order.setDestination(region, address);
-//                
-//                // Delivery orders usually start as "Sent" or "Ready" (waiting for rider)
-//                // If we want some to show up in "Assign Rider", keep them as "Ready"
-//                order.setStatus(rand.nextBoolean() ? "Ready" : "Sent");
-//            } else {
-//                // Dine-in
-//                order.setDestination(); // Sets to In-Store
-//                order.setStatus(cafeStatuses[rand.nextInt(cafeStatuses.length)]);
-//            }
-//            
-//            order.setSender(frontDeskUA);
-//            
-//            // 4. Add to Queues
-//            // Add to Barista/Production Queue
-//            bevOrg.getWorkQueue().getWorkRequestList().add(order);
-//            // Add to FrontDesk Personal Queue
-//            frontDeskUA.getWorkQueue().getWorkRequestList().add(order);
-//        }
-//        
-//        System.out.println("Professional Faker Data Generated Successfully!");
-//    }
+    private static void populateFakeData(CustomerServiceOrganization custOrg, 
+                                         BeverageProductionOrganization bevOrg,
+                                         WarehouseOrganization wareOrg,
+                                         LogisticsOrganization logOrg, 
+                                         DeliveryDispatcherOrganization deliveryOrg,
+                                         UserAccount storeManagerUA,
+                                         UserAccount frontDeskUA,
+                                         UserAccount baristaUA,
+                                         UserAccount warehouseUA, 
+                                         UserAccount logisticsUA) { 
+        
+        Faker faker = new Faker();
+        Random rand = new Random();
+
+        // 1. create employees 
+        for (int i = 0; i < 5; i++) {
+            custOrg.getEmployeeDirectory().createEmployee(faker.name().fullName());
+            bevOrg.getEmployeeDirectory().createEmployee(faker.name().fullName());
+        }
+        
+        // 2. create extra riders
+        for (int i = 0; i < 5; i++) {
+            String fName = faker.name().firstName();
+            String lName = faker.name().lastName();
+            long id = 200 + i;
+            int[] regions = {rand.nextInt(10)+1, rand.nextInt(10)+1}; 
+            deliveryOrg.getRiderDirectory().createRider(id, fName, lName, 9876543210L, regions);
+            deliveryOrg.getEmployeeDirectory().createEmployee(fName + " " + lName);
+        }
+
+
+        // A: supply orders 
+
+        String[] supplyItems = {
+            "Coffee - Dark Roast", "Coffee - Medium Roast", "Coffee - Light Roast", 
+            "Coffee - Espresso", "Coffee - Decaf", 
+            "Cups - Small (12oz)", "Cups - Medium (16oz)", "Cups - Large (20oz)", 
+            "Milk - Whole", "Milk - Skim", "Milk - Almond", "Milk - Oat", "Other"
+        };
+        
+        // 6 Defined Statuses
+        String[] supplyStatuses = {
+            "Sent to Warehouse",        //1.
+            "Prepared in Warehouse",    //2.receiver: wh
+            "Sent to Logistics",        //3.receiver: wh
+            "Out for Delivery",         //4.receiver: ld, has tracking
+            "Delivered to Store",       //5.receiver: ld, has tracking
+            "Received by Store"         //6.receiver: ld, has tracking
+        };
+        
+        for (int i = 0; i < 30; i++) {
+            SupplyOrderRequest request = new SupplyOrderRequest();
+            request.setItemName(supplyItems[rand.nextInt(supplyItems.length)]);            
+            request.setStoreName("Main Coffee Store");
+            request.setQuantity(faker.number().numberBetween(20, 200));
+            request.setSender(storeManagerUA); // sender always is store manager
+            
+            // Randomly select status 
+            int statusIndex = rand.nextInt(supplyStatuses.length);
+            String currentStatus = supplyStatuses[statusIndex];
+            request.setStatus(currentStatus);
+            
+            // based on status
+            if (statusIndex == 0) {
+                // 1. Sent to Warehouse / no receiver
+                wareOrg.getWorkQueue().getWorkRequestList().add(request);
+                
+            } else if (statusIndex == 1 || statusIndex == 2) {
+                // 2. Prepared in Warehouse; 3. Sent to Logistics
+                // receiver: wh
+                request.setReceiver(warehouseUA);
+                
+                if (statusIndex == 2) {
+                    logOrg.getWorkQueue().getWorkRequestList().add(request);
+                }
+                wareOrg.getWorkQueue().getWorkRequestList().add(request);
+                
+            } else {
+                // 4. Out for Delivery, 5. Delivered to Store, 6. Received by Store
+                // receiver: ld, has tracking
+                request.setReceiver(logisticsUA);
+                request.setTrackingNumber(faker.code().ean8());
+                
+                logOrg.getWorkQueue().getWorkRequestList().add(request);
+                wareOrg.getWorkQueue().getWorkRequestList().add(request);
+            }
+            
+            storeManagerUA.getWorkQueue().getWorkRequestList().add(request);
+        }
+
+
+        // B: coffee orders 
+        String[] coffeeMenu = { "Americano", "Latte", "Mocha", "Espresso" };
+        String[] orderTypes = { "Dine-in", "Delivery" };
+        
+        for (int i = 0; i < 40; i++) {
+            CoffeeOrderRequest order = new CoffeeOrderRequest();
+            
+            String drink = coffeeMenu[rand.nextInt(coffeeMenu.length)];
+            order.setMessage(drink); 
+            
+            String type = orderTypes[rand.nextInt(orderTypes.length)];
+            order.setOrderType(type);
+            
+            if ("Delivery".equals(type)) {
+                int region = rand.nextInt(10) + 1;
+                String address = faker.address().streetAddress();
+                order.setDestination(region, address);
+            } else {
+                order.setDestination(); 
+            }
+            
+            order.setSender(frontDeskUA);
+            
+            // status: Sent, Pending, Ready
+            int statusRoll = rand.nextInt(3);
+            
+            if (statusRoll == 0) {
+                // 1. Sent (receiver: waiting)
+                order.setStatus("Sent");
+                order.setReceiver(null); 
+                
+            } else if (statusRoll == 1) {
+                // 2. Pending (receiver: barista)
+                order.setStatus("Pending");
+                order.setReceiver(baristaUA); 
+                
+            } else {
+                // 3. Ready (receiver: barista)
+                order.setStatus("Ready");
+                order.setReceiver(baristaUA);
+            }
+            
+            bevOrg.getWorkQueue().getWorkRequestList().add(order);
+            frontDeskUA.getWorkQueue().getWorkRequestList().add(order);
+            
+            if (order.getReceiver() != null) {
+                baristaUA.getWorkQueue().getWorkRequestList().add(order);
+            }
+        }
+        
+    }
 }

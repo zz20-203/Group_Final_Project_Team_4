@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import ui.delivery.ViewDeliveriesJPanel;
+import ui.DeliveryRole.ViewDeliveriesJPanel;
+import Business.Organization.BeverageProductionOrganization;
 
 /**
  *
@@ -75,7 +76,7 @@ public final class AssignRiderJPanel extends javax.swing.JPanel {
             for (Enterprise e : n.getEnterpriseDirectory().getEnterpriseList()) {
                 if (e instanceof CoffeeChainEnterprise) {
                     for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
-                        if (org instanceof CustomerServiceOrganization) {
+                        if (org instanceof BeverageProductionOrganization) {
                             for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
                                 if (req instanceof CoffeeOrderRequest coffeeOrderRequest) {
                                     list.add(coffeeOrderRequest);
