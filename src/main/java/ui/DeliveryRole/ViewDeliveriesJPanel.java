@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.delivery;
+package ui.DeliveryRole;
 
 import Business.EcoSystem;
 import Business.Enterprise.CoffeeChainEnterprise;
@@ -11,7 +11,6 @@ import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
 import Business.Enterprise.DeliveryDepartment.RiderDirectory;
 import Business.Enterprise.Enterprise;
 import Business.Network.Network;
-import Business.Organization.CustomerServiceOrganization;
 import Business.Organization.Organization;
 import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
@@ -21,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import ui.DeliveryRole.AssignRiderJPanel;
+import Business.Organization.BeverageProductionOrganization;
 
 /**
  *
@@ -57,7 +57,7 @@ public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
             for (Enterprise e : n.getEnterpriseDirectory().getEnterpriseList()) {
                 if (e instanceof CoffeeChainEnterprise) {
                     for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
-                        if (org instanceof CustomerServiceOrganization) {
+                        if (org instanceof BeverageProductionOrganization) {
                             for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
                                 if (req instanceof CoffeeOrderRequest) {
                                     list.add((CoffeeOrderRequest) req);

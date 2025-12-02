@@ -10,7 +10,7 @@ import Business.Organization.DeliveryDispatcherOrganization;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
-import ui.delivery.ViewDeliveriesJPanel;
+import ui.DeliveryRole.ViewDeliveriesJPanel;
 
 /**
  *
