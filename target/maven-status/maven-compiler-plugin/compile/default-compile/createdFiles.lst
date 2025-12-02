@@ -4,11 +4,11 @@ ui/AdminRole/ManageUserAccountJPanel.class
 ui/RiderRole/ReportDeliveryJPanel$4.class
 ui/delivery/ViewDeliveriesJPanel$3.class
 ui/DeliveryRole/ManageDestinationsJPanel$1.class
+Business/Organization/CustomerServiceOrganization.class
 ui/DeliveryRole/AssignRiderJPanel$5.class
 Business/Role/Role$RoleType.class
 ui/FrontDeskRole/FrontDeskWorkAreaJPanel$2.class
 ui/AdminRole/ManageOrganizationJPanel$1.class
-Business/Organization/CafeOperationOrganization.class
 ui/WarehouseRole/WarehouseKeeperWorkAreaJPanel$2.class
 ui/BaristaRole/BaristaWorkAreaJPanel.class
 ui/MainJFrame.class
@@ -20,7 +20,6 @@ Business/OrderQueue/CoffeeOrderRequest.class
 Business/Enterprise/DeliveryDepartment/DeliveryDirectory.class
 ui/LogisticsRole/LogisticsDispatcherWorkAreaJPanel$2.class
 Business/Organization/LogisticsOrganization.class
-Business/Organization/CafeAdminOrganization.class
 ui/DeliveryRole/ManageRiderJPanel$1.class
 ui/BaristaRole/BaristaWorkAreaJPanel$1.class
 ui/BaristaRole/BaristaWorkAreaJPanel$4.class
@@ -139,6 +138,7 @@ ui/SystemAdminWorkArea/ManageNetworkJPanel$1.class
 ui/DeliveryRole/AssignRiderJPanel.class
 ui/LogisticsRole/LogisticsDispatcherWorkAreaJPanel$4.class
 ui/AdminRole/ManageOrganizationJPanel$2.class
+Business/Organization/BeverageProductionOrganization.class
 Business/Enterprise/DeliveryDepartment/Rider.class
 ui/AdminRole/AdminWorkAreaJPanel$2.class
 ui/AdminRole/AdminWorkAreaJPanel.class
@@ -155,6 +155,7 @@ ui/SystemAdminWorkArea/ManageEnterpriseAdminJPanel.class
 ui/RiderRole/ManageAccountJPanel$4.class
 Business/Organization/DeliveryDispatcherOrganization.class
 ui/SystemAdminWorkArea/ManageEnterpriseAdminJPanel$1.class
+Business/Organization/AdminOrganization.class
 Business/UserAccount/UserAccount.class
 Business/Role/BaristaRole.class
 Business/Organization/Organization.class

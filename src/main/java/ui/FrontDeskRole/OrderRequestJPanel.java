@@ -116,7 +116,7 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
         
         Organization org = null;
         for (Organization organization : enterprise.getOrganizationDirectory().getOrganizationList()){
-            if (organization instanceof Business.Organization.CafeOperationOrganization){
+            if (organization instanceof Business.Organization.CustomerServiceOrganization){
                 org = organization;
                 break;
             }

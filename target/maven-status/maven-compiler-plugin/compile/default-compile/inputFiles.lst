@@ -21,9 +21,10 @@
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/OrderQueue/OrderRequest.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/OrderQueue/RestockWorkRequest.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/OrderQueue/SupplyOrderRequest.java
-/Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Organization/CafeAdminOrganization.java
+/Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Organization/AdminOrganization.java
+/Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Organization/BeverageProductionOrganization.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Organization/CafeManagementOrganization.java
-/Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Organization/CafeOperationOrganization.java
+/Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Organization/CustomerServiceOrganization.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Organization/DeliveryDispatcherOrganization.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Organization/LogisticsOrganization.java
 /Users/madison/Documents/GitHub/Group_Final_Project_Team_4/src/main/java/Business/Organization/Organization.java

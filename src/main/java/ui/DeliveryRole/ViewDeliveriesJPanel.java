@@ -11,7 +11,7 @@ import Business.Enterprise.DeliveryDepartment.DeliveryDirectory;
 import Business.Enterprise.DeliveryDepartment.RiderDirectory;
 import Business.Enterprise.Enterprise;
 import Business.Network.Network;
-import Business.Organization.CafeOperationOrganization;
+import Business.Organization.CustomerServiceOrganization;
 import Business.Organization.Organization;
 import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
@@ -57,7 +57,7 @@ public final class ViewDeliveriesJPanel extends javax.swing.JPanel {
             for (Enterprise e : n.getEnterpriseDirectory().getEnterpriseList()) {
                 if (e instanceof CoffeeChainEnterprise) {
                     for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
-                        if (org instanceof CafeOperationOrganization) {
+                        if (org instanceof CustomerServiceOrganization) {
                             for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
                                 if (req instanceof CoffeeOrderRequest) {
                                     list.add((CoffeeOrderRequest) req);
