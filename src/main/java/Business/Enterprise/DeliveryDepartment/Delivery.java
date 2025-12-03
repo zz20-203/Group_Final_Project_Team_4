@@ -16,8 +16,8 @@ public class Delivery {
     CoffeeOrderRequest order;
     Destination destination;
     
-    int dateTimeSent;
-    int dateTimeArrived;
+    long dateTimeSent;
+    long dateTimeArrived;
     
     public Delivery(CoffeeOrderRequest o, Rider r) {
         order = o;
@@ -28,8 +28,8 @@ public class Delivery {
             throw new IllegalArgumentException("This destination is In-Store and cannot be delivered to.");
         }
         
-        if (IntStream.of(rider.getRegions()).anyMatch(x -> x == destination.getRegion())){
-            throw new IllegalArgumentException("This rider does not currently perform deliveries to the region of this delivery.");
+        if (!IntStream.of(rider.getRegions()).anyMatch(x -> x == destination.getRegion())){
+             throw new IllegalArgumentException("This rider does not currently perform deliveries to the region (" + destination.getRegion() + ") of this delivery.");
         }
     }
 
@@ -45,19 +45,19 @@ public class Delivery {
         return destination;
     }
 
-    public int getDateTimeSent() {
+    public long getDateTimeSent() {
         return dateTimeSent;
     }
 
-    public void setDateTimeSent(int dateTimeSent) {
+    public void setDateTimeSent(long dateTimeSent) {
         this.dateTimeSent = dateTimeSent;
     }
 
-    public int getDateTimeArrived() {
+    public long getDateTimeArrived() {
         return dateTimeArrived;
     }
 
-    public void setDateTimeArrived(int dateTimeArrived) {
+    public void setDateTimeArrived(long dateTimeArrived) {
         this.dateTimeArrived = dateTimeArrived;
     }
 }

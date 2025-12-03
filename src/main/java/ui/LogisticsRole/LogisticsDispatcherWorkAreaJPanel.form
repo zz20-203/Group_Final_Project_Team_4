@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -20,9 +20,15 @@
               <EmptySpace pref="53" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnRefresh" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
-                  <Component id="btnOutForDelivery" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
-                  <Component id="btnDelivered" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="896" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="txtTrackingField" max="32767" attributes="0"/>
+                          <Component id="btnDelivered" alignment="1" pref="190" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnOutForDelivery" min="-2" pref="190" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace pref="51" max="32767" attributes="0"/>
           </Group>
@@ -43,7 +49,10 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnRefresh" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="btnOutForDelivery" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnOutForDelivery" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtTrackingField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="btnDelivered" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="102" max="32767" attributes="0"/>
@@ -75,7 +84,7 @@
               </Border>
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="6" rowCount="6">
+              <Table columnCount="7" rowCount="6">
                 <Column editable="false" title="Order" type="java.lang.Object">
                   <Data value=""/>
                   <Data value=""/>
@@ -96,11 +105,17 @@
                 <Column editable="false" title="Quantity" type="java.lang.Object"/>
                 <Column editable="false" title="Sender" type="java.lang.Object"/>
                 <Column editable="false" title="Status" type="java.lang.Object"/>
+                <Column editable="false" title="Tracking No." type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="150" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -162,6 +177,8 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeliveredActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtTrackingField">
     </Component>
   </SubComponents>
 </Form>

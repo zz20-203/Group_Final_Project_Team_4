@@ -7,7 +7,6 @@ package ui.LogisticsRole;
 import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
 import Business.Organization.LogisticsOrganization;
-import Business.Organization.Organization;
 import Business.OrderQueue.OrderRequest;
 import Business.OrderQueue.SupplyOrderRequest;
 import Business.UserAccount.UserAccount;
@@ -17,11 +16,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private UserAccount account;
-    private LogisticsOrganization organization;
-    private Enterprise enterprise;
-    private EcoSystem business;
+    private final JPanel userProcessContainer;
+    private final UserAccount account;
+    private final LogisticsOrganization organization;
+    private final Enterprise enterprise;
+    private final EcoSystem business;
 
     public LogisticsDispatcherWorkAreaJPanel(JPanel userProcessContainer,
                                              UserAccount account,
@@ -49,6 +48,7 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
         btnRefresh = new javax.swing.JButton();
         btnOutForDelivery = new javax.swing.JButton();
         btnDelivered = new javax.swing.JButton();
+        txtTrackingField = new javax.swing.JTextField();
 
         lblTitle.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         lblTitle.setText("Logictics Dispatcher Work Area");
@@ -56,19 +56,19 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
         tblLogisticsRequests.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tblLogisticsRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null}
+                {"", "", null, null, null, null, null},
+                {"", "", null, null, null, null, null},
+                {"", "", null, null, null, null, null},
+                {"", "", null, null, null, null, null},
+                {"", "", null, null, null, null, null},
+                {"", "", null, null, null, null, null}
             },
             new String [] {
-                "Order", "Store", "Item", "Quantity", "Sender", "Status"
+                "Order", "Store", "Item", "Quantity", "Sender", "Status", "Tracking No."
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -109,9 +109,13 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
                 .addContainerGap(53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOutForDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelivered, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 896, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 896, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtTrackingField)
+                            .addComponent(btnDelivered, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnOutForDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(51, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -128,7 +132,9 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(btnRefresh)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnOutForDelivery)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOutForDelivery)
+                    .addComponent(txtTrackingField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnDelivered)
                 .addContainerGap(102, Short.MAX_VALUE))
@@ -148,10 +154,28 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
             return;
         }
 
+        // read tracking number from the text field
+        String tracking = txtTrackingField.getText().trim();
+        if (tracking.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Please enter a tracking number before marking the order 'For Delivery'.");
+            return;
+        }
+
         SupplyOrderRequest sReq = (SupplyOrderRequest) tblLogisticsRequests.getValueAt(selectedRow, 0);
 
+        // optional: only allow if it came from Warehouse
+        if (!"Sent to Logistics".equals(sReq.getStatus())) {
+            JOptionPane.showMessageDialog(this,
+                "Order must have status 'Sent to Logistics' before it can be marked 'For Delivery'.");
+            return;
+        }
+
+        sReq.setTrackingNumber(tracking);
         sReq.setStatus("Out for Delivery");
-        sReq.setReceiver(account); 
+        sReq.setReceiver(account);   // logistics dispatcher
+
+        txtTrackingField.setText("");  
 
         populateTable();
 
@@ -170,10 +194,10 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
         sReq.setStatus("Delivered to Store");
 
         // back into store manager’s queue so they see final status
-        if (sReq.getSender() != null &&
-            !sReq.getSender().getWorkQueue().getWorkRequestList().contains(sReq)) {
-            sReq.getSender().getWorkQueue().getWorkRequestList().add(sReq);
-        }
+//        if (sReq.getSender() != null &&
+//            !sReq.getSender().getWorkQueue().getWorkRequestList().contains(sReq)) {
+//            sReq.getSender().getWorkQueue().getWorkRequestList().add(sReq);
+//        }
 
         JOptionPane.showMessageDialog(this, "Order marked as delivered.");
         populateTable();
@@ -188,6 +212,7 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JTable tblLogisticsRequests;
+    private javax.swing.JTextField txtTrackingField;
     // End of variables declaration//GEN-END:variables
 
     private void populateTable() {
@@ -199,13 +224,14 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
             if (req instanceof SupplyOrderRequest) {
                 SupplyOrderRequest sReq = (SupplyOrderRequest) req;
 
-                Object[] row = new Object[6];
+                Object[] row = new Object[7];
                 row[0] = sReq;
                 row[1] = sReq.getStoreName();
                 row[2] = sReq.getItemName();
                 row[3] = sReq.getQuantity();
                 row[4] = (sReq.getSender() == null) ? "" : sReq.getSender().getUsername();
                 row[5] = sReq.getStatus();
+                row[6] = sReq.getTrackingNumber(); 
 
                 model.addRow(row);
             }

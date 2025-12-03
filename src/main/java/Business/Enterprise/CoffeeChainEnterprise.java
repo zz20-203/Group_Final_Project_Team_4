@@ -25,7 +25,8 @@ public class CoffeeChainEnterprise extends Enterprise {
     @Override
     public ArrayList<Organization.Type> getSupportedOrganizationTypes() {
         ArrayList<Organization.Type> types = new ArrayList<>();
-        types.add(Organization.Type.CafeOperation);
+        types.add(Organization.Type.CustomerService);
+        types.add(Organization.Type.BeverageProduction);
         types.add(Organization.Type.CafeManagement);
         return types;
     }

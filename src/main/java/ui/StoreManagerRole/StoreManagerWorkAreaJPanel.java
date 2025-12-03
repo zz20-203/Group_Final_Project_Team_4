@@ -8,9 +8,7 @@ import Business.EcoSystem;
 import Business.Organization.CafeManagementOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
-import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
-import java.awt.CardLayout;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import Business.Enterprise.Enterprise;
@@ -26,13 +24,17 @@ import javax.swing.JOptionPane;
  */
 public class StoreManagerWorkAreaJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private EcoSystem business;
-    private UserAccount userAccount;
-    private CafeManagementOrganization labOrganization;
+    private final JPanel userProcessContainer;
+    private final EcoSystem business;
+    private final UserAccount userAccount;
+    private final CafeManagementOrganization labOrganization;
     
     /**
      * Creates new form LabAssistantWorkAreaJPanel
+     * @param userProcessContainer
+     * @param business
+     * @param organization
+     * @param account
      */
     public StoreManagerWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, EcoSystem business) {
         initComponents();
@@ -66,28 +68,25 @@ public class StoreManagerWorkAreaJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblSupplyOrders.getModel();
         model.setRowCount(0);
 
-        // Show all SupplyOrderRequests where this user is the sender
-        for (Network network : business.getNetworkList()) {
-            for (Enterprise enterprise : network.getEnterpriseDirectory().getEnterpriseList()) {
-                for (Organization org : enterprise.getOrganizationDirectory().getOrganizationList()) {
-                    for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
-                        if (req instanceof SupplyOrderRequest) {
-                            SupplyOrderRequest sReq = (SupplyOrderRequest) req;
 
-                            // Only show requests created by this Store Manager
-                            if (sReq.getSender() == userAccount) {
-                                Object[] row = new Object[5];
-                                row[0] = sReq.getItemName();
-                                row[1] = sReq.getQuantity();
-                                row[2] = sReq.getStatus();
-                                row[3] = sReq.getSender() == null ? "" : sReq.getSender().getUsername();
-                                row[4] = sReq.getReceiver() == null ? "" : sReq.getReceiver().getUsername();
+        for (OrderRequest req : userAccount.getWorkQueue().getWorkRequestList()) {
+            
+            if (req instanceof SupplyOrderRequest) {
+                SupplyOrderRequest sReq = (SupplyOrderRequest) req;
 
-                                model.addRow(row);
-                            }
-                        }
-                    }
-                }
+                Object[] row = new Object[6];
+                row[0] = sReq; 
+                row[1] = sReq.getQuantity();
+                row[2] = sReq.getSender() == null ? "" : sReq.getSender().getUsername();
+                row[3] = sReq.getReceiver() == null ? "" : sReq.getReceiver().getUsername();
+                row[4] = sReq.getTrackingNumber() == null ? "N/A" : sReq.getTrackingNumber();
+                row[5] = sReq.getStatus();
+
+                model.addRow(row);
+                            
+                        
+                    
+                
             }
         }
     }
@@ -109,6 +108,8 @@ public class StoreManagerWorkAreaJPanel extends javax.swing.JPanel {
         tblSupplyOrders = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         cmbSupplyItem = new javax.swing.JComboBox<>();
+        btnConfirm = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -131,18 +132,25 @@ public class StoreManagerWorkAreaJPanel extends javax.swing.JPanel {
 
         tblSupplyOrders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Item", "Quantity", "Status", "Sender", "Receiver"
+                "Order", "Quantity", "Sender", "Receiver", "Tracking No.", "Status"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -157,6 +165,22 @@ public class StoreManagerWorkAreaJPanel extends javax.swing.JPanel {
 
         cmbSupplyItem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Coffee - Dark Roast", "Coffee - Medium Roast", "Coffee - Light Roast", "Coffee - Espresso", "Coffee - Decaf", "Cups - Small (12oz)", "Cups - Medium (16oz)", "Cups - Large (20oz)", "Milk - Whole", "Milk - Skim", "Milk - Almond", "Milk - Oat", "Other" }));
         add(cmbSupplyItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 170, -1));
+
+        btnConfirm.setText("Confirm - Received by Store");
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
+        add(btnConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 290, -1, -1));
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+        add(btnRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 80, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRequestSuppliesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestSuppliesActionPerformed
@@ -214,7 +238,42 @@ public class StoreManagerWorkAreaJPanel extends javax.swing.JPanel {
         populateSupplyOrdersTable();
     }//GEN-LAST:event_btnRequestSuppliesActionPerformed
 
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblSupplyOrders.getSelectedRow();
+        
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select an order to confirm.");
+            return;
+        }
+        
+        SupplyOrderRequest request = (SupplyOrderRequest) tblSupplyOrders.getValueAt(selectedRow, 0);
+
+        if ("Received by Store".equals(request.getStatus())) {
+            JOptionPane.showMessageDialog(this, "This order is already received.");
+            return;
+        }
+
+        if (!"Delivered to Store".equals(request.getStatus())) {
+             JOptionPane.showMessageDialog(this, "You can only confirm orders that have been delivered.\nCurrent Status: " + request.getStatus());
+             return;
+        }
+
+        request.setStatus("Received by Store");
+        
+        populateSupplyOrdersTable();
+        
+        JOptionPane.showMessageDialog(this, "Order received successfully!"); 
+    }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+        populateSupplyOrdersTable();
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConfirm;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnRequestSupplies;
     private javax.swing.JComboBox<String> cmbSupplyItem;
     private javax.swing.JLabel jLabel1;

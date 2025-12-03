@@ -5,12 +5,12 @@
 package ui.BaristaRole;
 
 import Business.EcoSystem;
-import Business.Organization.CafeOperationOrganization;
+import Business.Organization.CustomerServiceOrganization;
 import Business.Organization.Organization;
 import Business.UserAccount.UserAccount;
 import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
-import java.awt.CardLayout;
+import Business.Organization.BeverageProductionOrganization;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -19,15 +19,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author raunak
  */
-public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
+public final class BaristaWorkAreaJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private EcoSystem business;
-    private UserAccount userAccount;
-    private CafeOperationOrganization cafeOpOrganization;
+    private final JPanel userProcessContainer;
+    private final EcoSystem business;
+    private final UserAccount userAccount;
+    private final BeverageProductionOrganization organization;
     
     /**
      * Creates new form LabAssistantWorkAreaJPanel
+     * @param userProcessContainer
+     * @param account
+     * @param organization
+     * @param business
      */
     public BaristaWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, EcoSystem business) {
         initComponents();
@@ -35,7 +39,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.userAccount = account;
         this.business = business;
-        this.cafeOpOrganization = (CafeOperationOrganization)organization;
+        this.organization = (BeverageProductionOrganization) organization;
         
         populateTable(); 
     }
@@ -44,7 +48,9 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel)workRequestJTable.getModel();
         model.setRowCount(0);
         
-        java.util.List<OrderRequest> list = cafeOpOrganization.getWorkQueue().getWorkRequestList();
+        java.util.List<OrderRequest> list = organization.getWorkQueue().getWorkRequestList();
+        
+        System.out.println("Barista Queue Size: " + list.size());
         
         for (int i = list.size() - 1; i >= 0; i--) {
             OrderRequest request = list.get(i);
@@ -114,7 +120,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
             workRequestJTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 850, 150));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 850, 270));
 
         assignJButton.setText("Assign Order to me");
         assignJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -122,7 +128,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                 assignJButtonActionPerformed(evt);
             }
         });
-        add(assignJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, -1, -1));
+        add(assignJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, -1, -1));
 
         orderFinishedJButton.setText("Order Finished");
         orderFinishedJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -130,7 +136,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                 orderFinishedJButtonActionPerformed(evt);
             }
         });
-        add(orderFinishedJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 250, -1, -1));
+        add(orderFinishedJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 370, -1, -1));
 
         refreshJButton.setText("Refresh");
         refreshJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -180,7 +186,7 @@ public class BaristaWorkAreaJPanel extends javax.swing.JPanel {
                      return;
                 }
         
-        request.setStatus("Completed");
+        request.setStatus("Ready");
         
         populateTable();
         JOptionPane.showMessageDialog(null, "Order Completed!");

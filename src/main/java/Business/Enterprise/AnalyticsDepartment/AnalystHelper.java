@@ -34,6 +34,14 @@ public abstract class AnalystHelper {
     * 7. Delivery Percentage
     */
     
+    // Helper to Format Milliseconds to Minutes/Seconds ---
+    private static String formatDuration(double ms) {
+        long totalSeconds = (long) (ms / 1000);
+        long minutes = totalSeconds / 60;
+        long seconds = totalSeconds % 60;
+        return String.format("%dm %ds", minutes, seconds);
+    }
+    
     // --- 1. & 2. Rider Delivery Times ---
     
     /**
@@ -45,8 +53,7 @@ public abstract class AnalystHelper {
         for (Delivery d : directory.getDeliveryList()) {
             // Only consider completed deliveries
             if (d.getDateTimeArrived() > 0 && d.getDateTimeSent() > 0) {
-                // Calculate duration (using long logic to avoid calc overflow, though inputs are int)
-                long duration = (long)d.getDateTimeArrived() - (long)d.getDateTimeSent();
+                long duration = d.getDateTimeArrived() - d.getDateTimeSent();
                 // Sanity check for positive duration
                 if (duration > 0) {
                     riderDurations.computeIfAbsent(d.getRider(), k -> new ArrayList<>()).add(duration);
@@ -78,12 +85,11 @@ public abstract class AnalystHelper {
         int count = 0;
         for (Map.Entry<Rider, Double> entry : sorted) {
             if (count >= 5) break;
-            // Converting milliseconds (approx) to readable format if needed, assuming raw unit for now
-            sb.append(String.format("%d. %s %s - %.2f ms\n", 
+            sb.append(String.format("%d. %s %s - %s\n", 
                     (count + 1), 
                     entry.getKey().getFirstName(), 
                     entry.getKey().getLastName(), 
-                    entry.getValue()));
+                    formatDuration(entry.getValue())));
             count++;
         }
         return sb.toString();
@@ -103,13 +109,12 @@ public abstract class AnalystHelper {
         int count = 0;
         for (Map.Entry<Rider, Double> entry : sorted) {
             if (count >= 5) break;
-            sb.append(String.format("%d. %s %s - %.2f ms\n", 
+            sb.append(String.format("%d. %s %s - %s\n", 
                     (count + 1), 
                     entry.getKey().getFirstName(), 
                     entry.getKey().getLastName(), 
-                    entry.getValue()));
-            count++;
-        }
+                    formatDuration(entry.getValue())));
+            count++;        }
         return sb.toString();
     }
 

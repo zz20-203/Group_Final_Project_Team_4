@@ -4,9 +4,8 @@
  */
 package ui.FrontDeskRole;
 
-import Business.EcoSystem;
 import Business.Enterprise.Enterprise;
-import Business.Organization.CafeOperationOrganization;
+import Business.Organization.CustomerServiceOrganization;
 import Business.UserAccount.UserAccount;
 import Business.OrderQueue.CoffeeOrderRequest;
 import Business.OrderQueue.OrderRequest;
@@ -18,16 +17,20 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author raunak
  */
-public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
+public final class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
 
-    private JPanel userProcessContainer;
-    private CafeOperationOrganization organization;
-    private Enterprise enterprise;
-    private UserAccount userAccount;
+    private final JPanel userProcessContainer;
+    private final CustomerServiceOrganization organization;
+    private final Enterprise enterprise;
+    private final UserAccount userAccount;
     /**
      * Creates new form DoctorWorkAreaJPanel
+     * @param userProcessContainer
+     * @param organization
+     * @param account
+     * @param enterprise
      */
-    public FrontDeskWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, CafeOperationOrganization organization, Enterprise enterprise) {
+    public FrontDeskWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, CustomerServiceOrganization organization, Enterprise enterprise) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
@@ -141,13 +144,13 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(orderRequestJButton)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(enterpriseLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(valueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(enterpriseLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(valueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(orderRequestJButton)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
@@ -168,10 +171,10 @@ public class FrontDeskWorkAreaJPanel extends javax.swing.JPanel {
                     .addComponent(refreshTestJButton)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addComponent(orderRequestJButton)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -25,7 +25,8 @@ public abstract class Organization {
     
     public enum Type{
         CafeAdmin("Cafe Admin Organization"),
-        CafeOperation("Cafe Operation Organization"),//Brista
+        CustomerService("Customer Service Organization"), 
+        BeverageProduction("Beverage Production Organization"),
         CafeManagement("Cafe Management Organization"),
         
         Warehouse("Warehouse Organization"),

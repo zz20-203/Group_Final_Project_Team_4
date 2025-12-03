@@ -10,6 +10,7 @@ import Business.Organization.DeliveryDispatcherOrganization;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
+import ui.DeliveryRole.ViewDeliveriesJPanel;
 
 /**
  *
@@ -21,14 +22,15 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
     private final DeliveryDispatcherOrganization organization;
     private final Enterprise enterprise;
     private final UserAccount userAccount;
+    private final EcoSystem system;
 
     /**
      * Creates new form DeliveryDispatcherWorkArea
      * @param userProcessContainer
-     * @param account
-     * @param organization
-     * @param business
      * @param enterprise
+     * @param organization
+     * @param account
+     * @param business
      */
     public DeliveryDispatcherWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, DeliveryDispatcherOrganization organization, Enterprise enterprise, EcoSystem business) {
         initComponents();
@@ -36,6 +38,7 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
         this.userAccount = account;
         this.organization = organization;
         this.enterprise = enterprise;
+        this.system = business;
     }
 
     /**
@@ -85,7 +88,7 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageDeliveriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageDeliveriesActionPerformed
-        ViewDeliveriesJPanel panel = new ViewDeliveriesJPanel(userProcessContainer, organization.getWorkQueue(), organization.getRiderDirectory(), organization.getDeliveryDirectory());
+        ViewDeliveriesJPanel panel = new ViewDeliveriesJPanel(userProcessContainer, system, organization.getRiderDirectory(), organization.getDeliveryDirectory());
         userProcessContainer.add("ViewDeliveriesJPanel", panel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
@@ -94,7 +97,7 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
     private void btnManageDestinationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageDestinationsActionPerformed
         ManageDestinationsJPanel panel = new ManageDestinationsJPanel(
                 userProcessContainer, 
-                organization.getWorkQueue(), 
+                system, 
                 organization.getDeliveryDirectory(), 
                 organization.getDestinationDirectory()
         );
@@ -104,7 +107,6 @@ public class DeliveryDispatcherWorkAreaJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnManageDestinationsActionPerformed
 
     private void btnManageRidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageRidersActionPerformed
-        // Pass the entire organization so the panel can access EmployeeDirectory and UserAccountDirectory
         ManageRiderJPanel panel = new ManageRiderJPanel(userProcessContainer, organization);
         userProcessContainer.add("ManageRiderJPanel", panel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();

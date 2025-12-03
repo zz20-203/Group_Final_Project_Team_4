@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class DeliveryEnterprise extends Enterprise {
     /**
     * This is the delivery company and their deliveryboys/girls.
+     * @param name
     */
     public DeliveryEnterprise(String name){
         super(name, Enterprise.EnterpriseType.Delivery);
@@ -29,6 +30,7 @@ public class DeliveryEnterprise extends Enterprise {
     public ArrayList<Organization.Type> getSupportedOrganizationTypes() {
         ArrayList<Organization.Type> types = new ArrayList<>();
         types.add(Organization.Type.Dispatch);
+        types.add(Organization.Type.Analyst);
         return types;
     }
     
