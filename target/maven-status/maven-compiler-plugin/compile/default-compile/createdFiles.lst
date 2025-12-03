@@ -101,6 +101,7 @@ Business/ConfigureASystem.class
 Business/Enterprise/EnterpriseDirectory$1.class
 ui/AdminRole/ManageEmployeeJPanel.class
 Business/Organization/OrganizationDirectory$1.class
+ui/FrontDeskRole/OrderRequestJPanel$5.class
 Business/Enterprise/DeliveryDepartment/Delivery.class
 ui/SystemAdminWorkArea/ManageNetworkJPanel.class
 Business/Enterprise/Enterprise.class

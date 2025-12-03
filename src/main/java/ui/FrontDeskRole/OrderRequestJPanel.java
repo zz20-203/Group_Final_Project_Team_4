@@ -35,6 +35,7 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
         this.enterprise = enterprise;
         this.userAccount = account;
         valueLabel.setText(enterprise.getName());
+        deliveryAddressText.setEnabled(false);
     }
 
     /**
@@ -54,6 +55,8 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
         cmbOrder = new javax.swing.JComboBox<>();
         typeLabel = new javax.swing.JLabel();
         cmbOrder1 = new javax.swing.JComboBox<>();
+        typeLabel1 = new javax.swing.JLabel();
+        deliveryAddressText = new javax.swing.JTextField();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -63,10 +66,10 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
                 placeOrderJButtonActionPerformed(evt);
             }
         });
-        add(placeOrderJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, -1, -1));
+        add(placeOrderJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, -1, -1));
 
         CoffeeLabel.setText("Coffee:");
-        add(CoffeeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, -1, 40));
+        add(CoffeeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, -1, 40));
 
         backJButton.setText("<<Back");
         backJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -74,7 +77,7 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
                 backJButtonActionPerformed(evt);
             }
         });
-        add(backJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
+        add(backJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
 
         valueLabel.setText("<value>");
         add(valueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 130, 20));
@@ -89,10 +92,10 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
                 cmbOrderActionPerformed(evt);
             }
         });
-        add(cmbOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, -1, -1));
+        add(cmbOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, -1, -1));
 
         typeLabel.setText("Type:");
-        add(typeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, -1, 40));
+        add(typeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, -1, 40));
 
         cmbOrder1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dine-in", "Delivery" }));
         cmbOrder1.addActionListener(new java.awt.event.ActionListener() {
@@ -100,32 +103,70 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
                 cmbOrder1ActionPerformed(evt);
             }
         });
-        add(cmbOrder1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, -1, -1));
+        add(cmbOrder1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, -1, -1));
+
+        typeLabel1.setText("Delivery Address:");
+        add(typeLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, -1, 40));
+
+        deliveryAddressText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deliveryAddressTextActionPerformed(evt);
+            }
+        });
+        add(deliveryAddressText, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 200, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void placeOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placeOrderJButtonActionPerformed
         
-        String coffeeType = cmbOrder.getSelectedItem().toString();
+String coffeeType = cmbOrder.getSelectedItem().toString();
         String type = cmbOrder1.getSelectedItem().toString();
+        
+   
+        String address = "";
+        if ("Delivery".equals(type)) {
+            address = deliveryAddressText.getText();
+            if (address.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter a delivery address!");
+                return; 
+            }
+        }
         
         CoffeeOrderRequest request = new CoffeeOrderRequest();
         request.setMessage(coffeeType);
         request.setOrderType(type);
+        
+
+        if ("Delivery".equals(type)) {
+            request.setDestination(1, address); 
+        } else {
+
+            request.setDestination(); 
+        }
+
         request.setSender(userAccount);
         request.setStatus("Sent");
         
+
         Organization org = null;
         for (Organization organization : enterprise.getOrganizationDirectory().getOrganizationList()){
-            if (organization instanceof Business.Organization.CustomerServiceOrganization){
+
+            if (organization instanceof Business.Organization.BeverageProductionOrganization){
                 org = organization;
                 break;
             }
         }
+        
         if (org!=null){
             org.getWorkQueue().getWorkRequestList().add(request);
             userAccount.getWorkQueue().getWorkRequestList().add(request);
             
             JOptionPane.showMessageDialog(null, "Order Placed Successfully!");
+            
+
+            deliveryAddressText.setText("");
+        } else {
+             JOptionPane.showMessageDialog(null, "system error");
+        
         }
         
     }//GEN-LAST:event_placeOrderJButtonActionPerformed
@@ -148,16 +189,31 @@ public class OrderRequestJPanel extends javax.swing.JPanel {
 
     private void cmbOrder1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOrder1ActionPerformed
         // TODO add your handling code here:
+        String selectedType = cmbOrder1.getSelectedItem().toString();
+        
+        if ("Delivery".equals(selectedType)) {
+            deliveryAddressText.setEnabled(true);
+        } else {
+            deliveryAddressText.setEnabled(false);
+            deliveryAddressText.setText("");
+        }
+        
     }//GEN-LAST:event_cmbOrder1ActionPerformed
+
+    private void deliveryAddressTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveryAddressTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deliveryAddressTextActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CoffeeLabel;
     private javax.swing.JButton backJButton;
     private javax.swing.JComboBox<String> cmbOrder;
     private javax.swing.JComboBox<String> cmbOrder1;
+    private javax.swing.JTextField deliveryAddressText;
     private javax.swing.JLabel enterpriseLabel;
     private javax.swing.JButton placeOrderJButton;
     private javax.swing.JLabel typeLabel;
+    private javax.swing.JLabel typeLabel1;
     private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
 }
