@@ -51,6 +51,10 @@ public class OrganizationDirectory {
                     organization = new DeliveryDispatcherOrganization();
                     organizationList.add(organization);
                 }
+                case Analyst -> {
+                    organization = new AnalystOrganization();
+                    organizationList.add(organization);
+                }
                 default -> {
                 }
             }

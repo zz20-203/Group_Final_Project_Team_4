@@ -30,6 +30,7 @@ public class DeliveryEnterprise extends Enterprise {
     public ArrayList<Organization.Type> getSupportedOrganizationTypes() {
         ArrayList<Organization.Type> types = new ArrayList<>();
         types.add(Organization.Type.Dispatch);
+        types.add(Organization.Type.Analyst);
         return types;
     }
     
