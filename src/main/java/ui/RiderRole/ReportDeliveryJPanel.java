@@ -167,8 +167,7 @@ public class ReportDeliveryJPanel extends javax.swing.JPanel {
             
             Delivery d = organization.getDeliveryDirectory().findDeliveryByOrder(order);
             if (d != null) {
-                // Using generic int representation of time
-                d.setDateTimeSent((int)System.currentTimeMillis()); 
+                d.setDateTimeSent(System.currentTimeMillis()); 
             }
             
             populateTable();
@@ -204,7 +203,7 @@ public class ReportDeliveryJPanel extends javax.swing.JPanel {
                 // Update Delivery Time
                 Delivery d = organization.getDeliveryDirectory().findDeliveryByOrder(order);
                 if (d != null) {
-                    d.setDateTimeArrived((int)System.currentTimeMillis());
+                    d.setDateTimeArrived(System.currentTimeMillis());
                 }
                 
                 populateTable();

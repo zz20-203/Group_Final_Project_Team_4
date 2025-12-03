@@ -13,7 +13,6 @@ import Business.Enterprise.DeliveryEnterprise;
 import Business.Enterprise.Enterprise;
 import Business.Network.Network;
 import Business.Organization.AnalystOrganization;
-import Business.Organization.CafeManagementOrganization;
 import Business.Organization.DeliveryDispatcherOrganization;
 import Business.Organization.Organization;
 import Business.OrderQueue.CoffeeOrderRequest;
@@ -42,10 +41,10 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
     /**
      * Creates new form AnalystWorkAreaJPanel
      * @param userProcessContainer
-     * @param account
-     * @param organization
-     * @param enterprise
      * @param business
+     * @param account
+     * @param enterprise
+     * @param organization
      */
     public AnalystWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem business) {
         initComponents();
@@ -60,7 +59,6 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
     
     /**
      * Traverses the EcoSystem to find the Delivery Data and all Coffee Orders.
-     * This ensures the Analyst sees the most up-to-date data when generating a report.
      */
     private void refreshDataSources() {
         aggregatedOrderQueue = new OrderQueue();
@@ -69,6 +67,7 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
         for (Network n : system.getNetworkList()) {
             for (Enterprise e : n.getEnterpriseDirectory().getEnterpriseList()) {
                 
+                // 1. Find Delivery Directory (in Delivery Enterprise -> Dispatch Org)
                 if (e instanceof DeliveryEnterprise) {
                     for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
                         if (org instanceof DeliveryDispatcherOrganization deliveryDispatcherOrganization) {
@@ -77,13 +76,12 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
                     }
                 }
                 
+                // 2. Find All Coffee Orders (In CoffeeChain)
                 if (e instanceof CoffeeChainEnterprise) {
                     for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
-                        if (org instanceof CafeManagementOrganization) {
-                            for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
-                                if (req instanceof CoffeeOrderRequest) {
-                                    aggregatedOrderQueue.getWorkRequestList().add(req);
-                                }
+                        for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
+                            if (req instanceof CoffeeOrderRequest) {
+                                aggregatedOrderQueue.getWorkRequestList().add(req);
                             }
                         }
                     }
@@ -95,7 +93,7 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
     private void populateOldReportsList() {
         DefaultListModel<Object> model = new DefaultListModel<>();
         for (Report r : organization.getReportDirectory().getReports()) {
-            model.addElement(r); // Report.toString() returns the timestamp
+            model.addElement(r); 
         }
         lstOldReports.setModel(model);
     }
@@ -122,7 +120,7 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
         chkDeliveryPercent = new javax.swing.JCheckBox();
         btnGetRepot = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        lstOldReports = new javax.swing.JList();
+        lstOldReports = new javax.swing.JList<>();
         lblNewReport = new javax.swing.JLabel();
         lblPreviousReports = new javax.swing.JLabel();
 
@@ -202,8 +200,6 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
         
         boolean anythingSelected = false;
         
-        // Append selected sections using AnalystHelper
-        
         if (chkFastRiders.isSelected()) {
             sb.append(AnalystHelper.getTop5FastestRiders(targetDeliveryDirectory));
             sb.append("\n----------------------------------------\n\n");
@@ -254,8 +250,9 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
         String finalReport = sb.toString();
         Report reportObj = new Report(finalReport);
         organization.getReportDirectory().addReport(reportObj);
+        
         txtReportArea.setText(finalReport);
-        populateOldReportsList(); // Refresh list to show new report
+        populateOldReportsList(); 
         
     }//GEN-LAST:event_btnGenReportActionPerformed
 
@@ -267,7 +264,8 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
             return;
         }
         
-        if (selected instanceof Report r) {
+        if (selected instanceof Report) {
+            Report r = (Report) selected;
             txtReportArea.setText(r.getContent());
         }
     }//GEN-LAST:event_btnGetRepotActionPerformed
@@ -288,7 +286,7 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblNewReport;
     private javax.swing.JLabel lblPreviousReports;
     private javax.swing.JLabel lblTitle;
-    private javax.swing.JList lstOldReports;
+    private javax.swing.JList<Object> lstOldReports;
     private javax.swing.JTextArea txtReportArea;
     // End of variables declaration//GEN-END:variables
 }
