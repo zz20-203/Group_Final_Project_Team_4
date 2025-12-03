@@ -24,7 +24,9 @@ import Business.OrderQueue.SupplyOrderRequest;
 
 // Delivery Imports
 import Business.Enterprise.DeliveryEnterprise;
+import Business.Organization.AnalystOrganization;
 import Business.Organization.DeliveryDispatcherOrganization;
+import Business.Role.AnalystRole;
 import Business.Role.DeliveryDispatcherRole;
 import Business.Role.RiderRole;
 
@@ -53,6 +55,7 @@ import Business.Role.RiderRole;
  * Enterprise Admin:        da / 1
  * Delivery Dispatcher:     dd / 1
  * Rider:                   r  / 1
+ * Analyst:                 an / 1
  */
 
 public class ConfigureASystem {
@@ -104,10 +107,14 @@ public class ConfigureASystem {
         DeliveryEnterprise deliveryEnterprise = (DeliveryEnterprise) enterpriseDirectory
                 .createAndAddEnterprise("FastDelivery", Enterprise.EnterpriseType.Delivery);
         
-        //Organizations inside Delivery: Dispatch
+        //Organizations inside Delivery: Dispatch, Analyst
         OrganizationDirectory deliveryOrgDir = deliveryEnterprise.getOrganizationDirectory();
         DeliveryDispatcherOrganization deliveryDispatchOrg = (DeliveryDispatcherOrganization)
                 deliveryOrgDir.createOrganization(Organization.Type.Dispatch);
+        
+        AnalystOrganization analystOrg = (AnalystOrganization)
+                deliveryOrgDir.createOrganization(Organization.Type.Analyst);
+        
         
         //4. have some employees 
         //5. create user account
@@ -140,8 +147,8 @@ public class ConfigureASystem {
         
         
         
-        //FoodSupply part:
-        //Warehouse Keeper (FoodSupply)
+        // FoodSupply part:
+        // Warehouse Keeper (FoodSupply)
         Employee warehouseEmp = warehouseOrg.getEmployeeDirectory().createEmployee("Warehouse Keeper One");
         UserAccount warehouseUA = warehouseOrg.getUserAccountDirectory()
                 .createUserAccount("wh", "1", warehouseEmp, new WarehouseKeeperRole());
@@ -156,18 +163,23 @@ public class ConfigureASystem {
         UserAccount fsAdminUA = foodSupply.getUserAccountDirectory()
                 .createUserAccount("fa", "1", fsAdminEmp, new Business.Role.AdminRole());
                 
-        //Delivery Part:
-        //Delivery Dispatcher
+        // Delivery Part:
+        // Delivery Dispatcher
         Employee deliveryDispatchEmp = deliveryDispatchOrg.getEmployeeDirectory().createEmployee("Delivery Dispatcher One");
         UserAccount deliveryDispatchUA = deliveryDispatchOrg.getUserAccountDirectory()
                 .createUserAccount("dd", "1", deliveryDispatchEmp, new DeliveryDispatcherRole());
         
-        //Delivery Admin
+        // Delivery Admin
         Employee deliveryAdminEmp = deliveryEnterprise.getEmployeeDirectory().createEmployee("Delivery Admin One");
         UserAccount deliveryAdminUA = deliveryEnterprise.getUserAccountDirectory()
                 .createUserAccount("da", "1", deliveryAdminEmp, new AdminRole());
         
-		// ** Test Rider **
+        // Analyst
+        Employee analystEmp = analystOrg.getEmployeeDirectory().createEmployee("Chief Analyst");
+        UserAccount analystUA = analystOrg.getUserAccountDirectory()
+        .createUserAccount("ana", "1", analystEmp, new AnalystRole());
+        
+	// ** Test Rider **
         // Create the Rider business object (ID: 101, Regions: 1,2,3)
         int[] testRiderRegions = {1, 2, 3};
         deliveryDispatchOrg.getRiderDirectory().createRider(101L, "Test", "Rider", 9876543210L, testRiderRegions);
