@@ -27,8 +27,12 @@ public class OrganizationDirectory {
         
         if (type != null) {
             switch (type) {
-                case CafeOperation -> {
-                    organization = new CafeOperationOrganization();
+                case CustomerService -> {
+                    organization = new CustomerServiceOrganization();
+                    organizationList.add(organization);
+                }
+                case BeverageProduction -> {
+                    organization = new BeverageProductionOrganization();
                     organizationList.add(organization);
                 }
                 case CafeManagement -> {
