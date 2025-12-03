@@ -13,7 +13,7 @@ import Business.Enterprise.DeliveryEnterprise;
 import Business.Enterprise.Enterprise;
 import Business.Network.Network;
 import Business.Organization.AnalystOrganization;
-import Business.Organization.CafeOperationOrganization;
+import Business.Organization.CafeManagementOrganization;
 import Business.Organization.DeliveryDispatcherOrganization;
 import Business.Organization.Organization;
 import Business.OrderQueue.CoffeeOrderRequest;
@@ -79,7 +79,7 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
                 
                 if (e instanceof CoffeeChainEnterprise) {
                     for (Organization org : e.getOrganizationDirectory().getOrganizationList()) {
-                        if (org instanceof CafeOperationOrganization) {
+                        if (org instanceof CafeManagementOrganization) {
                             for (OrderRequest req : org.getWorkQueue().getWorkRequestList()) {
                                 if (req instanceof CoffeeOrderRequest) {
                                     aggregatedOrderQueue.getWorkRequestList().add(req);
@@ -122,7 +122,7 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
         chkDeliveryPercent = new javax.swing.JCheckBox();
         btnGetRepot = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        lstOldReports = new javax.swing.JList<>();
+        lstOldReports = new javax.swing.JList();
         lblNewReport = new javax.swing.JLabel();
         lblPreviousReports = new javax.swing.JLabel();
 
@@ -288,7 +288,7 @@ public class AnalystWorkAreaJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblNewReport;
     private javax.swing.JLabel lblPreviousReports;
     private javax.swing.JLabel lblTitle;
-    private javax.swing.JList<Object> lstOldReports;
+    private javax.swing.JList lstOldReports;
     private javax.swing.JTextArea txtReportArea;
     // End of variables declaration//GEN-END:variables
 }
