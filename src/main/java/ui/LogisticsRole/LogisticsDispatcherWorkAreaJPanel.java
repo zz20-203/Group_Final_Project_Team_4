@@ -56,12 +56,12 @@ public class LogisticsDispatcherWorkAreaJPanel extends javax.swing.JPanel {
         tblLogisticsRequests.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tblLogisticsRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", "", null, null, null, null, null},
-                {"", "", null, null, null, null, null},
-                {"", "", null, null, null, null, null},
-                {"", "", null, null, null, null, null},
-                {"", "", null, null, null, null, null},
-                {"", "", null, null, null, null, null}
+                {"", null, null, null, null, null, null},
+                {"", null, null, null, null, null, null},
+                {"", null, null, null, null, null, null},
+                {"", null, null, null, null, null, null},
+                {"", null, null, null, null, null, null},
+                {"", null, null, null, null, null, null}
             },
             new String [] {
                 "Order", "Store", "Item", "Quantity", "Sender", "Status", "Tracking No."

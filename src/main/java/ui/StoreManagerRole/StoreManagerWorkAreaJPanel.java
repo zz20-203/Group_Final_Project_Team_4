@@ -220,7 +220,8 @@ public class StoreManagerWorkAreaJPanel extends javax.swing.JPanel {
         }
 
         SupplyOrderRequest request = new SupplyOrderRequest();
-        request.setStoreName(labOrganization.getName());
+//      request.setStoreName(labOrganization.getName());
+        request.setStoreName("Main Coffee Store");
         request.setItemName(itemName);   
         request.setQuantity(quantity);
         request.setSender(userAccount);

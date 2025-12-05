@@ -33,7 +33,7 @@ public class DB4OUtil {
     }
 
     private ObjectContainer createConnection() {
-        try {
+        try { 
 
             EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
             config.common().add(new TransparentPersistenceSupport());

@@ -93,14 +93,7 @@
                   <Data value=""/>
                   <Data value=""/>
                 </Column>
-                <Column editable="false" title="Store" type="java.lang.Object">
-                  <Data value=""/>
-                  <Data value=""/>
-                  <Data value=""/>
-                  <Data value=""/>
-                  <Data value=""/>
-                  <Data value=""/>
-                </Column>
+                <Column editable="false" title="Store" type="java.lang.Object"/>
                 <Column editable="false" title="Item" type="java.lang.Object"/>
                 <Column editable="false" title="Quantity" type="java.lang.Object"/>
                 <Column editable="false" title="Sender" type="java.lang.Object"/>

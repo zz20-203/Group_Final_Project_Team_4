@@ -15,7 +15,7 @@ import java.util.ArrayList;
  *
  * @author MyPC1
  */
-public class EcoSystem extends Organization{
+public class EcoSystem extends Organization {
     
     private static EcoSystem business;
     private ArrayList<Network> networkList;

@@ -56,12 +56,12 @@ public class WarehouseKeeperWorkAreaJPanel extends javax.swing.JPanel {
         tblSupplyRequests.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tblSupplyRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null},
-                {"", "", null, null, null, null}
+                {"", null, null, null, null, null},
+                {"", null, null, null, null, null},
+                {"", null, null, null, null, null},
+                {"", null, null, null, null, null},
+                {"", null, null, null, null, null},
+                {"", null, null, null, null, null}
             },
             new String [] {
                 "Order", "Store", "Item", "Quantity", "Sender", "Status"

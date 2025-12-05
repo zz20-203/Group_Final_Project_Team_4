@@ -93,7 +93,7 @@ public class ConfigureASystem {
         // 2. In Network, create a CoffeeChain Enterprise
         EnterpriseDirectory enterpriseDirectory = network.getEnterpriseDirectory();
         CoffeeChainEnterprise CoffeeChain = (CoffeeChainEnterprise) enterpriseDirectory
-                .createAndAddEnterprise("CoffeeChain", Enterprise.EnterpriseType.CoffeeChain);
+                .createAndAddEnterprise("Main Coffee Store", Enterprise.EnterpriseType.CoffeeChain);
 
         // 3. In CoffeeChain Enterprise, create 2 CafeOp, CafeMgmt Organizations
         OrganizationDirectory cafeOrgDir = CoffeeChain.getOrganizationDirectory();
