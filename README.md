@@ -228,29 +228,35 @@ These work requests drive the main UI workflows.
 2. Enter username and password for one of the seeded demo accounts (System Admin, Enterprise Admins, Store Manager, etc.).  
 3. On successful login, you’ll be routed automatically to the appropriate **Work Area** panel for that role.  
 
-/*
- * Test Login (username / password):
- * System Admin:            sa / 1
- * 
- * CoffeeChain Enterprise:
+## Test Login Credentials
 
- * Enterprise Admin:        ca / 1
- * Front Desk:              fd / 1
- * Barista:                 b  / 1
- * Store Manager:           sm / 1
- * 
- * FoodSupply Enterprise:
+### System Admin
+| Role          | Username | Password |
+|---------------|----------|----------|
+| System Admin  | sa       | 1        |
 
- * Enterprise Admin:        fa / 1
- * Warehouse Keeper:        wh / 1
- * Logistics Dispatcher:    ld / 1
- * 
- * Delivery Enterprise:
+### CoffeeChain Enterprise
+| Role              | Username | Password |
+|-------------------|----------|----------|
+| Enterprise Admin  | ca       | 1        |
+| Front Desk        | fd       | 1        |
+| Barista           | b        | 1        |
+| Store Manager     | sm       | 1        |
 
- * Enterprise Admin:        da / 1
- * Delivery Dispatcher:     dd / 1
- * Rider:                   r  / 1
- */
+### FoodSupply Enterprise
+| Role                 | Username | Password |
+|----------------------|----------|----------|
+| Enterprise Admin     | fa       | 1        |
+| Warehouse Keeper     | wh       | 1        |
+| Logistics Dispatcher | ld       | 1        |
+
+### Delivery Enterprise
+| Role                 | Username | Password |
+|----------------------|----------|----------|
+| Enterprise Admin     | da       | 1        |
+| Delivery Dispatcher  | dd       | 1        |
+| Rider                | r        | 1        |
+
 
 ### Example Workflows (Short)  
 
