@@ -256,6 +256,7 @@ These work requests drive the main UI workflows.
 | Enterprise Admin     | da       | 1        |
 | Delivery Dispatcher  | dd       | 1        |
 | Rider                | r        | 1        |
+| Analyst              | ana      | 1        |
 
 
 ### Example Workflows (Short)  
