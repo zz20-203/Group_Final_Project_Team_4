@@ -258,6 +258,7 @@ These work requests drive the main UI workflows.
 | Rider                | r        | 1        |
 | Analyst              | ana      | 1        |
 
+Faker module has been implemented for random data generation.
 
 ### Example Workflows (Short)  
 
