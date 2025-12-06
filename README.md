@@ -17,27 +17,27 @@ GitHub repository (final project):
 **Ecosystem (Coffee Chain + Supply Chain + Delivery Chain)**  
 
 ### Problem Statement  
-Modern cafe chains usually treat store orders, warehouse restocking, and last-mile delivery as **separate systems**. That causes:
+Modern cafe chains usually treat store orders, warehouse restocking, and last-mile delivery as separate systems. That causes:
 
 - Delayed communication between store and supplier  
 - Manual coordination between warehouse, logistics, and riders  
 - Inefficient restocking due to poor visibility into inventory  
 - Limited cross-enterprise automation and analytics  
 
-This project builds a unified **Swing-based enterprise ecosystem** that connects:
+This project builds a unified Swing-based enterprise ecosystem that connects:
 
 1. **CoffeeChain Enterprise** — in-store order taking, drink preparation, inventory and store management  
 2. **FoodSupply Enterprise** — warehouse handling, stock preparation, and logistics transportation  
 3. **Delivery Enterprise** — delivery dispatch, rider assignment, delivery tracking, and analytics  
 
-Orders and work requests can move across **organizations, enterprises, and roles** in a single integrated EcoSystem.
+Orders and work requests can move across organizations, enterprises, and roles in a single integrated EcoSystem.
 
 ---
 
 ## System Architecture (High Level)
 
 ### Network  
-A single **Network** hosts all enterprises and organizations, sharing users and work queues.
+A single Network hosts all enterprises and organizations, sharing users and work queues.
 
 ### Enterprises (3 total)  
 - **CoffeeChain Enterprise**  
@@ -82,19 +82,19 @@ Each enterprise also has its own **Enterprise Admin**, and the whole EcoSystem i
 
 ## Key Objectives  
 
-- Integrate **store operations, supply chain, and delivery** into a single EcoSystem  
-- Implement **role-based access** so each user only sees tools relevant to their job  
-- Support **cross-organization and cross-enterprise work requests** end-to-end  
-- Provide **analytics** on delivery and order performance for the Analytics Dept  
-- Build a maintainable Java **Swing + CardLayout** UI on top of the domain model  
+- Integrate store operations, supply chain, and delivery into a single EcoSystem  
+- Implement role-based access so each user only sees tools relevant to their job  
+- Support cross-organization and cross-enterprise work requests end-to-end  
+- Provide analytics on delivery and order performance for the Analytics Dept  
+- Build a maintainable Java Swing + CardLayout UI on top of the domain model  
 
 ---
 
 ## Key Features  
 
-- Central **EcoSystem** with Network, Enterprises, Organizations, Users, Roles, and WorkQueues  
-- Role-based Swing UI: each role logs in and sees its own **Work Area Panel**  
-- Cross-enterprise workflows tying together **CoffeeChain**, **FoodSupply**, and **Delivery**  
+- Central EcoSystem with Network, Enterprises, Organizations, Users, Roles, and WorkQueues  
+- Role-based Swing UI: each role logs in and sees its own work area panel  
+- Cross-enterprise workflows tying together CoffeeChain, FoodSupply, and Delivery  
 - Work request tracking with status updates as requests move across departments  
 - Delivery management: assign riders, update delivery status, and complete deliveries  
 - Analytics: generate high-level reports on deliveries and riders (Analytics Dept)  
@@ -105,19 +105,19 @@ Each enterprise also has its own **Enterprise Admin**, and the whole EcoSystem i
 
 ### Prerequisites  
 
-- Java **JDK 17** or higher (8+ is usually fine, but we developed on a modern JDK)  
-- IDE: **NetBeans** (recommended), IntelliJ IDEA, or Eclipse  
+- Java JDK 17 or higher (8+ is usually fine, but we developed on a modern JDK)  
+- IDE: NetBeans (recommended), IntelliJ IDEA, or Eclipse  
 - No external libraries required besides standard Java Swing  
 
 ### Setup Steps  
 
-1. **Clone** the repository  
+1. Clone the repository  
    ```bash
    git clone https://github.com/zz20-203/Group_Final_Project_Team_4.git
    ```
-2. **Open** the project in your IDE (NetBeans project structure is already included).  
+2. Open the project in your IDE (NetBeans project structure is already included).  
 3. Locate the main entry class (for example `MainJFrame.java` or `Main.java`) in the UI package.  
-4. **Run** the main class. The Swing login window should appear.  
+4. Run the main class. The Swing login window should appear.  
 
 If necessary, update the project SDK/JDK in your IDE’s Project Settings so it points to your installed JDK.
 
@@ -127,13 +127,13 @@ If necessary, update the project SDK/JDK in your IDE’s Project Settings so it 
 
 ### Authentication  
 
-- Users log in from the **Main Frame / Login Panel**.  
+- Users log in from the Main Frame / Login Panel.  
 - Credentials are checked against the `UserAccountDirectory` stored in the EcoSystem.  
 - On successful login, the system loads the correct work area for that user’s role and enterprise.
 
 ### Authorization  
 
-Each `UserAccount` has an associated **Role** and **Organization** (and indirectly, an Enterprise). That controls:
+Each `UserAccount` has an associated Role and Organization (and indirectly, an Enterprise). That controls:
 
 - Which menus and buttons are visible  
 - Which tables and entities can be edited  
@@ -269,12 +269,12 @@ Faker module has been implemented for random data generation.
 ### Complete Workflow Example – Drink Order to Delivery  
 
 1. **Front Desk Staff**  
-   - Logs in and creates a **Drink Order** work request.  
+   - Logs in and creates a drink Order work request.  
 2. **Barista**  
    - Sees the order, prepares the drink, updates order status.  
-   - On completion, sends a **Delivery Request** to the Delivery Dispatcher.  
+   - On completion, sends a delivery Request to the Delivery Dispatcher.  
 3. **Delivery Dispatcher**  
-   - Views ready-for-delivery orders, assigns them to a **Rider**.  
+   - Views ready-for-delivery orders, assigns them to a rider.  
 4. **Rider**  
    - Logs in, checks assigned deliveries, picks up the drink, and marks as delivered.  
 5. **Data Analyst**  
@@ -283,9 +283,9 @@ Faker module has been implemented for random data generation.
 ### Complete Workflow Example – Inventory Restock  
 
 1. **Store Manager**  
-   - Logs in, views inventory, creates **Restock Inventory** request when stock is low.  
+   - Logs in, views inventory, creates restock inventory request when stock is low.  
 2. **Warehouse Keeper**  
-   - Receives the request, prepares materials, sends **Shipment Request** to Logistics.  
+   - Receives the request, prepares materials, sends shipment request to Logistics.  
 3. **Logistics Dispatcher**  
    - Ships materials to the store and marks shipment as delivered.  
 4. **Store Manager**  
@@ -318,7 +318,7 @@ You can log intermediate statuses in console output or Swing dialogs to validate
 
 ### Solutions  
 
-- Introduced a clear **EcoSystem → Network → Enterprise → Organization** hierarchy  
+- Introduced a clear EcoSystem → Network → Enterprise → Organization hierarchy  
 - Kept work queues at the organization level so requests can move cleanly  
 - Used role-based panels with CardLayout to isolate each role’s workflow  
 - Iterated on UML class, component, and sequence diagrams to validate design  
